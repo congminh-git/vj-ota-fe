@@ -1,0 +1,61 @@
+export const fareRule = {
+    eco: {
+        apply: [
+            'Hành lý xách tay: 07kg.',
+            'Bảo hiểm Sky Care (chưa áp dụng cho các chuyến bay do Thai Vietjet khai thác).',
+        ],
+        notApply: [
+            'Hành lý ký gửi (tùy chọn)',
+            'Suất ăn',
+            'Bộ tiện ích 3 trong 1',
+            'Chọn trước chỗ ngồi',
+            'Thay đổi chuyến bay, ngày bay, hành trình',
+            'Chênh lệch tiền vé khi thay đổi (nếu có)',
+        ],
+    },
+    deluxe: {
+        apply: [
+            'Hành lý xách tay: 07kg hoặc 10kg tuỳ vào nhóm đường bay.',
+            'Hành lý ký gửi: miễn phí 20 Kg hoặc 40kg tuỳ vào nhóm đường bay ',
+            'Suất ăn & nước uống tuỳ vào nhóm đường bay',
+            'Chọn trước chỗ ngồi yêu thích (khi còn chỗ, không áp dụng các hàng ghế dành cho SkyBoss và Business)',
+            'Miễn phí thay đổi chuyến bay, ngày bay, hành trình (Thu chênh lệch giá Vé - nếu có)',
+            'Bảo hiểm Sky Care (chưa áp dụng cho các chuyến bay do Thai Vietjet khai thác).',
+        ],
+        notApply: ['Bộ tiện ích 3 trong 1'],
+    },
+    skyBoss: {
+        apply: [
+            'Hành lý xách tay: 10kg hoặc 14kg tuỳ vào nhóm đường bay.',
+            'Hành lý ký gửi: 30kg hoặc 50kg và 01 bộ dụng cụ chơi golf (nếu có) tuỳ vào nhóm đường bay',
+            'Phòng chờ sang trọng (không áp dụng trên các chuyến bay nội địa Thái Lan và các sân bay có phòng chờ không đạt tiêu chuẩn hoặc đóng cửa trong giờ hoạt động của chuyến bay). Thời gian sử dụng dịch vụ là 03 tiếng trước giờ khởi hành chuyến bay.',
+            'Ưu tiên làm thủ tục trước chuyến bay',
+            'Ưu tiên phục vụ hành lý',
+            'Ưu tiên qua cửa an ninh (tùy theo điều kiện từng sân bay)',
+            'Phục vụ đưa đón riêng ra tàu bay (áp dụng trường hợp tàu bay đậu bãi; không áp dụng đối với sân bay không cung cấp dịch vụ xe đưa đón riêng)',
+            'Ưu tiên chọn chỗ ngồi trên tàu bay',
+            'Thưởng thức ẩm thực tươi ngon suốt chuyến bay',
+            'Bộ tiện ích 3 trong 1',
+            'Hoàn bảo lưu định danh tiền vé trong vòng 02 (hai) năm kể từ ngày khởi hành dự kiến',
+            'Bảo hiểm Sky Care (chưa áp dụng cho các chuyến bay do Thai Vietjet khai thác).',
+        ],
+        notApply: [],
+    },
+    business: {
+        apply: [
+            'Hành lý xách tay: 18kg.',
+            'Hành lý ký gửi: Miễn phí 40 Kg hoặc 60 Kg và 01 bộ dụng cụ chơi golf (nếu có) tuỳ vào nhóm đường bay',
+            'Phòng chờ sang trọng (không áp dụng trên các chuyến bay nội địa Thái Lan và các sân bay có phòng chờ không đạt tiêu chuẩn hoặc đóng cửa trong giờ hoạt động của chuyến bay). Thời gian sử dụng dịch vụ là 03 tiếng trước giờ khởi hành chuyến bay. ',
+            'Ưu tiên làm thủ tục trước chuyến bay',
+            'Ưu tiên phục vụ hành lý',
+            'Ưu tiên qua cửa an ninh (tùy theo điều kiện từng sân bay)',
+            'Phục vụ đưa đón riêng ra tàu bay (áp dụng trường hợp tàu bay đậu bãi; không áp dụng đối với sân bay không cung cấp dịch vụ xe đưa đón riêng)',
+            'Ưu tiên chọn chỗ ngồi trên tàu bay',
+            'Thưởng thức ẩm thực tươi ngon suốt chuyến bay',
+            'Bộ tiện ích 3 trong 1',
+            'Hoàn bảo lưu định danh Tiền Vé: 02 năm kể từ ngày khởi hành dự kiến',
+            'Bảo hiểm Sky Care (chưa áp dụng cho các chuyến bay do Thai Vietjet khai thác).',
+        ],
+        notApply: [],
+    },
+};
