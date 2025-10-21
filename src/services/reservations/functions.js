@@ -1,4 +1,5 @@
-import { getRequest, postRequest, putRequest } from "../apiService";
+import { getRequest, postRequest, putRequest } from '../apiService';
+import { getBaseURL } from '@/lib/getBaseUrl';
 import { toast } from 'react-hot-toast';
 
 export const getReservationByLocatorForSearch = async (locator) => {
@@ -20,7 +21,7 @@ export const getReservationPassengers = async (reservationKey, passengerSelect) 
     const url = `/reservations/${reservationKey}/passengers`;
     const response = await getRequest(url);
     const list = response.filter((passenger) => passenger.key == passengerSelect.key);
-    return list
+    return list;
 };
 
 export const putUpdateReservationPassengerByKey = async (reservationKey, reservationBody) => {
@@ -33,37 +34,60 @@ export const putUpdateReservationJourneyByKey = async (reservationKey, journeyke
     return putRequest(url, reservationBody);
 };
 
-export const postReservationDatVe = async (
-    body,
-    quotations,
-    creditCard
-) => {
+export const postReservationDatVe = async (body, quotations, creditCard) => {
     try {
         const url = `/reservations`;
         body.paymentTransactions[0].currencyAmounts = quotations.paymentTransactions[0].currencyAmounts;
-            body.paymentTransactions[0].processingCurrencyAmounts =
-                quotations.paymentTransactions[0].processingCurrencyAmounts;
-            body.paymentTransactions.forEach((element) => {
-                if (['MC', 'VI'].includes(element.paymentMethod.identifier)) {
-                    const newCreditCard = { ...creditCard };
-                    delete newCreditCard.expiryDate;
-                    element.paymentMethodCriteria = {
-                        creditCard: newCreditCard,
-                    };
-                }
-            });
+        body.paymentTransactions[0].processingCurrencyAmounts =
+            quotations.paymentTransactions[0].processingCurrencyAmounts;
+        body.paymentTransactions.forEach((element) => {
+            if (['MC', 'VI'].includes(element.paymentMethod.identifier)) {
+                const newCreditCard = { ...creditCard };
+                delete newCreditCard.expiryDate;
+                element.paymentMethodCriteria = {
+                    creditCard: newCreditCard,
+                };
+            }
+        });
         const response = await postRequest(url, body);
         if (response) {
             sessionStorage.setItem('bookingSuccessResult', JSON.stringify(response));
-            await postEmailingItineraries(
-                response.key,
-                response.bookingInformation.contactInformation.email,
-                true,
-            );
+            await postEmailingItineraries(response.key, response.bookingInformation.contactInformation.email, true);
         }
-        return true
+        return true;
     } catch (error) {
-        console.error(error)
+        console.error(error);
+    }
+};
+
+export const postReservationByInternationalCard = async (body, quotations, billing, cardInfo) => {
+    try {
+        console.log(billing, cardInfo);
+        const url = `/reservations`;
+        const baseUrl = getBaseURL();
+        body.paymentTransactions[0].currencyAmounts = quotations.paymentTransactions[0].currencyAmounts;
+        body.paymentTransactions[0].processingCurrencyAmounts =
+            quotations.paymentTransactions[0].processingCurrencyAmounts;
+        body.paymentTransactions[0].callbackURLs = {
+            successURL: `${baseUrl}/dat-ve/payment/result`,
+            failureURL: `${baseUrl}/dat-ve/payment/result`,
+            cancelURL: `${baseUrl}/dat-ve/payment/result`,
+            pendingURL: `${baseUrl}/dat-ve/payment/result`,
+            ipnURL: ``,
+            
+                // "successURL": "https://ota-booking-demo.vercel.app/dat-ve",
+                // "failureURL": "https://ota-booking-demo.vercel.app/dat-ve",
+                // "cancelURL": "https://ota-booking-demo.vercel.app/dat-ve",
+                // "pendingURL": "https://ota-booking-demo.vercel.app/dat-ve",
+                // "ipnURL": ""
+
+        };
+        body.paymentTransactions[0].billingInfo = billing;
+        body.paymentTransactions[0].cardInfo = cardInfo;
+        const response = await postRequest(url, body);
+        return response;
+    } catch (error) {
+        console.error(error);
     }
 };
 
@@ -73,11 +97,7 @@ export const postReservationSplitPassengers = async (body) => {
         const response = await postRequest(url, body);
         if (response) {
             sessionStorage.setItem('bookingSuccessResult', JSON.stringify(response));
-            postEmailingItineraries(
-                response.key,
-                response.bookingInformation.contactInformation.email,
-                true,
-            );
+            postEmailingItineraries(response.key, response.bookingInformation.contactInformation.email, true);
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -158,10 +178,10 @@ export const postReservationPaymentTransaction = async (
 export const postEmailingItineraries = async (reservationKey, email, passive) => {
     try {
         const url = `/reservations/${reservationKey}/emailItinerary?languageCode=vi&includeAllPassengers=true&itineraryTypeCode=D&emailAddresses=${email}&senderAddress=noreply.itinerary@vietjetair.com&passengerKey=&includeLogo=true&includeTermsAndConditions=true`;
-        console.log(url)
+        console.log(url);
         const response = await postRequest(url, {});
-        console.log(response)
-        if (response == "") {
+        console.log(response);
+        if (response == '') {
             if (passive) {
                 toast.success('Đã gửi email hành trình');
             } else {
@@ -258,11 +278,7 @@ export const getReservationBookingInfomation = async (reservationKey, bookingInf
     }
 };
 
-export const putReservationBookingInformation = async (
-    reservationKey,
-    bookingInformationKey,
-    body
-) => {
+export const putReservationBookingInformation = async (reservationKey, bookingInformationKey, body) => {
     try {
         const url = `/reservations/${reservationKey}/bookingInformation/${bookingInformationKey}`;
         const response = await putRequest(url, body);

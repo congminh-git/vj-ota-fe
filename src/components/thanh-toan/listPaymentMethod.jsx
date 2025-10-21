@@ -253,12 +253,6 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 onChange={() => {
                                     setPaymentMethod({ identifier: 'PL', description: 'Pay Later', creditCard: '' });
                                     setSelectedPaymentMethod('paylater');
-
-                                    setPaymentMethodGpay({
-                                        paymentMethod: null,
-                                        sourceOfFund: null,
-                                        sourceType: null,
-                                    });
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">

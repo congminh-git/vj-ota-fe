@@ -12,7 +12,6 @@ import { getAncillaryOptionsReturn } from '@/services/ancillaryOptions/functions
 import { getSeatSelectionOptionsReturn } from '@/services/seatSelection/functions';
 import { getCompany } from '@/services/companies/functions';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
-import { postGpayPay } from '@/services/gpay/functions';
 import { toast } from 'react-hot-toast';
 
 export function useBookingManagement() {
@@ -29,11 +28,6 @@ export function useBookingManagement() {
     const [debt, setDebt] = useState(0);
     const [companyKey, setCompanyKey] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState({ identifier: null, description: null });
-    const [paymentMethodGpay, setPaymentMethodGpay] = useState({
-        paymentMethod: null,
-        sourceOfFund: null,
-        sourceType: null,
-    });
     const [passengerSelect, setPassengerSelect] = useState(null);
     const [searchFlightPopup, setSearchFlightPopup] = useState(false);
     const [changePassengerInfoPopup, setChangePassengerInfoPopup] = useState(false);
@@ -283,143 +277,6 @@ export function useBookingManagement() {
         }
     }, [paymentMethod, reservationByKey, companyKey, quotations, currency, exchangeRate]);
 
-    const gpayPayFunction = useCallback(async (jsonData) => {
-        const data = await postGpayPay(jsonData);
-        return data;
-    }, []);
-
-    const gpayPay = useCallback(async () => {
-        if (reservationByKey && totalPrice) {
-            const passenger_list = [];
-            const payment_detail = [];
-            const flight_info = [];
-            for (var i = 0; i < reservationByKey.charges.length; i++) {
-                payment_detail.push({
-                    leg_index: 'Chưa chắc',
-                    service_code: reservationByKey.charges[i].chargeType.code,
-                    amount: reservationByKey.charges[i].currencyAmounts[0].totalAmount,
-                    ccy_code: reservationByKey.charges[i].currencyAmounts[0].currency.code,
-                    payment_desc: reservationByKey.charges[i].chargeType.description,
-                    additional_data: reservationByKey.charges[i].description,
-                });
-            }
-            for (var i = 0; i < reservationByKey.passengers.length; i++) {
-                passenger_list.push({
-                    pax_id: 'Chưa biết',
-                    pax_type: reservationByKey.passengers[i].fareApplicability.adult ? 'ADT' : 'CHD',
-                    gender:
-                        reservationByKey.passengers[i].reservationProfile.gender.toUpperCase() === 'MALE' ? 'M' : 'F',
-                    dob: reservationByKey.passengers[i].reservationProfile.birthDate,
-                    first_name: reservationByKey.passengers[i].reservationProfile.firstName,
-                    last_name: reservationByKey.passengers[i].reservationProfile.lastName,
-                    name_in_pnr:
-                        reservationByKey.passengers[i].reservationProfile.firstName +
-                        reservationByKey.passengers[i].reservationProfile.lastName,
-                    customer_id: 'Chưa biết',
-                    title: reservationByKey.passengers[i].reservationProfile.title,
-                    member_ticket: 'Chưa biết',
-                });
-            }
-            for (var i = 0; i < reservationByKey.journeys.length; i++) {
-                flight_info.push({
-                    leg_index: 'Chưa chắc',
-                    airlineCode: reservationByKey.journeys[i].segments[0].flight.airlineCode.code,
-                    operatingAirlineCode: reservationByKey.journeys[i].segments[0].flight.airlineCode.code,
-                    flightNumber: reservationByKey.journeys[i].segments[0].flight.flightNumber,
-                    journey_type: 'Chưa biết',
-                    departureAirport: reservationByKey.journeys[i].segments[0].departure.airport.code,
-                    departureTime: reservationByKey.journeys[i].segments[0].departure.scheduledTime,
-                    arrivalAirport: reservationByKey.journeys[i].segments[0].arrival.airport.code,
-                    arrivalTime: reservationByKey.journeys[i].segments[0].arrival.scheduledTime,
-                    classOfService: 'Chưa biết',
-                    fareBasisCode: 'Chưa biết',
-                });
-            }
-            const extraData = {
-                mc_acc_code: 'Chưa biết',
-                channel_id: 'Chưa biết',
-                ip_addr: 'Chưa biết',
-                pay_method_code: 'Chưa biết',
-                order_number: reservationByKey.number,
-                record_locator: reservationByKey.locator,
-                created_date: getCurrentDateTimeString(),
-                expire_date: getCurrentDateTimeString(),
-                add_data: 'Chưa biết',
-                app_id: 'Chưa biết',
-                cus_street_number: '',
-                cus_add_line1: '',
-                cus_add_line2: '',
-                postal_code: '',
-                cus_title: '',
-                cus_name: reservationByKey.bookingInformation.contactInformation.name,
-                cus_country: '',
-                cus_email: reservationByKey.bookingInformation.contactInformation.email,
-                cus_phone_number: reservationByKey.bookingInformation.contactInformation.phoneNumber,
-                cus_phone_type: 'TEL',
-                cus_dob: '',
-                city_name: '',
-                state_province: '',
-                country_code: '',
-                payment_detail: payment_detail,
-                passenger_list: passenger_list,
-                flight_info: flight_info,
-                billing: {
-                    country: 'VN',
-                    state: 'Hồ Chí Minh',
-                    city: 'Nhà Bè',
-                    postalCode: '',
-                    streetNumber: '673',
-                    address01: 'Đường Nguyễn Hữu Thọ',
-                    address02: '',
-                    phoneNumber: '0321654987',
-                    email: 'example@example.com',
-                },
-                shipping: {
-                    country: 'VN',
-                    state: 'Hồ Chí Minh',
-                    city: 'Nhà Bè',
-                    postalCode: '',
-                    streetNumber: '673',
-                    address01: 'Đường Nguyễn Hữu Thọ',
-                    address02: '',
-                    phoneNumber: '0321654987',
-                    email: 'example@example.com',
-                },
-            };
-            const jsonData = {
-                requestID: '7c9c0d2d344346cdaf3c15e2cce67f8b',
-                requestDateTime: getCurrentDateTimeString(),
-                requestData: {
-                    orderID: '061681766f384711acb8f3c0e66f0e97',
-                    orderNumber: 'a9076e8d13f74d37ac27878288f898c1',
-                    orderDateTime: getCurrentDateTimeString(),
-                    orderAmount: totalPrice,
-                    orderNetAmount: totalPrice,
-                    orderFeeAmount: 0,
-                    orderDiscountAmount: 0,
-                    orderCurrency: 'VND',
-                    orderDescription: 'Pay demo pay',
-                    paymentMethod: paymentMethodGpay.paymentMethod,
-                    sourceOfFund: paymentMethodGpay.sourceOfFund,
-                    sourceType: paymentMethodGpay.sourceType,
-                    customerToken: '',
-                    extraData: extraData,
-                    language: 'vi',
-                },
-            };
-            return await gpayPayFunction(jsonData);
-        }
-    }, [reservationByKey, totalPrice, paymentMethodGpay, gpayPayFunction]);
-
-    const handlePay = useCallback(() => {
-        if (paymentMethod.identifier) {
-            handlePayAG();
-        } else if (paymentMethodGpay.paymentMethod) {
-            // onPayment logic (tách riêng nếu cần)
-            gpayPay();
-        }
-    }, [paymentMethod, paymentMethodGpay, handlePayAG, gpayPay]);
-
     return {
         checkedAuth,
         listBreadcrumb,
@@ -443,8 +300,6 @@ export function useBookingManagement() {
         companyKey,
         paymentMethod,
         setPaymentMethod,
-        paymentMethodGpay,
-        setPaymentMethodGpay,
         handlePay,
         searchFlightPopup,
         setSearchFlightPopup,

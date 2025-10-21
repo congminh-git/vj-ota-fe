@@ -131,27 +131,6 @@ export const putRequest = async (url, data, isRetry = false) => {
     }
 };
 
-// Hàm POST Gpay chung
-export const postGpayRequest = async (url, data) => {
-    try {
-        const response = await apiService.post(url, data);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to fetch data:', error);
-        if (error.status === 401) {
-            if (refreshToken) {
-                putRequestRefreshToken('/userSessions', refreshToken);
-            } else {
-                window.location.href = '/login';
-            }
-        }
-        const errorMessage = typeof error.message ? error.message : 'Something went wrong';
-
-        toast.error(errorMessage);
-        throw error;
-    }
-};
-
 export const postRequestLogin = async (url, data) => {
     try {
         const response = await apiService.post(url, data);

@@ -28,7 +28,7 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
     }, [cardInfo.cardNumber]);
 
     return (
-        <div className={`grid-cols-2 gap-12 my-4 p-16 ${show ? 'grid' : 'hidden'}`}>
+        <div className={`grid-cols-2 gap-12 my-4 p-4 bg-white rounded ${show ? 'grid' : 'hidden'}`}>
             <div>
                 <p className="font-semibold mb-4">Thông tin thẻ</p>
 
@@ -80,15 +80,15 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                     </label>
                     <input
                         type="text"
-                        name="cardholderName"
-                        placeholder="Nguyễn Văn A"
-                        value={cardInfo.cardholderName}
+                        name="cardName"
+                        place="NGUYEN VAN AN"
+                        value={cardInfo.cardName}
                         className="w-full mt-1 outline-none bg-transparent"
                         autoComplete="cc-name"
                         onChange={(e) => {
                             setCardInfo({
                                 ...cardInfo,
-                                cardholderName: e.target.value.toUpperCase(),
+                                cardName: e.target.value.toUpperCase(),
                             });
                         }}
                     />
@@ -102,19 +102,19 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                         </label>
                         <input
                             type="text"
-                            name="cardExpiry"
+                            name="expiryDate"
                             placeholder="MM/YY"
                             maxLength="5"
                             className="w-full mt-1 outline-none bg-transparent"
                             autoComplete="cc-exp"
-                            value={cardInfo.cardExpiry}
+                            value={cardInfo.expiryDate}
                             onChange={(e) => {
                                 let value = e.target.value.replace(/\D/g, '');
                                 if (value.length > 4) value = value.slice(0, 4);
                                 if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
                                 setCardInfo({
                                     ...cardInfo,
-                                    cardExpiry: value,
+                                    expiryDate: value,
                                 });
                             }}
                         />
@@ -136,7 +136,7 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                                 onChange={(e) => {
                                     setCardInfo({
                                         ...cardInfo,
-                                        cardCvv: e.target.value,
+                                        cvv: e.target.value,
                                     });
                                 }}
                             />
@@ -171,14 +171,13 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                     <input
                         type="text"
                         name="address"
-                        value={billing.address01}
+                        value={billing.address}
                         placeholder="Số nhà, tên đường"
                         className="w-full mt-1 outline-none bg-transparent"
                         onChange={(e) => {
                             setBilling({
                                 ...billing,
-                                address01: e.target.value,
-                                address02: e.target.value,
+                                address: e.target.value
                             });
                         }}
                     />
@@ -272,14 +271,6 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                     {/* Select mã quốc gia */}
                     <div className="flex items-center gap-2">
                         <select
-                            value={cardInfo.countryCode}
-                            onChange={(e) => {
-                                setCardInfo({
-                                    ...cardInfo,
-                                    countryCode: e.target.value,
-                                    phone: `${e.target.value}${cardInfo.rawPhone || ''}`, // gộp code + số
-                                });
-                            }}
                             className="text-sm border rounded px-2 py-1 outline-none bg-transparent"
                         >
                             <option value="+84">🇻🇳 +84</option>
@@ -297,15 +288,14 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                         <input
                             type="tel"
                             name="phone"
-                            value={cardInfo.rawPhone || ''}
+                            value={billing.phone.replace("+84", "") || ''}
                             placeholder="912345678"
                             className="w-full mt-1 outline-none bg-transparent"
                             onChange={(e) => {
                                 const rawPhone = e.target.value.replace(/\D/g, ''); // chỉ giữ số
-                                setCardInfo({
-                                    ...cardInfo,
-                                    rawPhone,
-                                    phone: `${cardInfo.countryCode || '+84'}${rawPhone}`,
+                                setBilling({
+                                    ...billing,
+                                    phone: `${billing.countryCode || '+84'}${rawPhone}`,
                                 });
                             }}
                         />

@@ -19,6 +19,7 @@ export default function PriceInfomation({
     seatTotalPrice,
     mealTotalPrice,
     insuranceTotalPrice,
+    processingAmount
 }) {
     const pathname = usePathname();
     const [showDeparturePrices, setShowDeparturePrices] = useState(false);
@@ -851,7 +852,19 @@ export default function PriceInfomation({
             ) : (
                 <></>
             )}
-            <div className="border-gray-300 ">
+            <div className="border-gray-300 mt-4">
+                {
+                    processingAmount > 0
+                    ?
+                    <div className="flex justify-between items-center mt-1">
+                        <span>Phí tiện ích</span>
+                        <span className="font-bold">
+                            {processingAmount.toLocaleString()} {currencySymbol}
+                        </span>
+                    </div>
+                    :
+                    <></>
+                }
                 <div className="flex justify-between items-center mt-1">
                     <span>Tổng tiền</span>
                     <span className="font-bold">

@@ -10,8 +10,9 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCompany } from '@/services/companies/functions';
 import { getPaymentMethods } from '@/services/paymentMethods/functions';
-import { postReservationDatVe } from '@/services/reservations/functions';
+import { postReservationDatVe, postReservationByInternationalCard } from '@/services/reservations/functions';
 import { putQuotationReservation } from '@/services/quotations/functions';
+import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 
 // Custom hook để đọc sessionStorage một lần
 const useSessionStorageData = () => {
@@ -107,23 +108,43 @@ export default function PaymentPage() {
     const [personalIdentificationNumber, setPersonalIdentificationNumber] = useState('');
     const [password, setPassword] = useState('');
     const prevPaymentTransactionsRef = useRef();
+
+    const [billing, setBilling] = useState({
+        city: '',
+        state: '',
+        country: '',
+        address: '',
+        postalCode: '',
+        phone: ''
+    });
+
+    const [cardInfo, setCardInfo] = useState({
+        cardName: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: ''
+    });
+
     // Memoize breadcrumb để tránh tạo lại object mỗi lần render
-    const listBreadcrumb = useMemo(() => [
-        { title: 'Tìm vé', uri: '/dat-ve' },
-        {
-            title: 'Danh sách vé',
-            uri: `/dat-ve/danh-sach-ve?cityPair=${cityPair}&departure=${departmentDate}&roundTrip=${roundTrip}&comeback=${returnDate}&currency=${currency}&adultCount=${adult}&childCount=${child}&infantCount=${infant}&departureCity=${departureCity}&arrivalCity=${arrivalCity}&activeChonVe=${'đi'}`,
-        },
-        {
-            title: 'Thông tin hành khách',
-            uri: `/dat-ve/thong-tin-hanh-khach?cityPair=${cityPair}&departure=${departmentDate}&roundTrip=${roundTrip}&comeback=${returnDate}&currency=${currency}&adultCount=${adult}&childCount=${child}&infantCount=${infant}&departureCity=${departureCity}&arrivalCity=${arrivalCity}&activeChonVe=${'đi'}`,
-        },
-        {
-            title: 'Thêm dịch vụ',
-            uri: `/dat-ve/them-dich-vu`,
-        },
-        { title: 'Thanh toán', uri: 'thanh-toan' },
-    ], [cityPair, departmentDate, roundTrip, returnDate, currency, adult, child, infant, departureCity, arrivalCity]);
+    const listBreadcrumb = useMemo(
+        () => [
+            { title: 'Tìm vé', uri: '/dat-ve' },
+            {
+                title: 'Danh sách vé',
+                uri: `/dat-ve/danh-sach-ve?cityPair=${cityPair}&departure=${departmentDate}&roundTrip=${roundTrip}&comeback=${returnDate}&currency=${currency}&adultCount=${adult}&childCount=${child}&infantCount=${infant}&departureCity=${departureCity}&arrivalCity=${arrivalCity}&activeChonVe=${'đi'}`,
+            },
+            {
+                title: 'Thông tin hành khách',
+                uri: `/dat-ve/thong-tin-hanh-khach?cityPair=${cityPair}&departure=${departmentDate}&roundTrip=${roundTrip}&comeback=${returnDate}&currency=${currency}&adultCount=${adult}&childCount=${child}&infantCount=${infant}&departureCity=${departureCity}&arrivalCity=${arrivalCity}&activeChonVe=${'đi'}`,
+            },
+            {
+                title: 'Thêm dịch vụ',
+                uri: `/dat-ve/them-dich-vu`,
+            },
+            { title: 'Thanh toán', uri: 'thanh-toan' },
+        ],
+        [cityPair, departmentDate, roundTrip, returnDate, currency, adult, child, infant, departureCity, arrivalCity],
+    );
 
     const isValidCreditCard = useCallback((cardNumber) => {
         // Remove any non-digit characters
@@ -183,15 +204,24 @@ export default function PaymentPage() {
         setLoading(true);
         const data = await postReservationDatVe(body, quotations, paymentMethod.creditCard);
         if (data) {
-            setSendEmail(true)
-            setLoading(false)
+            setSendEmail(true);
+            setLoading(false);
             router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
         }
     }, [body, quotations, paymentMethod, router]);
 
+    const handleBookingWithInternationalCard = useCallback(async () => {
+        setLoading(true);
+        const data = await postReservationByInternationalCard(body, quotations, billing, cardInfo);
+        //Redirect sang endpoint trả về
+        router.push(data?.data?.responseData?.endpoint)
+    }, [body, quotations, paymentMethod, billing, cardInfo]);
+
     const checkValidation = useCallback(() => {
-        if (!['MC', 'VI'].includes(paymentMethod.identifier)) {
+        if (['AG', 'PL'].includes(paymentMethod.identifier)) {
             handleBooking();
+        } else if (['VJPVI', 'VJPMC', 'VJPAMEX', 'VJPJCB'].includes(paymentMethod.identifier)) {
+            handleBookingWithInternationalCard();
         } else {
             let validateCount = 0;
             if (!paymentMethod.creditCard.number.replace(/\D/g, '')) {
@@ -266,7 +296,7 @@ export default function PaymentPage() {
                 handleBooking();
             }
         }
-    }, [paymentMethod, isValidCreditCard, isValidExpiryDate, handleBooking]);
+    }, [paymentMethod, isValidCreditCard, isValidExpiryDate, handleBooking, handleBookingWithInternationalCard]);
 
     const handleGetCompany = useCallback(async () => {
         const data = await getCompany();
@@ -282,7 +312,7 @@ export default function PaymentPage() {
         if (fareOptionsDepartureFlightStr) {
             setFareOptionsDepartureFlight(fareOptionsDepartureFlightStr);
         } else {
-            router.replace('/')
+            router.replace('/');
         }
         if (fareOptionsReturnFlightStr) {
             setFareOptionsReturnFlight(fareOptionsReturnFlightStr);
@@ -304,10 +334,13 @@ export default function PaymentPage() {
         const getValidPaymentMethod = async () => {
             if (returnFlight) {
                 const paymentMethodDepartureFlight = await getPaymentMethods(
-                    departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight).bookingCode.key,
+                    departureFlight?.fareOptions.find(
+                        (element) => element.bookingCode.key == fareOptionsDepartureFlight,
+                    ).bookingCode.key,
                 );
                 const paymentMethodReturnFlight = await getPaymentMethods(
-                    returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight).bookingCode.key,
+                    returnFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsReturnFlight)
+                        .bookingCode.key,
                 );
                 if (paymentMethodDepartureFlight && paymentMethodReturnFlight) {
                     const paymentMethodDepartureFlightFormat = {
@@ -344,7 +377,9 @@ export default function PaymentPage() {
             } else {
                 if (departureFlight) {
                     const paymentMethodDepartureFlight = await getPaymentMethods(
-                        departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight).bookingCode.key,
+                        departureFlight?.fareOptions.find(
+                            (element) => element.bookingCode.key == fareOptionsDepartureFlight,
+                        ).bookingCode.key,
                     );
 
                     if (paymentMethodDepartureFlight) {
@@ -552,172 +587,225 @@ export default function PaymentPage() {
 
     return (
         <>
-        {
-            fareOptionsDepartureFlightStr
-            ?
-        <main className="relative">
-            <Steps />
-            <div className="flex flex-wrap justify-center p-4 min-h-screen bg-gray-100 border shadow">
-                <div className={` w-full max-w-[1200px]`}>
-                    <Breadcrumb listBreadcrumb={listBreadcrumb} />
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="col-span-2">
-                            <PassengersInfomation listPassengers={listPassengers} />
-                            <div className="mt-4">
-                                <div className="mb-4 bg-white p-4 rounded-md">
-                                    <h3 className="font-medium flex items-center">
+            {fareOptionsDepartureFlightStr ? (
+                <main className="relative">
+                    <Steps />
+                    <div className="flex flex-wrap justify-center p-4 min-h-screen bg-gray-100 border shadow">
+                        <div className={` w-full max-w-[1200px]`}>
+                            <Breadcrumb listBreadcrumb={listBreadcrumb} />
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="col-span-2">
+                                    <PassengersInfomation listPassengers={listPassengers} />
+                                    <div className="mt-4">
+                                        <div className="mb-4 bg-white p-4 rounded-md">
+                                            <h3 className="font-medium flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id=""
+                                                    checked={useVoucher}
+                                                    onChange={() => {
+                                                        setUseVoucher(!useVoucher);
+                                                    }}
+                                                    className="mr-2 h-4 w-4"
+                                                />
+                                                <i>Voucher</i>
+                                            </h3>
+                                            <div
+                                                className={`grid grid-cols-2 gap-4 mt-4 ${
+                                                    useVoucher ? 'grid' : 'hidden'
+                                                }`}
+                                            >
+                                                <div className="col-span-2">
+                                                    <label htmlFor="" className="text-sm text-gray-500 font-medium">
+                                                        Mã thẻ quà tặng
+                                                        <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input className="w-full outline-none border-b" type="text" />
+                                                </div>
+                                                <div className="col-span-1">
+                                                    <label htmlFor="" className="text-sm text-gray-500 font-medium">
+                                                        Mật khẩu
+                                                        <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input className="w-full outline-none border-b" type="text" />
+                                                </div>
+                                                <div className="col-span-1">
+                                                    <label htmlFor="" className="text-sm text-gray-500 font-medium">
+                                                        Mã PIN
+                                                        <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input className="w-full outline-none border-b" type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ListPaymentMethod
+                                            setPaymentMethod={setPaymentMethod}
+                                            listPaymentMethod={listPaymentMethod}
+                                            useVoucher={useVoucher}
+                                        />
+
+                                        <InternationalCardInfoForm
+                                            cardInfo={cardInfo}
+                                            setCardInfo={setCardInfo}
+                                            billing={billing}
+                                            setBilling={setBilling}
+                                            show={
+                                                paymentMethod.identifier === 'VJPVI' ||
+                                                paymentMethod.identifier === 'VJPMC' ||
+                                                paymentMethod.identifier === 'VJPAMEX' ||
+                                                paymentMethod.identifier === 'VJPJCB'
+                                            }
+                                        />
+                                    </div>
+                                    <div className="mt-4 bg-white p-4 rounded-md">
                                         <input
                                             type="checkbox"
-                                            id=""
-                                            checked={useVoucher}
-                                            onChange={()=>{setUseVoucher(!useVoucher)}}
-                                            className="mr-2 h-4 w-4"
+                                            id="agreementCheckbox"
+                                            value={agreementCheckbox}
+                                            onChange={() => setAgreementCheckbox(!agreementCheckbox)}
+                                            className="h-4 w-4"
                                         />
-                                        <i>Voucher</i>
-                                    </h3>
-                                    <div className={`grid grid-cols-2 gap-4 mt-4 ${useVoucher ? 'grid' : 'hidden'}`}>
-                                        <div className="col-span-2">
-                                            <label htmlFor="" className="text-sm text-gray-500 font-medium">
-                                                Mã thẻ quà tặng
-                                                <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full outline-none border-b"
-                                                type="text"
-                                            />
-                                        </div>
-                                        <div className="col-span-1">
-                                            <label htmlFor="" className="text-sm text-gray-500 font-medium">
-                                                Mật khẩu
-                                                <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full outline-none border-b"
-                                                type="text"
-                                            />
-                                        </div>
-                                        <div className="col-span-1">
-                                            <label htmlFor="" className="text-sm text-gray-500 font-medium">
-                                                Mã PIN
-                                                <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                className="w-full outline-none border-b"
-                                                type="text"
-                                            />
-                                        </div>
+                                        <label className="ml-2" htmlFor="agreementCheckbox">
+                                            Tôi đã đọc, hiểu và đồng ý với{' '}
+                                            <a
+                                                className="text-[#236FA1]"
+                                                href="https://www.vietjetair.com/vi/pages/chinh-sach-ve-quyen-rieng-tu-1702461524009"
+                                            >
+                                                Chính sách về quyền riêng tư,{' '}
+                                            </a>
+                                            <a
+                                                className="text-[#236FA1]"
+                                                href="https://www.vietjetair.com/vi/pages/de-co-chuyen-bay-tot-dep-1578323501979/dieu-le-van-chuyen-1601835865384"
+                                            >
+                                                Điều lệ vận chuyển,{' '}
+                                            </a>
+                                            <a
+                                                className="text-[#236FA1]"
+                                                href="https://www.vietjetair.com/vi/pages/de-co-chuyen-bay-tot-dep-1578323501979/dieu-kien-ve-1641466500765"
+                                            >
+                                                Điều kiện vé{' '}
+                                            </a>
+                                            và {''}
+                                            <a
+                                                className="text-[#236FA1]"
+                                                href="https://www.vietjetair.com/vi/pages/vat-dung-cam-mang-len-may-bay-1638837843950"
+                                            >
+                                                Quy định vật dụng bị cấm
+                                            </a>{' '}
+                                            mang lên chuyến bay
+                                        </label>
                                     </div>
+                                    <button
+                                        onClick={checkValidation}
+                                        className={`bg-sky-500 rounded text-white text-sm font-semibold px-10 py-2 mt-4 ${
+                                            paymentMethod.identifier == '' ||
+                                            !agreementCheckbox ||
+                                            !((paymentMethod.identifier === 'VJPVI' ||
+                                                paymentMethod.identifier === 'VJPMC' ||
+                                                paymentMethod.identifier === 'VJPAMEX' ||
+                                                paymentMethod.identifier === 'VJPJCB') &&
+                                                billing.address &&
+                                                billing.city &&
+                                                billing.country &&
+                                                billing.postalCode &&
+                                                billing.phone &&
+                                                cardInfo.cvv &&
+                                                cardInfo.expiryDate &&
+                                                cardInfo.cardName &&
+                                                cardInfo.cardNumber)
+                                                ? 'grayscale'
+                                                : ''
+                                        }`}
+                                        disabled={
+                                            paymentMethod.identifier == '' ||
+                                            !agreementCheckbox ||
+                                            !((paymentMethod.identifier === 'VJPVI' ||
+                                                paymentMethod.identifier === 'VJPMC' ||
+                                                paymentMethod.identifier === 'VJPAMEX' ||
+                                                paymentMethod.identifier === 'VJPJCB') &&
+                                                billing.address &&
+                                                billing.city &&
+                                                billing.country &&
+                                                billing.postalCode &&
+                                                billing.phone &&
+                                                cardInfo.cvv &&
+                                                cardInfo.expiryDate &&
+                                                cardInfo.cardName &&
+                                                cardInfo.cardNumber)
+                                        }
+                                    >
+                                        {loading ? (
+                                            <div role="status">
+                                                <svg
+                                                    aria-hidden="true"
+                                                    className="inline w-6 h-6 text-gray-200 animate-spin fill-green-500"
+                                                    viewBox="0 0 100 101"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                        fill="currentColor"
+                                                    />
+                                                    <path
+                                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                        fill="currentFill"
+                                                    />
+                                                </svg>
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                        ) : (['AG', 'VI'].includes(paymentMethod.identifier) || ((paymentMethod.identifier === 'VJPVI' ||
+                                                paymentMethod.identifier === 'VJPMC' ||
+                                                paymentMethod.identifier === 'VJPAMEX' ||
+                                                paymentMethod.identifier === 'VJPJCB') &&
+                                                billing.address &&
+                                                billing.city &&
+                                                billing.country &&
+                                                billing.postalCode &&
+                                                billing.phone &&
+                                                cardInfo.cvv &&
+                                                cardInfo.expiryDate &&
+                                                cardInfo.cardName &&
+                                                cardInfo.cardNumber)) ? (
+                                            'Thanh toán'
+                                        ) : paymentMethod.identifier == 'PL' ? (
+                                            'Giữ chỗ'
+                                        ) : (
+                                            'Tiếp theo'
+                                        )}
+                                    </button>
                                 </div>
-                                <ListPaymentMethod
-                                    setPaymentMethod={setPaymentMethod}
-                                    listPaymentMethod={listPaymentMethod}
-                                    useVoucher={useVoucher}
-                                />
+                                <div className="col-span-1">
+                                    <PriceInfomation
+                                        departureFlight={departureFlight}
+                                        returnFlight={returnFlight}
+                                        roundTrip={roundTrip}
+                                        adult={adult}
+                                        child={child}
+                                        infant={infant}
+                                        cityPair={cityPair}
+                                        departureCity={departureCity}
+                                        arrivalCity={arrivalCity}
+                                        setTotalPrice={setTotalPrice}
+                                        fareOptionsDepartureFlight={fareOptionsDepartureFlight}
+                                        fareOptionsReturnFlight={fareOptionsReturnFlight}
+                                        baggageTotalPrice={baggageTotalPrice}
+                                        seatTotalPrice={seatTotalPrice}
+                                        mealTotalPrice={mealTotalPrice}
+                                        insuranceTotalPrice={insuranceTotalPrice}
+                                        processingAmount={quotations?.paymentTransactions[0]?.processingCurrencyAmounts[0]?.totalAmount || 0}
+                                    />
+                                    {/* <FlightInfomation departureFlight={departureFlight} returnFlight={returnFlight} /> */}
+                                </div>
                             </div>
-                            <div className="mt-4 bg-white p-4 rounded-md">
-                                <input
-                                    type="checkbox"
-                                    id="agreementCheckbox"
-                                    value={agreementCheckbox}
-                                    onChange={() => setAgreementCheckbox(!agreementCheckbox)}
-                                    className="h-4 w-4"
-                                />
-                                <label className="ml-2" htmlFor="agreementCheckbox">
-                                    Tôi đã đọc, hiểu và đồng ý với{' '}
-                                    <a
-                                        className="text-[#236FA1]"
-                                        href="https://www.vietjetair.com/vi/pages/chinh-sach-ve-quyen-rieng-tu-1702461524009"
-                                    >
-                                        Chính sách về quyền riêng tư,{' '}
-                                    </a>
-                                    <a
-                                        className="text-[#236FA1]"
-                                        href="https://www.vietjetair.com/vi/pages/de-co-chuyen-bay-tot-dep-1578323501979/dieu-le-van-chuyen-1601835865384"
-                                    >
-                                        Điều lệ vận chuyển,{' '}
-                                    </a>
-                                    <a
-                                        className="text-[#236FA1]"
-                                        href="https://www.vietjetair.com/vi/pages/de-co-chuyen-bay-tot-dep-1578323501979/dieu-kien-ve-1641466500765"
-                                    >
-                                        Điều kiện vé{' '}
-                                    </a>
-                                    và {''}
-                                    <a
-                                        className="text-[#236FA1]"
-                                        href="https://www.vietjetair.com/vi/pages/vat-dung-cam-mang-len-may-bay-1638837843950"
-                                    >
-                                        Quy định vật dụng bị cấm
-                                    </a>{' '}
-                                    mang lên chuyến bay
-                                </label>
-                            </div>
-                            <button
-                                onClick={checkValidation}
-                                className={`bg-sky-500 rounded text-white text-sm font-semibold px-10 py-2 mt-4 ${
-                                    paymentMethod.identifier == '' || !agreementCheckbox ? 'grayscale' : ''
-                                }`}
-                                disabled={paymentMethod.identifier == '' || !agreementCheckbox}
-                            >
-                                {loading ? (
-                                    <div role="status">
-                                        <svg
-                                            aria-hidden="true"
-                                            className="inline w-6 h-6 text-gray-200 animate-spin fill-green-500"
-                                            viewBox="0 0 100 101"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                fill="currentColor"
-                                            />
-                                            <path
-                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                fill="currentFill"
-                                            />
-                                        </svg>
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
-                                ) : ['AG', 'MC', 'VI'].includes(paymentMethod.identifier) ? (
-                                    'Thanh toán'
-                                ) : paymentMethod.identifier == 'PL' ? (
-                                    'Giữ chỗ'
-                                ) : (
-                                    'Tiếp theo'
-                                )}
-                            </button>
-                        </div>
-                        <div className="col-span-1">
-                            <PriceInfomation
-                                departureFlight={departureFlight}
-                                returnFlight={returnFlight}
-                                roundTrip={roundTrip}
-                                adult={adult}
-                                child={child}
-                                infant={infant}
-                                cityPair={cityPair}
-                                departureCity={departureCity}
-                                arrivalCity={arrivalCity}
-                                setTotalPrice={setTotalPrice}
-                                fareOptionsDepartureFlight={fareOptionsDepartureFlight}
-                                fareOptionsReturnFlight={fareOptionsReturnFlight}
-                                baggageTotalPrice={baggageTotalPrice}
-                                seatTotalPrice={seatTotalPrice}
-                                mealTotalPrice={mealTotalPrice}
-                                insuranceTotalPrice={insuranceTotalPrice}
-                            />
-                            {/* <FlightInfomation departureFlight={departureFlight} returnFlight={returnFlight} /> */}
                         </div>
                     </div>
+                </main>
+            ) : (
+                <div className="min-h-screen">
+                    <span>Loading...</span>
                 </div>
-            </div>
-        </main>
-            :
-            <div className='min-h-screen'>
-                <span>Loading...</span>
-            </div>
-        }
+            )}
         </>
     );
 }

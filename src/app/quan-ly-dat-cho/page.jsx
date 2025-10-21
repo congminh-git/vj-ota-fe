@@ -76,18 +76,16 @@ export default function BookingManagement() {
         city: '',
         state: '',
         country: '',
-        address01: '',
-        address02: '',
+        address: '',
         postalCode: '',
+        phone: ''
     });
 
     const [cardInfo, setCardInfo] = useState({
-        cardholderName: '',
+        cardName: '',
         cardNumber: '',
-        cardExpiry: '',
-        cardCvv: '',
-        phone: '',
-        cardType: '',
+        expiryDate: '',
+        cvv: ''
     });
 
     // Refs để tránh re-render không cần thiết
@@ -548,24 +546,22 @@ export default function BookingManagement() {
                                     <div>
                                         <button
                                             disabled={
-                                                !paymentMethod.identifier &&
+                                                !paymentMethod.identifier === 'AG' &&
                                                 !(
                                                     (paymentMethod.identifier === 'VJPVI' ||
                                                         paymentMethod.identifier === 'VJPMC' ||
                                                         paymentMethod.identifier === 'VJPAMEX' ||
                                                         paymentMethod.identifier === 'VJPJCB') &&
-                                                    billing.address01 &&
-                                                    billing.address02 &&
-                                                    billing.city &&
-                                                    billing.country &&
-                                                    billing.postalCode &&
-                                                    cardInfo.cardCvv &&
-                                                    cardInfo.cardExpiry &&
-                                                    cardInfo.cardholderName &&
-                                                    cardInfo.phone &&
-                                                    cardInfo.cardNumber &&
-                                                    cardInfo.cardType
-                                                )
+                                                        billing.address &&
+                                                        billing.city &&
+                                                        billing.country &&
+                                                        billing.postalCode &&
+                                                        billing.phone &&
+                                                        cardInfo.cvv &&
+                                                        cardInfo.expiryDate &&
+                                                        cardInfo.cardName &&
+                                                        cardInfo.cardNumber
+                                                    )
                                                     ? true
                                                     : false
                                             }
@@ -574,22 +570,20 @@ export default function BookingManagement() {
                                                     new Date(reservationByKey?.bookingInformation.hold.expiryTime) >
                                                         today) ||
                                                     !reservationByKey?.bookingInformation.hold) &&
-                                                (paymentMethod.identifier ||
+                                                (paymentMethod.identifier === 'AG' ||
                                                     ((paymentMethod.identifier === 'VJPVI' ||
                                                         paymentMethod.identifier === 'VJPMC' ||
                                                         paymentMethod.identifier === 'VJPAMEX' ||
                                                         paymentMethod.identifier === 'VJPJCB') &&
-                                                        billing.address01 &&
-                                                        billing.address02 &&
+                                                        billing.address &&
                                                         billing.city &&
                                                         billing.country &&
                                                         billing.postalCode &&
-                                                        cardInfo.cardCvv &&
-                                                        cardInfo.cardExpiry &&
-                                                        cardInfo.cardholderName &&
-                                                        cardInfo.phone &&
-                                                        cardInfo.cardNumber &&
-                                                        cardInfo.cardType))
+                                                        billing.phone &&
+                                                        cardInfo.cvv &&
+                                                        cardInfo.expiryDate &&
+                                                        cardInfo.cardName &&
+                                                        cardInfo.cardNumber))
                                                     ? ' border-blue-400 text-white bg-blue-400 hover:text-blue-400 hover:bg-white'
                                                     : ' border-gray-400 text-white bg-gray-400'
                                             } border-2 py-2 justify-center flex items-center font-semibold w-full rounded-md mt-4`}
