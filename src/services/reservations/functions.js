@@ -69,10 +69,10 @@ export const postReservationByInternationalCard = async (body, quotations, billi
         body.paymentTransactions[0].processingCurrencyAmounts =
             quotations.paymentTransactions[0].processingCurrencyAmounts;
         body.paymentTransactions[0].callbackURLs = {
-            successURL: `${baseUrl}/dat-ve/payment/result`,
-            failureURL: `${baseUrl}/dat-ve/payment/result`,
-            cancelURL: `${baseUrl}/dat-ve/payment/result`,
-            pendingURL: `${baseUrl}/dat-ve/payment/result`,
+            successURL: `${baseUrl}/api/payment`,
+            failureURL: `${baseUrl}/api/payment`,
+            cancelURL: `${baseUrl}/api/payment`,
+            pendingURL: `${baseUrl}/api/payment`,
             ipnURL: ``,
             
                 // "successURL": "https://ota-booking-demo.vercel.app/dat-ve",
