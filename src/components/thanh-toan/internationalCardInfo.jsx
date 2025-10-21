@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billing, setBilling, show }) {
     const [cvvShow, setCvvShow] = useState(true);
@@ -22,10 +23,13 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
     // Cập nhật cardType khi cardNumber thay đổi
     useEffect(() => {
         const brand = detectCardBrand(cardInfo.cardNumber);
-        if (brand !== 'NULL' && brand !== 'ERROR' && cardInfo.cardType !== brand) {
-            setCardInfo({ ...cardInfo, cardType: brand });
-        }
-    }, [cardInfo.cardNumber]);
+        if (brand === 'NULL' || brand === 'ERROR') return;
+        // use functional updater to avoid needing full `cardInfo` in deps
+        setCardInfo((prev) => {
+            if (prev.cardType === brand) return prev;
+            return { ...prev, cardType: brand };
+        });
+    }, [cardInfo.cardNumber, setCardInfo]);
 
     return (
         <div className={`grid-cols-2 gap-12 my-4 p-4 bg-white rounded ${show ? 'grid' : 'hidden'}`}>
@@ -58,13 +62,45 @@ export default function InternationalCardInfoForm({ cardInfo, setCardInfo, billi
                         const brand = detectCardBrand(cardInfo.cardNumber);
                         switch (brand) {
                             case 'MASTERCARD':
-                                return <img src="/Mastercard-logo.svg" alt="Mastercard" className="w-12 h-8 absolute right-2 top-7" />;
+                                return (
+                                    <Image
+                                        src="/Mastercard-logo.svg"
+                                        alt="Mastercard"
+                                        width={48}
+                                        height={32}
+                                        className="w-12 h-8 absolute right-2 top-7"
+                                    />
+                                );
                             case 'VISA':
-                                return <img src="/Visa_Inc._logo.svg.png" alt="Visa" className="w-12 h-8 absolute right-2 top-7" />;
+                                return (
+                                    <Image
+                                        src="/Visa_Inc._logo.svg.png"
+                                        alt="Visa"
+                                        width={48}
+                                        height={32}
+                                        className="w-12 h-8 absolute right-2 top-7"
+                                    />
+                                );
                             case 'AMERICAN EXPRESS':
-                                return <img src="/AmericanExpress.png" alt="American Express" className="w-12 h-8 absolute right-2 top-7" />;
+                                return (
+                                    <Image
+                                        src="/AmericanExpress.png"
+                                        alt="American Express"
+                                        width={48}
+                                        height={32}
+                                        className="w-12 h-8 absolute right-2 top-7"
+                                    />
+                                );
                             case 'JCB':
-                                return <img src="/JCB_logo.svg.png" alt="JCB" className="w-12 h-8 absolute right-2 top-7" />;
+                                return (
+                                    <Image
+                                        src="/JCB_logo.svg.png"
+                                        alt="JCB"
+                                        width={48}
+                                        height={32}
+                                        className="w-12 h-8 absolute right-2 top-7"
+                                    />
+                                );
                             case 'ERROR':
                                 return <p className="text-red-500 text-sm absolute right-2 top-7">Số thẻ không hợp lệ</p>;
                             default:

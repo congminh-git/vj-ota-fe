@@ -215,8 +215,9 @@ export default function PaymentPage() {
         const data = await postReservationByInternationalCard(body, quotations, billing, cardInfo);
         //Redirect sang endpoint trả về
         router.push(data?.data?.responseData?.endpoint)
-    }, [body, quotations, paymentMethod, billing, cardInfo]);
+    }, [body, quotations, billing, cardInfo, router]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkValidation = useCallback(() => {
         if (['AG', 'PL'].includes(paymentMethod.identifier)) {
             handleBooking();

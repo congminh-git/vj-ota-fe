@@ -156,6 +156,7 @@ export default function BookingManagement() {
         }
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handlePayAG = useCallback(async () => {
         if (paymentMethod && reservationByKey && companyKey && quotations) {
             await postReservationPaymentTransaction(reservationByKey, companyKey, quotations, currency, exchangeRate);
@@ -188,7 +189,13 @@ export default function BookingManagement() {
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
     }, []);
 
-    const onPaymentByCard = () => {};
+    const onPaymentByCard = useCallback(async () => {
+        // Placeholder for international card payment processing.
+        // Keep as useCallback so the function identity is stable and
+        // won't trigger the exhaustive-deps warning when used in other callbacks.
+        console.log('onPaymentByCard called', { billing, cardInfo, reservationByKey, quotations });
+        // TODO: Call API to process international card payment (e.g., postReservationByInternationalCard)
+    }, [billing, cardInfo, reservationByKey, quotations]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handlePay = useCallback(() => {
