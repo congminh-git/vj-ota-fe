@@ -1,47 +1,89 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBaseURL } from '@/lib/getBaseUrl';
 
 export async function POST(req: NextRequest) {
   try {
-    const baseUrl = getBaseURL();
+    // Đọc body từ request
     const body = await req.json();
     
-    console.log('Payment callback data:', body);
+    // Log để debug
+    console.log('========== PAYMENT CALLBACK ==========');
+    console.log('Body:', JSON.stringify(body, null, 2));
     console.log('Query params:', req.nextUrl.searchParams.toString());
+    console.log('Full URL:', req.url);
+    console.log('=====================================');
     
-    // Lấy language từ query params nếu cần
-    const language = req.nextUrl.searchParams.get('language') || 'en';
-    
-    // Xử lý payment data
+    // Lấy các thông tin từ body
     const { 
       transactionID, 
       requestID, 
       currentState,
-      requestData 
+      requestData,
+      signature,
+      fingerprint,
+      dateTimeExpire,
+      requestDateTime
     } = body;
 
-    // TODO: Lưu vào database, update booking status, etc.
+    // TODO: Xử lý logic nghiệp vụ của bạn
+    // - Verify signature nếu có
+    // - Lưu vào database
+    // - Update booking status
+    // - Gửi email xác nhận
     
-    // QUAN TRỌNG: Phải return response
     if (currentState === 'RESULT') {
-      return NextResponse.json({ 
-        success: true,
-        message: 'Payment processed successfully',
-        transactionID 
-      }, { status: 200 });
+      console.log('✅ Payment SUCCESS:', transactionID);
+      
+      // Xử lý thanh toán thành công
+      // await updateBookingStatus(requestID, 'paid');
+      // await sendConfirmationEmail(requestData);
+      
+      return NextResponse.json(
+        { 
+          success: true,
+          message: 'Payment processed successfully',
+          transactionID,
+          requestID
+        },
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    } else {
+      console.log('⚠️ Payment status:', currentState);
+      
+      return NextResponse.json(
+        { 
+          success: false,
+          message: 'Payment not completed',
+          currentState,
+          transactionID
+        },
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
     }
     
-    return NextResponse.json({ 
-      success: false,
-      message: 'Payment not completed',
-      currentState 
-    }, { status: 200 });
-    
   } catch (error) {
-    console.error('Error processing payment callback:', error);
+    console.error('❌ Error processing payment callback:', error);
+    
     return NextResponse.json(
-      { error: 'Invalid request', message: error.message },
-      { status: 400 }
+      { 
+        error: 'Invalid request',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { 
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
     );
   }
 }
