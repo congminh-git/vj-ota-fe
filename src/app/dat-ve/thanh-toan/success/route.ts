@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { useRouter } from 'next/navigation';
 
 export async function POST(req: Request) {
-  const router = useRouter()
   // Nhận data từ cổng thanh toán
   const bodyText = await req.text();
 
@@ -30,8 +28,6 @@ export async function POST(req: Request) {
       </body>
     </html>
   `;
-
-  router.push('/dat-ve/thanh-toan/success/view')
 
   return new NextResponse(html, {
     headers: { 'Content-Type': 'text/html' },
