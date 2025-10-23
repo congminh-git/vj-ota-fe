@@ -10,9 +10,9 @@ export default function SuccessPage() {
 
     const handleReservationCheck = async (transactionID: string) => {
         const data = await postReservationCheck(transactionID.slice(1, -1));
-        if (response) {
-            sessionStorage.setItem('bookingSuccessResult', JSON.stringify(response));
-            await postEmailingItineraries(response.key, response.bookingInformation.contactInformation.email, true);
+        if (data) {
+            sessionStorage.setItem('bookingSuccessResult', JSON.stringify(data));
+            await postEmailingItineraries(data.key, data.bookingInformation.contactInformation.email, true);
             router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
         }
         setResponse(data);
