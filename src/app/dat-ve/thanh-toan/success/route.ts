@@ -14,6 +14,6 @@ export async function POST(req: Request) {
   // await fetch(`${process.env.API_URL}/save-transaction`, { method: 'POST', body: JSON.stringify({ orderId, transactionId }) })
 
   // Redirect người dùng đến trang view React
-  const redirectUrl = new URL(`/dat-ve/thanh-toan/success/view?orderId=${orderId}&status=${status}`, req.url);
+  const redirectUrl = new URL(`/dat-ve/thanh-toan/success/view`, req.url);
   return NextResponse.redirect(redirectUrl, 303); // 303 = POST→GET redirect
 }
