@@ -587,6 +587,29 @@ export default function PaymentPage() {
         }
     }, [quotations]);
 
+    // Determine whether the main action button should be disabled.
+    // For card-based payment methods we require billing and card info.
+    // For other methods (including PL) we only require that a payment method is selected and agreement is checked.
+    const isCardPayment =
+        paymentMethod.identifier === 'VJPVI' ||
+        paymentMethod.identifier === 'VJPMC' ||
+        paymentMethod.identifier === 'VJPAMEX' ||
+        paymentMethod.identifier === 'VJPJCB';
+
+    const isCardInfoValid =
+        billing?.address &&
+        billing.city &&
+        billing.country &&
+        billing.postalCode &&
+        billing.phone &&
+        cardInfo?.cvv &&
+        cardInfo?.expiryDate &&
+        cardInfo?.cardName &&
+        cardInfo?.cardNumber;
+
+    const isDisabled =
+        paymentMethod.identifier == '' || !agreementCheckbox || (isCardPayment && !isCardInfoValid);
+
     return (
         <>
             {fareOptionsDepartureFlightStr ? (
@@ -700,41 +723,9 @@ export default function PaymentPage() {
                                     <button
                                         onClick={checkValidation}
                                         className={`bg-sky-500 rounded text-white text-sm font-semibold px-10 py-2 mt-4 ${
-                                            paymentMethod.identifier == '' ||
-                                            !agreementCheckbox ||
-                                            !((paymentMethod.identifier === 'VJPVI' ||
-                                                paymentMethod.identifier === 'VJPMC' ||
-                                                paymentMethod.identifier === 'VJPAMEX' ||
-                                                paymentMethod.identifier === 'VJPJCB') &&
-                                                billing.address &&
-                                                billing.city &&
-                                                billing.country &&
-                                                billing.postalCode &&
-                                                billing.phone &&
-                                                cardInfo.cvv &&
-                                                cardInfo.expiryDate &&
-                                                cardInfo.cardName &&
-                                                cardInfo.cardNumber)
-                                                ? 'grayscale'
-                                                : ''
+                                            isDisabled ? 'grayscale' : ''
                                         }`}
-                                        disabled={
-                                            paymentMethod.identifier == '' ||
-                                            !agreementCheckbox ||
-                                            !((paymentMethod.identifier === 'VJPVI' ||
-                                                paymentMethod.identifier === 'VJPMC' ||
-                                                paymentMethod.identifier === 'VJPAMEX' ||
-                                                paymentMethod.identifier === 'VJPJCB') &&
-                                                billing.address &&
-                                                billing.city &&
-                                                billing.country &&
-                                                billing.postalCode &&
-                                                billing.phone &&
-                                                cardInfo.cvv &&
-                                                cardInfo.expiryDate &&
-                                                cardInfo.cardName &&
-                                                cardInfo.cardNumber)
-                                        }
+                                        disabled={isDisabled}
                                     >
                                         {loading ? (
                                             <div role="status">
