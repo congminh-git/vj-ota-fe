@@ -91,6 +91,16 @@ export const postReservationByInternationalCard = async (body, quotations, billi
     }
 };
 
+export const postReservationCheck = async (transactionID) => {
+    try {
+        const url = `/transactions/${transactionID}/paymentTransactions`;
+        const response = await postRequest(url, {});
+        return response
+    } catch (error) {
+
+    }
+}
+
 export const postReservationSplitPassengers = async (body) => {
     try {
         const url = `/reservations`;
