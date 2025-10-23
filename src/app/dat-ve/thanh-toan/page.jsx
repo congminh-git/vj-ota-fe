@@ -214,6 +214,7 @@ export default function PaymentPage() {
         setLoading(true);
         const data = await postReservationByInternationalCard(body, quotations, billing, cardInfo);
         //Redirect sang endpoint trả về
+        sessionStorage.setItem('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
         router.push(data?.data?.responseData?.endpoint)
     }, [body, quotations, billing, cardInfo, router]);
 
