@@ -1,16 +1,19 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { postEmailingItineraries, postReservationCheck } from '@/services/reservations/functions';
+import { useRouter } from 'next/navigation';
 
 export default function SuccessPage() {
     const [transactionID, setTransactionID] = useState<string | null>(null);
     const [response, setResponse] = useState<any | null>(null);
+    const router = useRouter()
 
     const handleReservationCheck = async (transactionID: string) => {
         const data = await postReservationCheck(transactionID.slice(1, -1));
         if (response) {
             sessionStorage.setItem('bookingSuccessResult', JSON.stringify(response));
             await postEmailingItineraries(response.key, response.bookingInformation.contactInformation.email, true);
+            router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
         }
         setResponse(data);
     };
