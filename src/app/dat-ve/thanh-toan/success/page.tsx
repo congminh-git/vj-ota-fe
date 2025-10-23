@@ -1,3 +1,5 @@
+'use client'
+
 export default function SuccessPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen text-center bg-green-50 text-green-700">

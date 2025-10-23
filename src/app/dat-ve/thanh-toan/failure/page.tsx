@@ -1,3 +1,5 @@
+'use client'
+
 export default function FailurePage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen text-center bg-red-50 text-red-700">

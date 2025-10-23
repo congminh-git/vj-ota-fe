@@ -1,3 +1,5 @@
+'use client'
+
 export default function PendingPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen text-center bg-blue-50 text-blue-700">
