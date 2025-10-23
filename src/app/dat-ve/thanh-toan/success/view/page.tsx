@@ -7,7 +7,7 @@ export default function SuccessPage() {
     const [response, setResponse] = useState<any | null>(null);
 
     const handleReservationCheck = async (transactionID: string) => {
-        const data = await postReservationCheck(transactionID);
+        const data = await postReservationCheck(parseInt(transactionID));
         if (response) {
             sessionStorage.setItem('bookingSuccessResult', JSON.stringify(response));
             await postEmailingItineraries(response.key, response.bookingInformation.contactInformation.email, true);
