@@ -350,12 +350,7 @@ export const postReservationAddJourney = async (reservationKey, body) => {
     try {
         const url = `/reservations/${reservationKey}/journeys`;
         const response = await postRequest(url, body);
-        if (response) {
-            toast.success('Thêm chặng bay thành công');
-            setHandleResult(response);
-        } else {
-            toast.error('Thêm chặng bay thất bại');
-        }
+        return response
     } catch (error) {
         console.error('Error fetching data:', error.message);
         toast.error(error.response?.data?.message?.message || 'Something went wrong');

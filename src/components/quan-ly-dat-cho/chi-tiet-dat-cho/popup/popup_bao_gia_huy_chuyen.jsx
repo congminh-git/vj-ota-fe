@@ -1,11 +1,13 @@
 'use client';
 
 import ListPaymentMethod from '@/components/thanh-toan/listPaymentMethod';
-import { toast } from 'react-hot-toast';
+import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 import { putUpdateReservationJourneyByKey } from '@/services/reservations/functions';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { parseNgayThang, tinhThoiGianBay } from '@/components/danh-sach-ve/chuyen_bay_item';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
+import { setCookie, getCookie } from '@/lib/cookie';
+import { useRouter } from 'next/navigation';
 
 export default function CancelLegQuotationPopup({
     openCancelLegQuotationPopup,
@@ -18,59 +20,94 @@ export default function CancelLegQuotationPopup({
     companyKey,
     journeyInfo,
 }) {
-    const [paymentMethod, setPaymentMethod] = useState(null);
+    const router = useRouter();
+    const today = useMemo(() => new Date(), []);
+    const [paymentMethod, setPaymentMethod] = useState({ identifier: null, description: null });
     const [price, setPrice] = useState(0);
     const currency = typeof window !== 'undefined' ? sessionStorage.getItem('currencySearchParam') ?? 'VND' : 'VND';
     const exchangeRate = typeof window !== 'undefined' ? parseInt(sessionStorage.getItem('exchangeRate')) ?? 1 : 1;
 
-    const handlePutUpdateReservationJourneyByKey = async (reservationKey, journeyKey, body) => {
-        const data = await putUpdateReservationJourneyByKey(reservationKey, journeyKey, body)
-        setCancelledResult(data)
-    }
+    const [billing, setBilling] = useState({
+        city: '',
+        state: '',
+        country: '',
+        address: '',
+        postalCode: '',
+        phone: '',
+    });
 
-    const handlePay = () => {
-        toast.fire({
-            title: 'Xác nhận muốn hủy chuyến',
-            // text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Xác nhận',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                cancelledBody.paymentTransactions = [
-                    {
-                        paymentMethod: {
-                            key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1¥CcncCLQNu3uhZGWzJkJUbmKK13BpWK¥9VaH1zFawFw==',
-                            identifier: 'AG',
-                        },
-                        paymentMethodCriteria: {
-                            account: {
-                                company: {
-                                    key: companyKey,
-                                },
-                            },
-                        },
-                        currencyAmounts: [
-                            {
-                                totalAmount: price,
-                                currency: {
-                                    href: 'https://vietjet-api.intelisystraining.ca/RESTv1/currencies/VND',
-                                    code: currency,
-                                    description: 'Vietnam Dong',
-                                    baseCurrency: true,
-                                },
-                                exchangeRate: exchangeRate,
-                            },
-                        ],
-                        refundTransactions: [],
-                        notes: '',
-                    },
-                ];
-                handlePutUpdateReservationJourneyByKey(reservationKey, journeyKey, cancelledBody);
+    const [cardInfo, setCardInfo] = useState({
+        cardName: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: '',
+    });
+
+    const handlePutUpdateReservationJourneyByKey = async (reservationKey, journeyKey, body) => {
+        const data = await putUpdateReservationJourneyByKey(reservationKey, journeyKey, body);
+        if (data?.data?.responseData?.endpoint) {
+            setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+            setCookie('reservationKey', reservationKey, 1);
+            router.push(data?.data?.responseData?.endpoint);
+        } else {
+            location.reload()
+        }
+    };
+
+    const handlePay = async () => {
+        var methodIndex = -1;
+        const internationalPaymentMethod = [
+            {
+                identifier: 'VJPVI',
+                key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw==',
+            },
+            {
+                identifier: 'VJPMC',
+                key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p194mAGlhM8hHzyNub1xGLall2SNuloDtpyhWuaoDeoPA==',
+            },
+            {
+                identifier: 'VJPAMEX',
+                key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA==',
+            },
+            {
+                identifier: 'VJPJCB',
+                key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ==',
+            },
+        ];
+        for (let i = 0; i < internationalPaymentMethod.length; i++) {
+            if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
+                methodIndex = i;
+                break;
             }
-        });
+        }
+        cancelledBody.paymentTransactions = [
+            {
+                paymentMethod: internationalPaymentMethod[methodIndex] || {
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1¥CcncCLQNu3uhZGWzJkJUbmKK13BpWK¥9VaH1zFawFw==',
+                    identifier: 'AG',
+                },
+                paymentMethodCriteria: {
+                    account: {
+                        company: {
+                            key: companyKey,
+                        },
+                    },
+                },
+                currencyAmounts: [
+                    {
+                        totalAmount: price,
+                        currency: {
+                            code: currency,
+                            baseCurrency: true,
+                        },
+                        exchangeRate: exchangeRate,
+                    },
+                ],
+                refundTransactions: [],
+                notes: '',
+            },
+        ];
+        handlePutUpdateReservationJourneyByKey(reservationKey, journeyKey, cancelledBody);
     };
 
     const [currencySymbol, setCurrencySymbol] = useState('');
@@ -209,10 +246,45 @@ export default function CancelLegQuotationPopup({
                     )}
                 </div>
                 <div>
-                    <ListPaymentMethod setPaymentMethod={setPaymentMethod} listPaymentMethod={['AG']} />
+                    <ListPaymentMethod
+                        setPaymentMethod={setPaymentMethod}
+                        // listPaymentMethod={['AG', 'VJPVI', 'VJPMC', 'VJPAMEX', 'VJPJCB']}
+                        listPaymentMethod={['AG']}
+                        useVoucher={false}
+                    />
+
+                    <InternationalCardInfoForm
+                        cardInfo={cardInfo}
+                        setCardInfo={setCardInfo}
+                        billing={billing}
+                        setBilling={setBilling}
+                        show={
+                            paymentMethod.identifier === 'VJPVI' ||
+                            paymentMethod.identifier === 'VJPMC' ||
+                            paymentMethod.identifier === 'VJPAMEX' ||
+                            paymentMethod.identifier === 'VJPJCB'
+                        }
+                    />
                     <button
                         onClick={handlePay}
-                        disabled={paymentMethod ? false : true}
+                        disabled={
+                            paymentMethod.identifier === 'AG' ||
+                            ((paymentMethod.identifier === 'VJPVI' ||
+                                paymentMethod.identifier === 'VJPMC' ||
+                                paymentMethod.identifier === 'VJPAMEX' ||
+                                paymentMethod.identifier === 'VJPJCB') &&
+                                billing.address &&
+                                billing.city &&
+                                billing.country &&
+                                billing.postalCode &&
+                                billing.phone &&
+                                cardInfo.cvv &&
+                                cardInfo.expiryDate &&
+                                cardInfo.cardName &&
+                                cardInfo.cardNumber)
+                                ? false
+                                : true
+                        }
                         className={`mt-8 w-full rounded py-2 text-white ${
                             paymentMethod ? 'bg-blue-500 hover:bg-blue-400' : 'bg-gray-200'
                         }`}

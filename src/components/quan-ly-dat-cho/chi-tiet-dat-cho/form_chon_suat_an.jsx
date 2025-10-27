@@ -227,9 +227,13 @@ function SelectMealForm({ body, setRefetch, refetch, companyKey, listAllJourneyM
                 },
             ];
             const data = await postReservationAncillaryBulkInternationalCard(body.key, bodyPost);
-            setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
-            setCookie('reservationKey', body.key, 1);
-            router.push(data?.data?.responseData?.endpoint);
+            if (data?.data?.responseData?.endpoint) {
+                setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+                setCookie('reservationKey', body.key, 1);
+                router.push(data?.data?.responseData?.endpoint);
+            } else {
+                location.reload();
+            }
         }
     };
 
