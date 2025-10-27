@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { putQuotationEditReservationSeatSelections } from '@/services/quotations/functions';
 import {
     postReservationSeatBulk,
@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 
 function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneySeatOptions, currency, exchangeRate }) {
     const router = useRouter()
+    const today = useMemo(() => new Date(), []);
     const [selectedJourney, setSelectedJourney] = useState(1);
     const [selectedPassenger, setSelectedPassenger] = useState(1);
     const [selectedSeatOptions, setSelectedSeatOptions] = useState([]);
@@ -106,7 +107,7 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listAllJourneySeatOptions]);
 
-    const xuLyThanhToan = () => {
+    const xuLyThanhToan = async () => {
         if (paymentMethod.identifier == 'AG') {
             const selectedSeatOptionsStr = JSON.stringify(selectedSeatOptions);
             let bodyPost = JSON.parse(selectedSeatOptionsStr);
@@ -209,7 +210,7 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
                     notes: null,
                 },
             ];
-            const data = postReservationSeatBulkInternationalCard(body.key, bodyPost);
+            const data = await postReservationSeatBulkInternationalCard(body.key, bodyPost);
             setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
             setCookie('reservationKey', body.key, 1)
             router.push(data?.data?.responseData?.endpoint);
