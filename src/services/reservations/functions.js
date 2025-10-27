@@ -325,6 +325,16 @@ export const postReservationSeatBulk = async (reservationKey, body, setRefetch, 
     }
 };
 
+export const postReservationSeatBulkInternationalCard = async (reservationKey, body) => {
+    try {
+        const url = `/reservations/${reservationKey}/seatSelections/bulk`;
+        const response = await postRequest(url, body);
+        return response
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+    }
+};
+
 export const postReservationAddJourney = async (reservationKey, body) => {
     try {
         const url = `/reservations/${reservationKey}/journeys`;

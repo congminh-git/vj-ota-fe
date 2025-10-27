@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { putQuotationEditReservationSeatSelections } from '@/services/quotations/functions';
 import {
     postReservationSeatBulk,
-    postReservationPaymentTransactionByInternationalCard,
+    postReservationSeatBulkInternationalCard,
 } from '@/services/reservations/functions';
 import { parseNgayThang } from '@/components/danh-sach-ve/chuyen_bay_item';
 import ListSeatOptions from '@/components/quan-ly-dat-cho/chi-tiet-dat-cho/them-dich-vu/list_cho_ngoi';
@@ -141,7 +141,60 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
             paymentMethod.identifier === 'VJPAMEX' ||
             paymentMethod.identifier === 'VJPJCB'
         ) {
-            onPaymentByCard();
+            const selectedSeatOptionsStr = JSON.stringify(selectedSeatOptions);
+            let bodyPost = JSON.parse(selectedSeatOptionsStr);
+            bodyPost[0].paymentTransactions = [
+                {
+                    paymentMethod: internationalPaymentMethod[methodIndex],
+                    paymentMethodCriteria: {
+                        account: {
+                            company: {
+                                key: companyKey,
+                            },
+                        },
+                    },
+                    currencyAmounts: [
+                        {
+                            totalAmount:
+                                quotations?.paymentTransactions[paymentObjIndex].currencyAmounts[0].totalAmount,
+                            currency: {
+                                code: currency,
+                                baseCurrency: true,
+                            },
+                            exchangeRate: exchangeRate,
+                        },
+                    ],
+                    processingCurrencyAmounts: [
+                        {
+                            totalAmount:
+                                quotations?.paymentTransactions[paymentObjIndex].processingCurrencyAmounts[0]
+                                    .totalAmount,
+                            currency: {
+                                code: currency,
+                                baseCurrency: true,
+                            },
+                            exchangeRate: exchangeRate,
+                        },
+                    ],
+                    billingInfo: billing,
+                    cardInfo: cardInfo,
+                    callbackURLs: {
+                        successURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success',
+                        failureURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure',
+                        cancelURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel',
+                        pendingURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending',
+                        ipnURL: '',
+                    },
+                    payerDescription: null,
+                    receiptNumber: null,
+                    payments: null,
+                    refundTransactions: null,
+                    notes: null,
+                },
+            ];
+            const data = postReservationSeatBulkInternationalCard(body.key, bodyPost);
+            setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+            setCookie('reservationKey', body.key, 1)
         }
     };
 
