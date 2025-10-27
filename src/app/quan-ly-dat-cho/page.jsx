@@ -13,11 +13,13 @@ import ReservationInformation from '@/components/quan-ly-dat-cho/chi-tiet-dat-ch
 import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 import { generateUUID } from '@/lib/uuid';
 import { getCurrentTimestamp } from '@/lib/dateTime';
+import { setCookie, getCookie } from "@/lib/cookie";
 
 import {
     getReservationByLocator,
     getReservationByKey,
     postReservationPaymentTransaction,
+    postReservationPaymentTransactionByInternationalCard,
     postEmailingItineraries,
 } from '@/services/reservations/functions';
 import { putQuotationPaymentTransaction } from '@/services/quotations/functions';
@@ -156,15 +158,6 @@ export default function BookingManagement() {
         }
     }, []);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handlePayAG = useCallback(async () => {
-        if (paymentMethod && reservationByKey && companyKey && quotations) {
-            await postReservationPaymentTransaction(reservationByKey, companyKey, quotations, currency, exchangeRate);
-        } else {
-            toast.error('Vui lòng chọn phương thức thanh toán');
-        }
-    }, [paymentMethod, reservationByKey, companyKey, quotations, currency, exchangeRate]);
-
     const sendItineraryEmail = useCallback(() => {
         if (reservationByKey?.key && reservationByKey?.bookingInformation?.contactInformation?.email) {
             setSendEmailResult(null);
@@ -189,13 +182,20 @@ export default function BookingManagement() {
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handlePayAG = useCallback(async () => {
+        if (paymentMethod && reservationByKey && companyKey && quotations) {
+            await postReservationPaymentTransaction(reservationByKey, companyKey, quotations, currency, exchangeRate);
+        } else {
+            toast.error('Vui lòng chọn phương thức thanh toán');
+        }
+    }, [paymentMethod, reservationByKey, companyKey, quotations, currency, exchangeRate]);
+
     const onPaymentByCard = useCallback(async () => {
-        // Placeholder for international card payment processing.
-        // Keep as useCallback so the function identity is stable and
-        // won't trigger the exhaustive-deps warning when used in other callbacks.
-        console.log('onPaymentByCard called', { billing, cardInfo, reservationByKey, quotations });
-        // TODO: Call API to process international card payment (e.g., postReservationByInternationalCard)
-    }, [billing, cardInfo, reservationByKey, quotations]);
+        const data = await postReservationPaymentTransactionByInternationalCard(reservationByKey, companyKey, quotations, currency, exchangeRate, billing, cardInfo, paymentMethod);
+        setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+        // router.push(data?.data?.responseData?.endpoint)
+    }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handlePay = useCallback(() => {

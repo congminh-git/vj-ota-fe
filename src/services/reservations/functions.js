@@ -74,13 +74,12 @@ export const postReservationByInternationalCard = async (body, quotations, billi
             // cancelURL: `${baseUrl}/dat-ve/thanh-toan/cancel`,
             // pendingURL: `${baseUrl}/dat-ve/thanh-toan/pending`,
             // ipnURL: ``,
-            
-            "successURL": "https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success",
-            "failureURL": "https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure",
-            "cancelURL": "https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel",
-            "pendingURL": "https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending",
-            "ipnURL": ""
 
+            successURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success',
+            failureURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure',
+            cancelURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel',
+            pendingURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending',
+            ipnURL: '',
         };
         body.paymentTransactions[0].billingInfo = billing;
         body.paymentTransactions[0].cardInfo = cardInfo;
@@ -95,11 +94,9 @@ export const postReservationCheck = async (transactionID) => {
     try {
         const url = `/transactions/${transactionID}/paymentTransactions`;
         const response = await postRequest(url, {});
-        return response
-    } catch (error) {
-
-    }
-}
+        return response;
+    } catch (error) {}
+};
 
 export const postReservationSplitPassengers = async (body) => {
     try {
@@ -115,7 +112,7 @@ export const postReservationSplitPassengers = async (body) => {
 };
 
 export const postReservationPaymentTransaction = async (
-    thongTinVeByKey,
+    reservationByKey,
     companyKey,
     quotations,
     currency,
@@ -123,7 +120,7 @@ export const postReservationPaymentTransaction = async (
 ) => {
     try {
         const body = {
-            reservationKey: thongTinVeByKey?.key,
+            reservationKey: reservationByKey?.key,
             data: {
                 paymentMethod: {
                     href: 'https://vietjet-api.intelisystraining.ca/RESTv1/paymentMethods/tfCeB5%C2%A5mircWvs2CC2%A59VaH1zFawFw==',
@@ -170,8 +167,8 @@ export const postReservationPaymentTransaction = async (
         if (response) {
             toast.success('Thanh toán thành công');
             await postEmailingItineraries(
-                thongTinVeByKey.key,
-                thongTinVeByKey.bookingInformation.contactInformation.email,
+                reservationByKey.key,
+                reservationByKey.bookingInformation.contactInformation.email,
                 true,
             );
             location.reload();
@@ -179,6 +176,87 @@ export const postReservationPaymentTransaction = async (
             toast.error('Thanh toán thất bại');
             throw new Error('Failed to fetch data');
         }
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        toast.error(error.response?.data?.message?.message || 'Something went wrong');
+    }
+};
+
+export const postReservationPaymentTransactionByInternationalCard = async (
+    reservationByKey,
+    companyKey,
+    quotations,
+    currency,
+    exchangeRate,
+    billing,
+    cardInfo,
+    paymentMethod
+) => {
+    try {
+        var methodIndex = -1
+        const internationalPaymentMethod = [
+            {identifier: "VJPVI", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw=="},
+            {identifier: "VJPMC", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p194mAGlhM8hHzyNub1xGLall2SNuloDtpyhWuaoDeoPA=="},
+            {identifier: "VJPAMEX", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA=="},
+            {identifier: "VJPJCB", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ=="}
+        ]
+        for (let i = 0; i<=internationalPaymentMethod.length; i++) {
+            if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
+                methodIndex = i
+                break;
+            }
+        }
+        const body = {
+            reservationKey: reservationByKey?.key,
+            data: {
+                paymentMethod: internationalPaymentMethod[methodIndex],
+                paymentMethodCriteria: {
+                    account: {
+                        company: {
+                            key: companyKey,
+                        },
+                    },
+                },
+                currencyAmounts: [
+                    {
+                        totalAmount: quotations?.paymentTransactions[0].currencyAmounts[0].totalAmount,
+                        currency: {
+                            code: currency,
+                            baseCurrency: true,
+                        },
+                        exchangeRate: exchangeRate,
+                    },
+                ],
+                processingCurrencyAmounts: [
+                    {
+                        totalAmount: 0,
+                        currency: {
+                            code: currency,
+                            baseCurrency: true,
+                        },
+                        exchangeRate: exchangeRate,
+                    },
+                ],
+                billingInfo: billing,
+                cardInfo: cardInfo,
+                callbackURLs: {
+                    successURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success',
+                    failureURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure',
+                    cancelURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel',
+                    pendingURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending',
+                    ipnURL: '',
+                },
+                payerDescription: null,
+                receiptNumber: null,
+                payments: null,
+                refundTransactions: null,
+                notes: null,
+            },
+        };
+        const url = `/reservations/paymentTransactions`;
+        const response = await postRequest(url, body);
+        console.log("A")
+        return response
     } catch (error) {
         console.error('Error fetching data:', error.message);
         toast.error(error.response?.data?.message?.message || 'Something went wrong');

@@ -1,14 +1,15 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { postEmailingItineraries, postReservationCheck } from '@/services/reservations/functions';
 import { useRouter } from 'next/navigation';
+import { setCookie, getCookie } from "@/lib/cookie"
 
 export default function SuccessPage() {
     const [transactionID, setTransactionID] = useState<string | null>(null);
     const [response, setResponse] = useState<any | null>(null);
     const router = useRouter()
 
-    const handleReservationCheck = async (transactionID: string) => {
+    const handleReservationCheck = useCallback(async (transactionID: string) => {
         const data = await postReservationCheck(transactionID.slice(1, -1));
         if (data) {
             sessionStorage.setItem('bookingSuccessResult', JSON.stringify(data));
@@ -16,10 +17,10 @@ export default function SuccessPage() {
             router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
         }
         setResponse(data);
-    };
+    }, [router]);
 
     useEffect(() => {
-        const id = sessionStorage.getItem('transactionID');
+        const id = getCookie('transactionID');
         setTransactionID(id);
     }, []);
 
@@ -27,7 +28,7 @@ export default function SuccessPage() {
         if (transactionID) {
             handleReservationCheck(transactionID);
         }
-    }, [transactionID]);
+    }, [transactionID, handleReservationCheck]);
 
     return (
         <main className="flex flex-col items-center justify-center min-h-screen text-center bg-green-50 text-green-700">
