@@ -2,11 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { putQuotationEditReservationSeatSelections } from '@/services/quotations/functions';
-import { postReservationSeatBulk } from '@/services/reservations/functions';
+import {
+    postReservationSeatBulk,
+    postReservationPaymentTransactionByInternationalCard,
+} from '@/services/reservations/functions';
 import { parseNgayThang } from '@/components/danh-sach-ve/chuyen_bay_item';
 import ListSeatOptions from '@/components/quan-ly-dat-cho/chi-tiet-dat-cho/them-dich-vu/list_cho_ngoi';
 import ListPaymentMethod from '@/components/thanh-toan/listPaymentMethod';
+import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
+import { setCookie, getCookie } from '@/lib/cookie';
 
 function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneySeatOptions, currency, exchangeRate }) {
     const [selectedJourney, setSelectedJourney] = useState(1);
@@ -20,6 +25,22 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
     const [listPurchasedSeat, setListPurchasedSeat] = useState(null);
     const [price, setPrice] = useState(0);
     const [currencySymbol, setCurrencySymbol] = useState('');
+
+    const [billing, setBilling] = useState({
+        city: '',
+        state: '',
+        country: '',
+        address: '',
+        postalCode: '',
+        phone: '',
+    });
+
+    const [cardInfo, setCardInfo] = useState({
+        cardName: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: '',
+    });
 
     useEffect(() => {
         if (currency) {
@@ -83,6 +104,22 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listAllJourneySeatOptions]);
 
+    const onPaymentByCard = useCallback(async () => {
+        const data = await postReservationPaymentTransactionByInternationalCard(
+            reservationByKey,
+            companyKey,
+            quotations,
+            currency,
+            exchangeRate,
+            billing,
+            cardInfo,
+            paymentMethod,
+        );
+        setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+        setCookie('reservationKey', reservationByKey.key, 1);
+        router.push(data?.data?.responseData?.endpoint);
+    }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
+
     const xuLyThanhToan = () => {
         if (paymentMethod.identifier == 'AG') {
             const selectedSeatOptionsStr = JSON.stringify(selectedSeatOptions);
@@ -98,21 +135,53 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
                 };
             });
             postReservationSeatBulk(body.key, bodyPost, setRefetch, refetch);
+        } else if (
+            paymentMethod.identifier === 'VJPVI' ||
+            paymentMethod.identifier === 'VJPMC' ||
+            paymentMethod.identifier === 'VJPAMEX' ||
+            paymentMethod.identifier === 'VJPJCB'
+        ) {
+            onPaymentByCard();
         }
     };
 
     const handlePutQuotationEditReservationSeatSelections = async (body) => {
-        const data = await putQuotationEditReservationSeatSelections(body)
-        setQuotations(data)
-    }
+        const data = await putQuotationEditReservationSeatSelections(body);
+        setQuotations(data);
+    };
 
     useEffect(() => {
         if (body) {
             const bodyStr = JSON.stringify(body);
             let newBody = JSON.parse(bodyStr);
+            var methodIndex = -1;
+            const internationalPaymentMethod = [
+                {
+                    identifier: 'VJPVI',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw==',
+                },
+                {
+                    identifier: 'VJPMC',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p194mAGlhM8hHzyNub1xGLall2SNuloDtpyhWuaoDeoPA==',
+                },
+                {
+                    identifier: 'VJPAMEX',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA==',
+                },
+                {
+                    identifier: 'VJPJCB',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ==',
+                },
+            ];
+            for (let i = 0; i < internationalPaymentMethod.length; i++) {
+                if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
+                    methodIndex = i;
+                    break;
+                }
+            }
             newBody.paymentTransactions = [
                 {
-                    paymentMethod: {
+                    paymentMethod: internationalPaymentMethod[methodIndex] || {
                         key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1¥CcncCLQNu3uhZGWzJkJUbmKK13BpWK¥9VaH1zFawFw==',
                         identifier: 'AG',
                     },
@@ -148,7 +217,7 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
             handlePutQuotationEditReservationSeatSelections(newBody);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedSeatOptions]);
+    }, [selectedSeatOptions, paymentMethod]);
 
     useEffect(() => {
         if (body) {
@@ -383,15 +452,67 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
                 )}
             </div>
 
-            <ListPaymentMethod setPaymentMethod={setPaymentMethod} listPaymentMethod={['AG']} />
+            <ListPaymentMethod
+                setPaymentMethod={setPaymentMethod}
+                listPaymentMethod={['AG', 'VJPVI', 'VJPMC', 'VJPAMEX', 'VJPJCB']}
+                useVoucher={false}
+            />
+
+            <InternationalCardInfoForm
+                cardInfo={cardInfo}
+                setCardInfo={setCardInfo}
+                billing={billing}
+                setBilling={setBilling}
+                show={
+                    paymentMethod.identifier === 'VJPVI' ||
+                    paymentMethod.identifier === 'VJPMC' ||
+                    paymentMethod.identifier === 'VJPAMEX' ||
+                    paymentMethod.identifier === 'VJPJCB'
+                }
+            />
 
             <button
                 onClick={() => xuLyThanhToan()}
-                disabled={selectedSeatOptions.length > 0 && paymentMethod != null ? false : true}
+                disabled={
+                    !paymentMethod.identifier === 'AG' &&
+                    !(
+                        (paymentMethod.identifier === 'VJPVI' ||
+                            paymentMethod.identifier === 'VJPMC' ||
+                            paymentMethod.identifier === 'VJPAMEX' ||
+                            paymentMethod.identifier === 'VJPJCB') &&
+                        billing.address &&
+                        billing.city &&
+                        billing.country &&
+                        billing.postalCode &&
+                        billing.phone &&
+                        cardInfo.cvv &&
+                        cardInfo.expiryDate &&
+                        cardInfo.cardName &&
+                        cardInfo.cardNumber
+                    )
+                        ? true
+                        : false
+                }
                 className={`mt-8 w-full rounded py-2 text-white ${
-                    selectedSeatOptions.length > 0 && paymentMethod != null
-                        ? 'bg-blue-500 hover:bg-blue-400'
-                        : 'bg-gray-300 text-gray-700'
+                    ((reservationByKey?.bookingInformation.hold &&
+                        new Date(reservationByKey?.bookingInformation.hold.expiryTime) > today) ||
+                        !reservationByKey?.bookingInformation.hold) &&
+                    (paymentMethod.identifier === 'AG' ||
+                        ((paymentMethod.identifier === 'VJPVI' ||
+                            paymentMethod.identifier === 'VJPMC' ||
+                            paymentMethod.identifier === 'VJPAMEX' ||
+                            paymentMethod.identifier === 'VJPJCB') &&
+                            billing.address &&
+                            billing.city &&
+                            billing.country &&
+                            billing.postalCode &&
+                            billing.phone &&
+                            cardInfo.cvv &&
+                            cardInfo.expiryDate &&
+                            cardInfo.cardName &&
+                            cardInfo.cardNumber))
+                        ? ' border-blue-400 text-white bg-blue-400 hover:text-blue-400 hover:bg-white'
+                        : ' border-gray-400 text-white bg-gray-400'
                 }`}
             >
                 <p className="text-sm">
