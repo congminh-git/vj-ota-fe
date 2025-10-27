@@ -123,7 +123,7 @@ export default function BookingManagement() {
 
     const handlePutQuotationPaymentTransaction = useCallback(
         async (reservationKey, reservationByKey, companyKey, currency, exchangeRate, paymentMethod) => {
-            if (reservationKey && reservationByKey && companyKey) {
+            if (reservationKey && reservationByKey && companyKey && paymentMethod) {
                 const data = await putQuotationPaymentTransaction(
                     reservationKey,
                     reservationByKey,
@@ -341,7 +341,7 @@ export default function BookingManagement() {
 
     useEffect(() => {
         if (reservationByKey && companyKey && reservationKey) {
-            handlePutQuotationPaymentTransaction(reservationKey, reservationByKey, companyKey, currency, exchangeRate);
+            handlePutQuotationPaymentTransaction(reservationKey, reservationByKey, companyKey, currency, exchangeRate, paymentMethod);
             handleGetReservationByLocator(reservationByKey.locator);
         }
     }, [
@@ -350,6 +350,7 @@ export default function BookingManagement() {
         reservationKey,
         currency,
         exchangeRate,
+        paymentMethod,
         handlePutQuotationPaymentTransaction,
         handleGetReservationByLocator,
     ]);

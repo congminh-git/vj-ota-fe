@@ -18,7 +18,7 @@ export const putQuotationPaymentTransaction = async (
             {identifier: "VJPAMEX", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA=="},
             {identifier: "VJPJCB", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ=="}
         ]
-        for (let i = 0; i<=internationalPaymentMethod.length; i++) {
+        for (let i = 0; i < internationalPaymentMethod.length; i++) {
             if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
                 methodIndex = i
                 break;
@@ -27,7 +27,10 @@ export const putQuotationPaymentTransaction = async (
     const url = `/quotations?httpMethod=POST&requestUri=reservations/${reservationKey}/paymentTransactions`;
     const body = thongTinVeByKey;
         body.paymentTransactions[0] = {
-            paymentMethod: internationalPaymentMethod[methodIndex],
+            paymentMethod: internationalPaymentMethod[methodIndex] || {
+                "key": "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1¥CcncCLQNu3uhZGWzJkJUbmKK13BpWK¥9VaH1zFawFw==",
+                "identifier": "AG"
+            },
             paymentMethodCriteria: {},
             currencyAmounts: [
                 {

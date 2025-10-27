@@ -142,6 +142,7 @@ export default function ChiTietDatCho() {
         companyKey,
         currency,
         exchangeRate,
+        paymentMethod
     ) => {
         const data = await putQuotationPaymentTransaction(
             reservationKey,
@@ -149,6 +150,7 @@ export default function ChiTietDatCho() {
             companyKey,
             currency,
             exchangeRate,
+            paymentMethod
         );
         setQuotations(data);
     };
