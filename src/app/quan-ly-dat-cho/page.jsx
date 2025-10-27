@@ -194,7 +194,7 @@ export default function BookingManagement() {
     const onPaymentByCard = useCallback(async () => {
         const data = await postReservationPaymentTransactionByInternationalCard(reservationByKey, companyKey, quotations, currency, exchangeRate, billing, cardInfo, paymentMethod);
         setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
-        // router.push(data?.data?.responseData?.endpoint)
+        router.push(data?.data?.responseData?.endpoint)
     }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
