@@ -310,6 +310,17 @@ export const postReservationAncillaryBulk = async (reservationKey, body, setRefe
     }
 };
 
+export const postReservationAncillaryBulkInternationalCard = async (reservationKey, body) => {
+    try {
+        const url = `/reservations/${reservationKey}/ancillaryPurchases/bulk`;
+        const response = await postRequest(url, body);
+        return response
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        toast.error(error.response?.data?.message?.message || 'Something went wrong');
+    }
+};
+
 export const postReservationSeatBulk = async (reservationKey, body, setRefetch, refetch) => {
     try {
         const url = `/reservations/${reservationKey}/seatSelections/bulk`;
