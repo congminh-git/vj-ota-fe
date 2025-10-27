@@ -152,6 +152,12 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
                     break;
                 }
             }
+            var paymentObjIndex = -1
+            for ( let i =0; i < quotations.paymentTransactions.length; i++ ) {
+                if (!quotations.paymentTransactions[i].receiptNumber) {
+                    paymentObjIndex = i
+                }
+            }
             bodyPost[0].paymentTransactions = [
                 {
                     paymentMethod: internationalPaymentMethod[methodIndex],
