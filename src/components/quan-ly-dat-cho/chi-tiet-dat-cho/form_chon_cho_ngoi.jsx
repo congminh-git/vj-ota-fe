@@ -12,8 +12,10 @@ import ListPaymentMethod from '@/components/thanh-toan/listPaymentMethod';
 import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
 import { setCookie, getCookie } from '@/lib/cookie';
+import { useRouter } from 'next/navigation';
 
 function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneySeatOptions, currency, exchangeRate }) {
+    const router = useRouter()
     const [selectedJourney, setSelectedJourney] = useState(1);
     const [selectedPassenger, setSelectedPassenger] = useState(1);
     const [selectedSeatOptions, setSelectedSeatOptions] = useState([]);
