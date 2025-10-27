@@ -210,6 +210,7 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
             const data = postReservationSeatBulkInternationalCard(body.key, bodyPost);
             setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
             setCookie('reservationKey', body.key, 1)
+            router.push(data?.data?.responseData?.endpoint);
         }
     };
 
