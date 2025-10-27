@@ -115,7 +115,7 @@ export default function ChiTietDatCho() {
 
     useEffect(() => {
         if (reservationByKey) {
-            handlePutQuotationPaymentTransaction(reservationKey, reservationByKey, companyKey, currency, exchangeRate);
+            handlePutQuotationPaymentTransaction(reservationKey, reservationByKey, companyKey, currency, exchangeRate, paymentMethod);
             handleGetReservationByLocator(reservationByKey.locator);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

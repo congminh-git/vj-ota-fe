@@ -1,20 +1,29 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
-import { postEmailingItineraries, postReservationCheck } from '@/services/reservations/functions';
+import { getReservationByKey, postEmailingItineraries, postReservationCheck } from '@/services/reservations/functions';
 import { useRouter } from 'next/navigation';
 import { setCookie, getCookie } from "@/lib/cookie"
 
 export default function SuccessPage() {
     const [transactionID, setTransactionID] = useState<string | null>(null);
+    const [reservationKey, setReservationKey] = useState<string | null>(null);
     const [response, setResponse] = useState<any | null>(null);
     const router = useRouter()
 
     const handleReservationCheck = useCallback(async (transactionID: string) => {
         const data = await postReservationCheck(transactionID.slice(1, -1));
         if (data) {
-            sessionStorage.setItem('bookingSuccessResult', JSON.stringify(data));
-            await postEmailingItineraries(data.key, data.bookingInformation.contactInformation.email, true);
-            router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
+            if (data.locator) {
+                sessionStorage.setItem('managementLocator', JSON.stringify(data.locator));
+                // await postEmailingItineraries(data.key, data.bookingInformation.contactInformation.email, true);
+                // router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
+                router.push('/quan-ly-dat-cho')
+            } else {
+                const key = getCookie('reservationKey');
+                const data = await getReservationByKey(key)
+                sessionStorage.setItem('managementLocator', JSON.stringify(data.locator))
+                router.push('/quan-ly-dat-cho')
+            }
         }
         setResponse(data);
     }, [router]);

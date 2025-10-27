@@ -204,6 +204,7 @@ export default function BookingManagement() {
             paymentMethod,
         );
         setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+        setCookie('reservationKey')
         router.push(data?.data?.responseData?.endpoint);
     }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
 
