@@ -122,7 +122,7 @@ export default function BookingManagement() {
     }, [companyKey]);
 
     const handlePutQuotationPaymentTransaction = useCallback(
-        async (reservationKey, reservationByKey, companyKey, currency, exchangeRate) => {
+        async (reservationKey, reservationByKey, companyKey, currency, exchangeRate, paymentMethod) => {
             if (reservationKey && reservationByKey && companyKey) {
                 const data = await putQuotationPaymentTransaction(
                     reservationKey,
@@ -130,6 +130,7 @@ export default function BookingManagement() {
                     companyKey,
                     currency,
                     exchangeRate,
+                    paymentMethod
                 );
                 setQuotations(data);
             }

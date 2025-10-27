@@ -10,15 +10,24 @@ export const putQuotationPaymentTransaction = async (
     thongTinVeByKey,
     companyKey,
     currency,
-    exchangeRate,) => {
+    exchangeRate,paymentMethod) => {
+        var methodIndex = -1
+        const internationalPaymentMethod = [
+            {identifier: "VJPVI", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw=="},
+            {identifier: "VJPMC", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p194mAGlhM8hHzyNub1xGLall2SNuloDtpyhWuaoDeoPA=="},
+            {identifier: "VJPAMEX", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA=="},
+            {identifier: "VJPJCB", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ=="}
+        ]
+        for (let i = 0; i<=internationalPaymentMethod.length; i++) {
+            if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
+                methodIndex = i
+                break;
+            }
+        }
     const url = `/quotations?httpMethod=POST&requestUri=reservations/${reservationKey}/paymentTransactions`;
     const body = thongTinVeByKey;
         body.paymentTransactions[0] = {
-            paymentMethod: {
-                href: 'https://vietjet-api.intelisystraining.ca/RESTv1/paymentMethods/tfCeB5%C2%A5mircWvs2CC2%A59VaH1zFawFw==',
-                key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1¥CcncCLQNu3uhZGWzJkJUbmKK13BpWK¥9VaH1zFawFw==',
-                identifier: 'AG',
-            },
+            paymentMethod: internationalPaymentMethod[methodIndex],
             paymentMethodCriteria: {},
             currencyAmounts: [
                 {
