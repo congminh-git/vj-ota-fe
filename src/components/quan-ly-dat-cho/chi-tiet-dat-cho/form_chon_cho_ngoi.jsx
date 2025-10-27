@@ -127,6 +127,31 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
         ) {
             const selectedSeatOptionsStr = JSON.stringify(selectedSeatOptions);
             let bodyPost = JSON.parse(selectedSeatOptionsStr);
+            var methodIndex = -1;
+            const internationalPaymentMethod = [
+                {
+                    identifier: 'VJPVI',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw==',
+                },
+                {
+                    identifier: 'VJPMC',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p194mAGlhM8hHzyNub1xGLall2SNuloDtpyhWuaoDeoPA==',
+                },
+                {
+                    identifier: 'VJPAMEX',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p104nzxRaOCpOkEMnƒuqo2oi1d¥9h0pvhMOuUOg7P4ƒmA==',
+                },
+                {
+                    identifier: 'VJPJCB',
+                    key: 'tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p1Ur12p0B7xIkkX8eFGwIjU0ZKUMgZƒDSk4CLyF3vJ0EQ==',
+                },
+            ];
+            for (let i = 0; i < internationalPaymentMethod.length; i++) {
+                if (internationalPaymentMethod[i].identifier === paymentMethod.identifier) {
+                    methodIndex = i;
+                    break;
+                }
+            }
             bodyPost[0].paymentTransactions = [
                 {
                     paymentMethod: internationalPaymentMethod[methodIndex],
