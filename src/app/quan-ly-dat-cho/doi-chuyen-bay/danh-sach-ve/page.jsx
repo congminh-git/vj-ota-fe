@@ -142,7 +142,7 @@ export default function ListTravelOptions() {
                 setCookie('reservationKey', reservationKey, 1);
                 router.push(data?.data?.responseData?.endpoint);
             } else {
-                sessionStorage.setItem('managementLocator', data.locator);
+                sessionStorage.setItem('managementLocator', ReservationByKey.locator);
                 router.push('/quan-ly-dat-cho');
             }
         } else {
@@ -181,7 +181,7 @@ export default function ListTravelOptions() {
                 setCookie('reservationKey', reservationKey, 1);
                 router.push(data?.data?.responseData?.endpoint);
             } else {
-                sessionStorage.setItem('managementLocator', data.locator);
+                sessionStorage.setItem('managementLocator', ReservationByKey.locator);
                 router.push('/quan-ly-dat-cho');
             }
         }
