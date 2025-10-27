@@ -14,6 +14,7 @@ import {
     getReservationByKey,
     postReservationPaymentTransaction,
     postEmailingItineraries,
+    postReservationPaymentTransactionByInternationalCard,
 } from '@/services/reservations/functions';
 import { putQuotationPaymentTransaction } from '@/services/quotations/functions';
 import { getCompany } from '@/services/companies/functions';
