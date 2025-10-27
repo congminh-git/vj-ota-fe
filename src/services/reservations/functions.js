@@ -206,6 +206,12 @@ export const postReservationPaymentTransactionByInternationalCard = async (
                 break;
             }
         }
+        var paymentObjIndex = -1
+        for ( let i =0; i < quotations.paymentTransactions.length; i++ ) {
+            if (!quotations.paymentTransactions[i].receiptNumber) {
+                paymentObjIndex = i
+            }
+        }
         const body = {
             reservationKey: reservationByKey?.key,
             data: {
@@ -219,7 +225,7 @@ export const postReservationPaymentTransactionByInternationalCard = async (
                 },
                 currencyAmounts: [
                     {
-                        totalAmount: quotations?.paymentTransactions[0].currencyAmounts[0].totalAmount,
+                        totalAmount: quotations?.paymentTransactions[paymentObjIndex].currencyAmounts[0].totalAmount,
                         currency: {
                             code: currency,
                             baseCurrency: true,
@@ -229,7 +235,7 @@ export const postReservationPaymentTransactionByInternationalCard = async (
                 ],
                 processingCurrencyAmounts: [
                     {
-                        totalAmount: 0,
+                        totalAmount: quotations?.paymentTransactions[paymentObjIndex].processingCurrencyAmounts[0].totalAmount,
                         currency: {
                             code: currency,
                             baseCurrency: true,

@@ -13,7 +13,7 @@ import ReservationInformation from '@/components/quan-ly-dat-cho/chi-tiet-dat-ch
 import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
 import { generateUUID } from '@/lib/uuid';
 import { getCurrentTimestamp } from '@/lib/dateTime';
-import { setCookie, getCookie } from "@/lib/cookie";
+import { setCookie, getCookie } from '@/lib/cookie';
 
 import {
     getReservationByLocator,
@@ -80,14 +80,14 @@ export default function BookingManagement() {
         country: '',
         address: '',
         postalCode: '',
-        phone: ''
+        phone: '',
     });
 
     const [cardInfo, setCardInfo] = useState({
         cardName: '',
         cardNumber: '',
         expiryDate: '',
-        cvv: ''
+        cvv: '',
     });
 
     // Refs để tránh re-render không cần thiết
@@ -192,9 +192,18 @@ export default function BookingManagement() {
     }, [paymentMethod, reservationByKey, companyKey, quotations, currency, exchangeRate]);
 
     const onPaymentByCard = useCallback(async () => {
-        const data = await postReservationPaymentTransactionByInternationalCard(reservationByKey, companyKey, quotations, currency, exchangeRate, billing, cardInfo, paymentMethod);
+        const data = await postReservationPaymentTransactionByInternationalCard(
+            reservationByKey,
+            companyKey,
+            quotations,
+            currency,
+            exchangeRate,
+            billing,
+            cardInfo,
+            paymentMethod,
+        );
         setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
-        router.push(data?.data?.responseData?.endpoint)
+        router.push(data?.data?.responseData?.endpoint);
     }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -559,16 +568,16 @@ export default function BookingManagement() {
                                                         paymentMethod.identifier === 'VJPMC' ||
                                                         paymentMethod.identifier === 'VJPAMEX' ||
                                                         paymentMethod.identifier === 'VJPJCB') &&
-                                                        billing.address &&
-                                                        billing.city &&
-                                                        billing.country &&
-                                                        billing.postalCode &&
-                                                        billing.phone &&
-                                                        cardInfo.cvv &&
-                                                        cardInfo.expiryDate &&
-                                                        cardInfo.cardName &&
-                                                        cardInfo.cardNumber
-                                                    )
+                                                    billing.address &&
+                                                    billing.city &&
+                                                    billing.country &&
+                                                    billing.postalCode &&
+                                                    billing.phone &&
+                                                    cardInfo.cvv &&
+                                                    cardInfo.expiryDate &&
+                                                    cardInfo.cardName &&
+                                                    cardInfo.cardNumber
+                                                )
                                                     ? true
                                                     : false
                                             }
