@@ -128,7 +128,7 @@ export default function ChiTietDatCho() {
             handleGetReservationByLocator(reservationByKey.locator);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reservationByKey, companyKey, reservationKey]);
+    }, [reservationByKey, companyKey, reservationKey, paymentMethod]);
 
     const handleGetCompany = async () => {
         const data = await getCompany();
