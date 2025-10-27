@@ -14,14 +14,14 @@ export default function SuccessPage() {
         const data = await postReservationCheck(transactionID.slice(1, -1));
         if (data) {
             if (data.locator) {
-                sessionStorage.setItem('managementLocator', JSON.stringify(data.locator));
+                sessionStorage.setItem('managementLocator', data.locator);
                 // await postEmailingItineraries(data.key, data.bookingInformation.contactInformation.email, true);
                 // router.push('/dat-ve/thanh-toan/dat-cho-thanh-cong');
                 router.push('/quan-ly-dat-cho')
             } else {
                 const key = getCookie('reservationKey');
                 const data = await getReservationByKey(key)
-                sessionStorage.setItem('managementLocator', JSON.stringify(data.locator))
+                sessionStorage.setItem('managementLocator', data.locator)
                 router.push('/quan-ly-dat-cho')
             }
         }

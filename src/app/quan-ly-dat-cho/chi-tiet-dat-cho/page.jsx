@@ -24,6 +24,7 @@ import { toast } from 'react-hot-toast';
 import { getCurrencySymbol } from '../../../lib/parseCurrency';
 import ListPaymentMethod from '@/components/thanh-toan/listPaymentMethod';
 import InternationalCardInfoForm from '@/components/thanh-toan/internationalCardInfo';
+import { setCookie, getCookie } from '@/lib/cookie';
 
 export default function ChiTietDatCho() {
     const today = new Date();
@@ -115,7 +116,14 @@ export default function ChiTietDatCho() {
 
     useEffect(() => {
         if (reservationByKey) {
-            handlePutQuotationPaymentTransaction(reservationKey, reservationByKey, companyKey, currency, exchangeRate, paymentMethod);
+            handlePutQuotationPaymentTransaction(
+                reservationKey,
+                reservationByKey,
+                companyKey,
+                currency,
+                exchangeRate,
+                paymentMethod,
+            );
             handleGetReservationByLocator(reservationByKey.locator);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,7 +150,7 @@ export default function ChiTietDatCho() {
         companyKey,
         currency,
         exchangeRate,
-        paymentMethod
+        paymentMethod,
     ) => {
         const data = await putQuotationPaymentTransaction(
             reservationKey,
@@ -150,14 +158,37 @@ export default function ChiTietDatCho() {
             companyKey,
             currency,
             exchangeRate,
-            paymentMethod
+            paymentMethod,
         );
         setQuotations(data);
     };
 
+    const onPaymentByCard = useCallback(async () => {
+        const data = await postReservationPaymentTransactionByInternationalCard(
+            reservationByKey,
+            companyKey,
+            quotations,
+            currency,
+            exchangeRate,
+            billing,
+            cardInfo,
+            paymentMethod,
+        );
+        setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
+        setCookie('reservationKey', reservationByKey.key, 1);
+        router.push(data?.data?.responseData?.endpoint);
+    }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
+
     const handlePay = async () => {
-        if (paymentMethod) {
+        if (paymentMethod.identifier === 'AG') {
             postReservationPaymentTransaction(reservationByKey, companyKey, quotations, currency, exchangeRate);
+        } else if (
+            paymentMethod.identifier === 'VJPVI' ||
+            paymentMethod.identifier === 'VJPMC' ||
+            paymentMethod.identifier === 'VJPAMEX' ||
+            paymentMethod.identifier === 'VJPJCB'
+        ) {
+            onPaymentByCard();
         } else {
             toast.error('Vui lòng chọn phương thức thanh toán');
         }
