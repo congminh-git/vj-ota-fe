@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { putQuotationEditReservationSeatSelections } from '@/services/quotations/functions';
 import {
     postReservationSeatBulk,
@@ -19,7 +19,7 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
     const [selectedSeatOptions, setSelectedSeatOptions] = useState([]);
     const [selectedSegment, setSelectedSegment] = useState(1);
     const [allJourneyListRow, setAllJourneyListRow] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState({identifier: null, description: null});
     const [quotations, setQuotations] = useState(null);
     const [postPaymentTransactions, setPostPaymentTransactions] = useState(null);
     const [listPurchasedSeat, setListPurchasedSeat] = useState(null);
@@ -103,22 +103,6 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listAllJourneySeatOptions]);
-
-    const onPaymentByCard = useCallback(async () => {
-        const data = await postReservationPaymentTransactionByInternationalCard(
-            reservationByKey,
-            companyKey,
-            quotations,
-            currency,
-            exchangeRate,
-            billing,
-            cardInfo,
-            paymentMethod,
-        );
-        setCookie('transactionID', JSON.stringify(data?.data?.responseData?.transactionId));
-        setCookie('reservationKey', reservationByKey.key, 1);
-        router.push(data?.data?.responseData?.endpoint);
-    }, [billing, cardInfo, reservationByKey, quotations, paymentMethod, companyKey, currency, exchangeRate]);
 
     const xuLyThanhToan = () => {
         if (paymentMethod.identifier == 'AG') {
@@ -547,9 +531,9 @@ function SelectSeatForm({ setRefetch, refetch, body, companyKey, listAllJourneyS
                         : false
                 }
                 className={`mt-8 w-full rounded py-2 text-white ${
-                    ((reservationByKey?.bookingInformation.hold &&
-                        new Date(reservationByKey?.bookingInformation.hold.expiryTime) > today) ||
-                        !reservationByKey?.bookingInformation.hold) &&
+                    ((body?.bookingInformation.hold &&
+                        new Date(body?.bookingInformation.hold.expiryTime) > today) ||
+                        !body?.bookingInformation.hold) &&
                     (paymentMethod.identifier === 'AG' ||
                         ((paymentMethod.identifier === 'VJPVI' ||
                             paymentMethod.identifier === 'VJPMC' ||
