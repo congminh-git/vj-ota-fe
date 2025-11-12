@@ -21,7 +21,7 @@ export default function Home() {
         if (!token && (!refreshToken || !apikey)) {
             router.replace('/login');
         } else {
-            router.replace('/dat-ve');
+            router.replace('/booking');
         }
     }, [router]);
 

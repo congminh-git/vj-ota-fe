@@ -69,17 +69,17 @@ export const postReservationByInternationalCard = async (body, quotations, billi
         body.paymentTransactions[0].processingCurrencyAmounts =
             quotations.paymentTransactions[0].processingCurrencyAmounts;
         body.paymentTransactions[0].callbackURLs = {
-            // successURL: `${baseUrl}/dat-ve/thanh-toan/success`,
-            // failureURL: `${baseUrl}/dat-ve/thanh-toan/failure`,
-            // cancelURL: `${baseUrl}/dat-ve/thanh-toan/cancel`,
-            // pendingURL: `${baseUrl}/dat-ve/thanh-toan/pending`,
-            // ipnURL: ``,
+            successURL: `${baseUrl}/booking/payment/success`,
+            failureURL: `${baseUrl}/booking/payment/failure`,
+            cancelURL: `${baseUrl}/booking/payment/cancel`,
+            pendingURL: `${baseUrl}/booking/payment/pending`,
+            ipnURL: ``,
 
-            successURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success',
-            failureURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure',
-            cancelURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel',
-            pendingURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending',
-            ipnURL: '',
+            // successURL: 'https://ota-booking-demo.vercel.app/booking/payment/success',
+            // failureURL: 'https://ota-booking-demo.vercel.app/booking/payment/failure',
+            // cancelURL: 'https://ota-booking-demo.vercel.app/booking/payment/cancel',
+            // pendingURL: 'https://ota-booking-demo.vercel.app/booking/payment/pending',
+            // ipnURL: '',
         };
         body.paymentTransactions[0].billingInfo = billing;
         body.paymentTransactions[0].cardInfo = cardInfo;
@@ -193,6 +193,7 @@ export const postReservationPaymentTransactionByInternationalCard = async (
     paymentMethod
 ) => {
     try {
+        const baseUrl = getBaseURL();
         var methodIndex = -1
         const internationalPaymentMethod = [
             {identifier: "VJPVI", key: "tfCeB5¥mircWvs2C4HkDdOXNJfƒNFOopDW2yQCBh2p2BJwZ8wTc4ExeJCtCEj4Hz7MHM1X8JzpsHK7LUkJqndw=="},
@@ -246,11 +247,11 @@ export const postReservationPaymentTransactionByInternationalCard = async (
                 billingInfo: billing,
                 cardInfo: cardInfo,
                 callbackURLs: {
-                    successURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/success',
-                    failureURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/failure',
-                    cancelURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/cancel',
-                    pendingURL: 'https://ota-booking-demo.vercel.app/dat-ve/thanh-toan/pending',
-                    ipnURL: '',
+                    successURL: `${baseUrl}/booking/payment/success`,
+                    failureURL: `${baseUrl}/booking/payment/failure`,
+                    cancelURL: `${baseUrl}/booking/payment/cancel`,
+                    pendingURL: `${baseUrl}/booking/payment/pending`,
+                    ipnURL: ``,
                 },
                 payerDescription: null,
                 receiptNumber: null,
@@ -261,7 +262,6 @@ export const postReservationPaymentTransactionByInternationalCard = async (
         };
         const url = `/reservations/paymentTransactions`;
         const response = await postRequest(url, body);
-        console.log("A")
         return response
     } catch (error) {
         console.error('Error fetching data:', error.message);

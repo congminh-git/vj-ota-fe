@@ -48,7 +48,7 @@ function Header() {
     }, []);
 
     useEffect(() => {
-        if (!pathName.includes('quan-ly-dat-cho')) {
+        if (!pathName.includes('booking-management')) {
             sessionStorage.removeItem('managementLocator');
         }
     }, [pathName]);

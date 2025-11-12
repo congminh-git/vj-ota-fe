@@ -5,8 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import 'flatpickr/dist/flatpickr.min.css';
 import flatpickr from 'flatpickr';
 import Vietnamese from 'flatpickr/dist/l10n/vn';
-import PassengersDropDown from './dropdown_hanh_khach';
-import ListAirport from './danh_sach_san_bay';
+import PassengersDropDown from './passengers_dropdown';
+import ListAirport from './list_airports';
 import React from 'react';
 import { useFlightSearchForm } from '@/hooks/useFlightSearchForm';
 
@@ -63,15 +63,15 @@ function HomePageSearchForm({ typeSearchForm, loadingStatus, setLoadingStatus })
     const airpostArrivalDropDownRef = useRef(null);
 
     // Memoize computed values
-    const isBookingManagement = useMemo(() => pathname.includes('quan-ly-dat-cho'), [pathname]);
-    const isFlightListPage = useMemo(() => pathname && pathname.includes('danh-sach-ve'), [pathname]);
+    const isBookingManagement = useMemo(() => pathname.includes('booking-management'), [pathname]);
+    const isFlightListPage = useMemo(() => pathname && pathname.includes('select-flight'), [pathname]);
 
     // Memoize handleSearchFlight function
     const handleSearchFlight = useCallback(() => {
         const departmentDateCompare = new Date(departmentDate);
         const returnDateCompare = new Date(returnDate);
         const cityPair = departureAirport.split(' ')[0] + '-' + arrivalAirport.split(' ')[0];
-        const endPoint = '/dat-ve/danh-sach-ve';
+        const endPoint = '/booking/select-flight';
         const url = `${endPoint}`;
         
         if (departureAirport !== arrivalAirport) {
@@ -92,15 +92,15 @@ function HomePageSearchForm({ typeSearchForm, loadingStatus, setLoadingStatus })
                         'đi',
                         promoCode,
                     );
-                    if (endPoint === 'danh-sach-ve') {
+                    if (endPoint === 'select-flight') {
                         if (cheapFlight) {
-                            router.replace('/dat-ve/tim-ve-re');
+                            router.replace('/booking/select-cheap-flight');
                         } else {
                             router.refresh();
                         }
                     } else {
                         if (cheapFlight) {
-                            router.push('dat-ve/tim-ve-re');
+                            router.push('booking/select-cheap-flight');
                         } else {
                             router.push(url);
                         }
@@ -122,15 +122,15 @@ function HomePageSearchForm({ typeSearchForm, loadingStatus, setLoadingStatus })
                     'đi',
                     promoCode,
                 );
-                if (endPoint === 'danh-sach-ve') {
+                if (endPoint === 'select-flight') {
                     if (cheapFlight) {
-                        router.replace('/dat-ve/tim-ve-re');
+                        router.replace('/booking/select-cheap-flight');
                     } else {
                         router.refresh();
                     }
                 } else {
                     if (cheapFlight) {
-                        router.push('dat-ve/tim-ve-re');
+                        router.push('booking/select-cheap-flight');
                     } else {
                         router.push(url);
                     }

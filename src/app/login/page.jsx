@@ -20,7 +20,7 @@ export default function Login() {
             const token = await getCookie('token');
             const apikey = await getCookie('apikey');
             if (token && apikey) {
-                router.replace('/dat-ve');
+                router.replace('/booking');
             }
         };
         checkToken();
@@ -33,7 +33,7 @@ export default function Login() {
             const loginResult = await postUserSessions({ username, password, apikey });
             if (loginResult.accessToken) {
                 await saveCookie({ name: 'apikey', data: apikey, time: 302380 });
-                router.replace('/dat-ve');
+                router.replace('/booking');
             } else {
                 const messageText = loginResult?.message || 'Sai tài khoản hoặc mật khẩu.';
                 await Swal.fire({ icon: 'error', title: 'Đăng nhập thất bại', text: messageText });

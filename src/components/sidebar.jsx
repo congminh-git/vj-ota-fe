@@ -35,8 +35,8 @@ function Sidebar() {
     }, []);
 
     useEffect(() => {
-        if (pathName.includes('quan-ly-dat-cho')) {
-            setSelected('quan-ly-dat-cho');
+        if (pathName.includes('booking-management')) {
+            setSelected('booking-management');
         } else {
             setSelected('tim-chuyen');
         }
@@ -61,7 +61,7 @@ function Sidebar() {
                         style={{ height: '72px' }}
                     >
                         <button>
-                            <Link href="/dat-ve">
+                            <Link href="/booking">
                                 {/* <div
                                     className={`bg-[url('/logo_brand.png')] h-full w-full bg-cover ${
                                         open ? 'block' : 'hidden'
@@ -158,12 +158,12 @@ function Sidebar() {
                             className={`flex ${
                                 open ? 'justify-start' : 'justify-center'
                             } items-center text-gray-500 hover:bg-sky-100 hover:text-sky-400 ${
-                                selected == 'quan-ly-dat-cho'
+                                selected == 'booking-management'
                                     ? 'sm:bg-sky-100 sm:border-transparent text-sky-400 border-b-2 border-sky-400'
                                     : 'border-b-2 border-transparent'
                             } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
                         >
-                            <Link className="flex items-center" href="/quan-ly-dat-cho">
+                            <Link className="flex items-center" href="/booking-management">
                                 <svg
                                     className={`h-5 w-5 ${open ? 'mr-2' : 'mr-0'}`}
                                     fill="none"
@@ -186,7 +186,7 @@ function Sidebar() {
                             className={`${
                                 !open ? 'btn-show-quan-ly-list' : ''
                             } sm:hover:bg-sky-100 sm:hover:text-sky-400 border-b-2 border-sky-400 sm:border-transparent cursor-pointer ${
-                                selected == 'quan-ly-dat-cho' || selected == 'quan-ly-ve'
+                                selected == 'booking-management' || selected == 'quan-ly-ve'
                                     ? 'sm:bg-sky-100 text-sky-400 border-b-2 border-sky-400'
                                     : 'border-b-2 border-transparent'
                             } text-gray-500`}
@@ -228,15 +228,15 @@ function Sidebar() {
                                     <button
                                         onClick={() => {
                                             alert(pathName);
-                                            if (pathName == '/quan-ly-dat-cho/') {
+                                            if (pathName == '/booking-management/') {
                                                 location.reload();
                                             }
                                         }}
                                         className={`p-2 text-sm block w-full text-start font-medium pl-10 text-gray-400 hover:bg-sky-50 hover:text-sky-400 ${
-                                            selected == 'quan-ly-dat-cho' ? 'bg-sky-50 text-sky-400' : 'bg-white'
+                                            selected == 'booking-management' ? 'bg-sky-50 text-sky-400' : 'bg-white'
                                         }`}
                                     >
-                                        <Link href="/quan-ly-dat-cho" className="h-full w-full">
+                                        <Link href="/booking-management" className="h-full w-full">
                                             Quản lý đặt chỗ
                                         </Link>
                                     </button>
@@ -246,15 +246,15 @@ function Sidebar() {
                                 >
                                     <button
                                         onClick={() => {
-                                            if (pathName == '/quan-ly-dat-cho/') {
+                                            if (pathName == '/booking-management/') {
                                                 location.reload();
                                             }
                                         }}
                                         className={`p-2 text-sm block w-full text-start font-medium text-gray-400 hover:bg-sky-50 hover:text-sky-400 ${
-                                            selected == 'quan-ly-dat-cho' ? 'bg-sky-50 text-sky-400' : 'bg-white'
+                                            selected == 'booking-management' ? 'bg-sky-50 text-sky-400' : 'bg-white'
                                         }`}
                                     >
-                                        <Link href="/quan-ly-dat-cho" className="h-full w-full">
+                                        <Link href="/booking-management" className="h-full w-full">
                                             Quản lý đặt chỗ
                                         </Link>
                                     </button>
