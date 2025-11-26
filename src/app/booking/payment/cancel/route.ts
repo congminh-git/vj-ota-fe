@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  const bodyText = await req.text();
+    const bodyText = await req.text();
 
-  const redirectUrl = new URL(`/payment/cancel/view`, req.url);
-  return NextResponse.redirect(redirectUrl, 303); // 303 = POST→GET redirect
+    const redirectUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/payment/cancel/view`;
+    return NextResponse.redirect(redirectUrl, 303); // 303 = POST→GET redirect
 }
