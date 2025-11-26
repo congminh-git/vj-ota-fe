@@ -27,7 +27,7 @@ export const getRequest = async (url, params = {}, isRetry = false) => {
             if (!refreshToken) {
                 window.location.href = '/login';
             } else {
-                const refreshed = await putUserSessions(refreshToken.value)
+                const refreshed = await putUserSessions(refreshToken.value);
                 if (refreshed) {
                     const response = await apiService.get(url, {
                         params,
@@ -70,7 +70,7 @@ export const postRequest = async (url, data, isRetry = false) => {
             if (!refreshToken) {
                 window.location.href = '/login';
             } else {
-                const refreshed = await putUserSessions(refreshToken.value)
+                const refreshed = await putUserSessions(refreshToken.value);
                 if (refreshed) {
                     const response = await apiService.post(url, data, {
                         headers: {
@@ -82,6 +82,42 @@ export const postRequest = async (url, data, isRetry = false) => {
                     window.location.href = '/login';
                 }
             }
+        }
+    } catch (error) {
+        const errorMessage =
+            typeof error.response?.data?.message === 'string' ? error.response.data.message : 'Something went wrong';
+        toast.error(errorMessage);
+        throw error;
+    }
+};
+
+export const postRequest9G = async (url, data, isRetry = false) => {
+    try {
+        const token = await getCookie('9gtoken');
+        if (token) {
+            const response = await apiService.post(url, data, {
+                headers: {
+                    token: `${token.value}`,
+                },
+            });
+            return response.data.data;
+        } else {
+            // const refreshToken = await getCookie('refreshToken');
+            // if (!refreshToken) {
+            //     window.location.href = '/login';
+            // } else {
+            //     const refreshed = await putUserSessions(refreshToken.value);
+            //     if (refreshed) {
+            //         const response = await apiService.post(url, data, {
+            //             headers: {
+            //                 token: `${refreshed}`,
+            //             },
+            //         });
+            //         return response.data.data;
+            //     } else {
+            //         window.location.href = '/login';
+            //     }
+            // }
         }
     } catch (error) {
         const errorMessage =
@@ -109,7 +145,7 @@ export const putRequest = async (url, data, isRetry = false) => {
             if (!refreshToken) {
                 window.location.href = '/login';
             } else {
-                const refreshed = await putUserSessions(refreshToken.value)
+                const refreshed = await putUserSessions(refreshToken.value);
                 if (refreshed) {
                     const response = await apiService.put(url, data, {
                         headers: {
@@ -134,20 +170,32 @@ export const putRequest = async (url, data, isRetry = false) => {
 export const postRequestLogin = async (url, data) => {
     try {
         const response = await apiService.post(url, data);
-        await saveCookie({ name: 'token', data: response.data.accessToken, time: 580 });
+        await saveCookie({ name: 'token', data: response.data.pss.accessToken, time: 580 });
         await saveCookie({
             name: 'refreshToken',
             data: JSON.stringify({
-                refreshToken: response.data.refreshToken,
+                refreshToken: response.data.pss.refreshToken,
                 auth: { username: data.username, password: data.password, apikey: data.apikey },
             }),
             time: 302380,
         });
-        return response.data;
+        await saveCookie({
+            name: '9gtoken',
+            data: response.data['9g'].data.accessToken,
+            time: 1780,
+        });
+        await saveCookie({
+            name: '9grefreshToken',
+            data: response.data['9g'].data.refreshToken,
+            time: 129580,
+        });
+        return response.data.pss;
     } catch (error) {
         console.error('Failed to fetch data:', error);
         const errorMessage =
-            typeof error.response?.data?.message === 'string' ? error.response.data.message : 'Something went wrong';
+            typeof error.response?.data?.message === 'string'
+                ? error.response.data.pss.message
+                : 'Something went wrong';
 
         toast.error(errorMessage);
         throw error;
