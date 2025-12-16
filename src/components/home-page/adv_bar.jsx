@@ -29,12 +29,12 @@ function AdvBar() {
     return (
         <div className="w-full">
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full h-96 list-adv">
-                <div className="col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv1.jpg')]"></div>
-                <div className="hidden sm:block col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv2.jpg')]"></div>
-                <div className="hidden md:block col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv3.png')]"></div>
-                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv4.png')]"></div>
-                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv5.jpg')]"></div>
-                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/adv6.jpg')]"></div>
+                <div className="col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv1.jpg')]"></div>
+                <div className="hidden sm:block col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv2.jpg')]"></div>
+                <div className="hidden md:block col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv3.png')]"></div>
+                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv4.png')]"></div>
+                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv5.jpg')]"></div>
+                <div className="hidden col-span-1 w-full h-full rounded-md bg-cover bg-[url('/globalImages/adv6.jpg')]"></div>
             </div>
             <div className="w-full flex justify-center mt-2">
                 <div className="flex justify-center">

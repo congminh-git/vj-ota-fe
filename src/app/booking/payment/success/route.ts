@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  const bodyText = await req.text();
+    const bodyText = await req.text();
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success/view`
-  return NextResponse.redirect(redirectUrl, 303);
+    const redirectUrl = `https://skyjet-ota.site/payment/success/view`;
+    return NextResponse.redirect(redirectUrl, 303);
 }

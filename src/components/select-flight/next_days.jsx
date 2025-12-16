@@ -36,14 +36,14 @@ function ConsecutiveDays({ flyingDay, activeSelectFlight, departmentDate, return
         if (roundTrip) {
             if (departmentDateCompare <= returnDateCompare) {
                 if (endPoint === 'select-flight') {
-                    router.refresh();
+                    window.location.reload();
                 } else {
                     router.push(url);
                 }
             }
         } else {
             if (endPoint === 'select-flight') {
-                router.refresh();
+                window.location.reload();
             } else {
                 router.push(url);
             }
@@ -65,7 +65,8 @@ function ConsecutiveDays({ flyingDay, activeSelectFlight, departmentDate, return
                 formattedDate,
             );
         }
-        router.refresh();
+
+        window.location.reload();
     };
     const oneDayForward = () => {
         let date = new Date(flyingDay);
@@ -82,7 +83,8 @@ function ConsecutiveDays({ flyingDay, activeSelectFlight, departmentDate, return
                 formattedDate,
             );
         }
-        router.refresh();
+
+        window.location.reload();
     };
     const dateRange = generateDateRange(flyingDay);
 

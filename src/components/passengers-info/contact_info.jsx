@@ -26,7 +26,7 @@ export default function ContactInfomation({ contactInfomation, setContactInfomat
                                 .toUpperCase();
                             setContactInfomation({ ...contactInfomation, lastName: updatedLastName });
                         }}
-                        value={contactInfomation.lastName}
+                        value={contactInfomation.lastName || ''}
                         className="w-full outline-none"
                         type="text"
                     />
@@ -47,7 +47,7 @@ export default function ContactInfomation({ contactInfomation, setContactInfomat
                                 .toUpperCase();
                             setContactInfomation({ ...contactInfomation, firstName: updatedFirstName });
                         }}
-                        value={contactInfomation.firstName}
+                        value={contactInfomation.firstName || ''}
                         className="w-full outline-none"
                         type="text"
                     />
@@ -59,10 +59,10 @@ export default function ContactInfomation({ contactInfomation, setContactInfomat
                         <span className="text-red-500">*</span>
                     </label>
                     <div className="flex items-center text-sm">
-                        {/* <div className="w-5 h-4 bg-[url('/vietnamicon.png')] bg-cover rounded-full"></div>
+                        {/* <div className="w-5 h-4 bg-[url('/globalImages/vietnamicon.png')] bg-cover rounded-full"></div>
                         <p className="ml-2">+84</p> */}
                         <input
-                            value={contactInfomation.phoneNumber}
+                            value={contactInfomation.phoneNumber || ''}
                             onChange={(e) => {
                                 const value = e.target.value.replace(/\D/g, '');
                                 setContactInfomation({ ...contactInfomation, phoneNumber: value });
@@ -81,7 +81,7 @@ export default function ContactInfomation({ contactInfomation, setContactInfomat
                     <input
                         onInput={(e) => setContactInfomation({ ...contactInfomation, email: e.target.value })}
                         className="w-full outline-none"
-                        value={contactInfomation.email}
+                        value={contactInfomation.email || ''}
                         type="text"
                     />
                     <p className="text-red-500 thong-tin-lien-he-email text-sm absolute top-2 right-2"></p>

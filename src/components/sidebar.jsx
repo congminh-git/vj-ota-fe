@@ -2,15 +2,19 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { ChevronLeft, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import './sidebar.css';
+import path from 'path';
 
 function Sidebar() {
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState('tim-chuyen');
+    const [isDocs, setIsDocs] = useState(false);
     const popupRef = useRef(null);
     const pathName = usePathname();
     const router = useRouter();
+    
     const smallSideBar = (e) => {
         setOpen(false);
     };
@@ -26,19 +30,29 @@ function Sidebar() {
     useEffect(() => {
         function handleClick(event) {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
-                setOpen(false);
+                if (!isDocs){
+                    setOpen(false);
+                }
             }
         }
 
         document.addEventListener('click', handleClick);
         return () => document.removeEventListener('click', handleClick);
-    }, []);
+    }, [isDocs]);
 
     useEffect(() => {
+        const isDocsPath = pathName.includes('docs');
+        setIsDocs(isDocsPath);
+        
         if (pathName.includes('booking-management')) {
             setSelected('booking-management');
+        } else if (pathName == '/booking' || pathName == '/booking/' || pathName.includes('/booking/')) {
+            setSelected('booking');
+        } else if (isDocsPath) {
+            setSelected('docs');
+            setOpen(true);
         } else {
-            setSelected('tim-chuyen');
+            setSelected('api-swagger');
         }
     }, [pathName]);
 
@@ -61,13 +75,7 @@ function Sidebar() {
                         style={{ height: '72px' }}
                     >
                         <button>
-                            <Link href="/booking">
-                                {/* <div
-                                    className={`bg-[url('/logo_brand.png')] h-full w-full bg-cover ${
-                                        open ? 'block' : 'hidden'
-                                    }`}
-                                ></div> */}
-                            </Link>
+                            <Link href="/booking"></Link>
                         </button>
                         <button>
                             <Link href="/">
@@ -124,7 +132,7 @@ function Sidebar() {
                             className={`flex ${
                                 open ? 'justify-start' : 'justify-center'
                             } items-center text-gray-500 hover:bg-sky-100 hover:text-sky-400 ${
-                                selected == 'tim-chuyen'
+                                selected == 'booking'
                                     ? 'sm:bg-sky-100 sm:border-transparent text-sky-400 border-b-2 border-sky-400'
                                     : 'border-b-2 border-transparent'
                             } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
@@ -165,102 +173,125 @@ function Sidebar() {
                         >
                             <Link className="flex items-center" href="/booking-management">
                                 <svg
-                                    className={`h-5 w-5 ${open ? 'mr-2' : 'mr-0'}`}
+                                    xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
+                                    strokeWidth={2}
                                     stroke="currentColor"
+                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
                                 >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
                                     />
                                 </svg>
+
                                 <span className={`text-sm font-semibold ${open ? 'block' : 'hidden'}`}>
                                     <span>Quản lý booking</span>
                                 </span>
                             </Link>
                         </button>
-                        {/* <div
-                            className={`${
-                                !open ? 'btn-show-quan-ly-list' : ''
-                            } sm:hover:bg-sky-100 sm:hover:text-sky-400 border-b-2 border-sky-400 sm:border-transparent cursor-pointer ${
-                                selected == 'booking-management' || selected == 'quan-ly-ve'
-                                    ? 'sm:bg-sky-100 text-sky-400 border-b-2 border-sky-400'
+                        <button
+                            className={`flex ${
+                                open ? 'justify-start' : 'justify-center'
+                            } items-center text-gray-500 hover:bg-sky-100 hover:text-sky-400 ${
+                                selected == 'api-swagger'
+                                    ? 'sm:bg-sky-100 sm:border-transparent text-sky-400 border-b-2 border-sky-400'
                                     : 'border-b-2 border-transparent'
-                            } text-gray-500`}
+                            } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
                         >
-                            <div className={`flex ${open ? 'justify-start' : 'justify-center'} items-center p-3`}>
+                            <Link
+                                className="flex items-center"
+                                href={process.env.NEXT_PUBLIC_PUBLICAPI_URL + '/api-docs'}
+                            >
                                 <svg
-                                    className={`h-5 w-5 ${open ? 'mr-2' : 'mr-0'}`}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
+                                >
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9 8c-1 .5-2 2-2 4s1 3.5 2 4"
+                                    />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M15 8c1 .5 2 2 2 4s-1 3.5-2 4"
+                                    />
+                                    <circle cx="10.5" cy="12" r="0.8" />
+                                    <circle cx="12" cy="12" r="0.8" />
+                                    <circle cx="13.5" cy="12" r="0.8" />
+                                </svg>
+                                <span className={`text-sm font-semibold ${open ? 'block' : 'hidden'}`}>
+                                    <span>API swagger</span>
+                                </span>
+                            </Link>
+                        </button>
+                        <button
+                            className={`flex ${
+                                open ? 'justify-start' : 'justify-center'
+                            } items-center text-gray-500 hover:bg-sky-100 hover:text-sky-400 ${
+                                selected == 'docs'
+                                    ? 'sm:bg-sky-100 sm:border-transparent text-sky-400 border-b-2 border-sky-400'
+                                    : 'border-b-2 border-transparent'
+                            } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
+                        >
+                            <Link className="flex items-center" href="/docs">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
+                                    strokeWidth={2}
                                     stroke="currentColor"
+                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
                                 >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                                        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
                                     />
                                 </svg>
-                                <span className={`text-sm font-semibold ${open ? 'flex' : 'hidden'}`}>
-                                    Quản lý booking
-                                    <svg
-                                        className="h-5 w-5 ml-2"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        {' '}
-                                        <path stroke="none" d="M0 0h24v24H0z" /> <polyline points="6 9 12 15 18 9" />
-                                    </svg>
-                                </span>
-                            </div>
-                            <div className="hover:bg-white hover:text-gray-500 relative">
-                                <div className={`${open ? 'block' : 'hidden'}`}>
-                                    <button
-                                        onClick={() => {
-                                            alert(pathName);
-                                            if (pathName == '/booking-management/') {
-                                                location.reload();
-                                            }
-                                        }}
-                                        className={`p-2 text-sm block w-full text-start font-medium pl-10 text-gray-400 hover:bg-sky-50 hover:text-sky-400 ${
-                                            selected == 'booking-management' ? 'bg-sky-50 text-sky-400' : 'bg-white'
-                                        }`}
-                                    >
-                                        <Link href="/booking-management" className="h-full w-full">
-                                            Quản lý đặt chỗ
-                                        </Link>
-                                    </button>
-                                </div>
-                                <div
-                                    className={`absolute sm:left-full sm:-top-12 right-0 top-2 w-[200px] z-10 shadow-xl border show-quan-ly-list`}
+                                <span
+                                    className={`text-sm font-semibold ${
+                                        open ? 'flex justify-between items-center' : 'hidden'
+                                    }`}
                                 >
-                                    <button
-                                        onClick={() => {
-                                            if (pathName == '/booking-management/') {
-                                                location.reload();
-                                            }
-                                        }}
-                                        className={`p-2 text-sm block w-full text-start font-medium text-gray-400 hover:bg-sky-50 hover:text-sky-400 ${
-                                            selected == 'booking-management' ? 'bg-sky-50 text-sky-400' : 'bg-white'
+                                    <span className='mr-4'>Business Document</span>
+                                    <ChevronLeft
+                                        className={`w-4 h-4 transition-transform duration-300 ${
+                                            isDocs ? '-rotate-90' : ''
                                         }`}
-                                    >
-                                        <Link href="/booking-management" className="h-full w-full">
-                                            Quản lý đặt chỗ
-                                        </Link>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> */}
+                                    />
+                                </span>
+                            </Link>
+                        </button>
+                        {isDocs && open ? (
+                            <ul className="ml-6 mt-1">
+                                <li className={`text-gray-600 hover:bg-sky-100 hover:text-sky-400 rounded cursor-pointer ${pathName.includes("/docs/master-data") ? "bg-sky-100 text-sky-400" : ""}`}>
+                                    <Link href="/docs/master-data" className="block py-2 px-4 text-sm">
+                                        Master Data
+                                    </Link>
+                                </li>
+                                <li className={`text-gray-600 hover:bg-sky-100 hover:text-sky-400 rounded cursor-pointer ${pathName.includes("/docs/booking-flow") ? "bg-sky-100 text-sky-400" : ""}`}>
+                                    <Link href="/docs/booking-flow" className="block py-2 px-4 text-sm">
+                                        Booking Flow
+                                    </Link>
+                                </li>
+                                <li className={`text-gray-600 hover:bg-sky-100 hover:text-sky-400 rounded cursor-pointer ${pathName.includes("/docs/manage-booking-flow") ? "bg-sky-100 text-sky-400" : ""}`}>
+                                    <Link href="/docs/manage-booking-flow" className="block py-2 px-4 text-sm">
+                                        Manage Booking Flow
+                                    </Link>
+                                </li>
+                            </ul>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
             </div>

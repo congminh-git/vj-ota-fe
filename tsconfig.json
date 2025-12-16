@@ -19,6 +19,9 @@
       ],
       "@/hooks/*": [
         "hooks/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
       ]
     },
     "skipLibCheck": true,

@@ -78,7 +78,7 @@ export default function PassengerInfomation({ setChangePassengerInfoPopup, reser
                                                                 <span className="mr-2">
                                                                     {segments.departure.airport.code}
                                                                 </span>
-                                                                <span className="block w-5 h-5 bg-[url('/airplane1.png')] bg-cover"></span>
+                                                                <span className="block w-5 h-5 bg-[url('/globalImages/airplane1.png')] bg-cover"></span>
                                                                 <span className="ml-2">
                                                                     {segments.arrival.airport.code}
                                                                 </span>

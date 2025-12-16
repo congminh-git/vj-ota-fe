@@ -117,7 +117,7 @@ function Header() {
                 </div>
                 <div className="px-4 cursor-pointer border-l">
                     <div className="flex items-center p-2 hover:bg-gray-200 rounded-full text-sm">
-                        <div className="w-4 h-4 bg-[url('/vietnamicon.png')] bg-cover rounded-full"></div>
+                        <div className="w-4 h-4 bg-[url('/globalImages/vietnamicon.png')] bg-cover rounded-full"></div>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

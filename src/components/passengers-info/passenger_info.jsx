@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import flatpickr from 'flatpickr';
 import Vietnamese from 'flatpickr/dist/l10n/vn';
 import 'flatpickr/dist/flatpickr.min.css';
-import InputMask from 'react-input-mask';
+import DateInputMask from './DateInputMask';
 
 export default function PassengerInfomation({
     listPassenger,
@@ -123,38 +123,38 @@ export default function PassengerInfomation({
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <div className="flex items-center">
-                                            <InputMask
+                                            <DateInputMask
                                                 mask="99/99/9999"
                                                 placeholder="DD/MM/YYYY"
-                                                maskChar="_"
+                                                value={listPassenger.listAdult[index].dob}
                                                 onChange={(e) => {
                                                     const listAdult = listPassenger.listAdult;
 
                                                     // Lấy giá trị từ ô nhập
                                                     const dob = e.target.value;
                                                     
-                                                    // Tách ngày, tháng và năm
-                                                    const [day, month, year] = dob.split('/');
-
-                                                    // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
-                                                    const newDob = `${month}/${day}/${year}`;
-
-                                                    listAdult[index] = {
-                                                        ...listAdult[index],
-                                                        dob: newDob,
-                                                    };
+                                                    // Chỉ xử lý nếu có đủ 3 phần (DD/MM/YYYY)
+                                                    const parts = dob.split('/');
+                                                    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+                                                        const [day, month, year] = parts;
+                                                        // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
+                                                        const newDob = `${month}/${day}/${year}`;
+                                                        listAdult[index] = {
+                                                            ...listAdult[index],
+                                                            dob: newDob,
+                                                        };
+                                                    } else {
+                                                        // Nếu chưa đủ, lưu giá trị hiện tại (DD/MM/YYYY format)
+                                                        listAdult[index] = {
+                                                            ...listAdult[index],
+                                                            dob: dob || null,
+                                                        };
+                                                    }
                                                     setListPassenger({ ...listPassenger, listAdult });
                                                 }}
-                                            >
-                                                {(inputProps) => (
-                                                    <input
-                                                        {...inputProps}
-                                                        type="text"
-                                                        name="dob"
-                                                        className="w-48 p-2 outline-none"
-                                                    />
-                                                )}
-                                            </InputMask>
+                                                name="dob"
+                                                className="w-48 p-2 outline-none"
+                                            />
                                         </div>
                                         <p
                                             className={`text-red-500 passengers-info-ngay-sinh-${index} text-sm absolute top-2 right-2`}
@@ -268,7 +268,7 @@ export default function PassengerInfomation({
                                                     <span className="text-red-500">*</span>
                                                 </label>
                                                 <div className="flex items-center text-sm">
-                                                    {/* <div className="w-5 h-4 bg-[url('/vietnamicon.png')] bg-cover rounded-full"></div>
+                                                    {/* <div className="w-5 h-4 bg-[url('/globalImages/vietnamicon.png')] bg-cover rounded-full"></div>
                                                     <p className="ml-2">+84</p> */}
                                                     <input
                                                         onChange={(e) => {
@@ -429,39 +429,39 @@ export default function PassengerInfomation({
                                             Ngày sinh
                                             <span className="text-red-500">*</span>
                                         </label>
-                                        <div className="flexitems-center">
-                                            <InputMask
+                                        <div className="flex items-center">
+                                            <DateInputMask
                                                 mask="99/99/9999"
                                                 placeholder="DD/MM/YYYY"
-                                                maskChar="_"
+                                                value={listPassenger.listChild[index].dob}
                                                 onChange={(e) => {
                                                     const listChild = listPassenger.listChild;
                                                     
                                                     // Lấy giá trị từ ô nhập
                                                     const dob = e.target.value;
                                                     
-                                                    // Tách ngày, tháng và năm
-                                                    const [day, month, year] = dob.split('/');
-
-                                                    // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
-                                                    const newDob = `${month}/${day}/${year}`;
-
-                                                    listChild[index] = {
-                                                        ...listChild[index],
-                                                        dob: newDob,
-                                                    };
+                                                    // Chỉ xử lý nếu có đủ 3 phần (DD/MM/YYYY)
+                                                    const parts = dob.split('/');
+                                                    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+                                                        const [day, month, year] = parts;
+                                                        // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
+                                                        const newDob = `${month}/${day}/${year}`;
+                                                        listChild[index] = {
+                                                            ...listChild[index],
+                                                            dob: newDob,
+                                                        };
+                                                    } else {
+                                                        // Nếu chưa đủ, lưu giá trị hiện tại (DD/MM/YYYY format)
+                                                        listChild[index] = {
+                                                            ...listChild[index],
+                                                            dob: dob || null,
+                                                        };
+                                                    }
                                                     setListPassenger({ ...listPassenger, listChild });
                                                 }}
-                                            >
-                                                {(inputProps) => (
-                                                    <input
-                                                        {...inputProps}
-                                                        type="text"
-                                                        name="dob"
-                                                        className="w-48 p-2 outline-none"
-                                                    />
-                                                )}
-                                            </InputMask>
+                                                name="dob"
+                                                className="w-48 p-2 outline-none"
+                                            />
                                         </div>
                                         <p
                                             className={`text-red-500 thong-tin-tre-em-ngay-sinh-${index} text-sm absolute top-2 right-2`}
@@ -584,38 +584,38 @@ export default function PassengerInfomation({
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <div className="flex space-x-2 items-center">
-                                            <InputMask
+                                            <DateInputMask
                                                 mask="99/99/9999"
                                                 placeholder="DD/MM/YYYY"
-                                                maskChar="_"
+                                                value={listPassenger.listInfant[index].dob}
                                                 onChange={(e) => {
                                                     const listInfant = listPassenger.listInfant;
                                                     
                                                     // Lấy giá trị từ ô nhập
                                                     const dob = e.target.value;
                                                     
-                                                    // Tách ngày, tháng và năm
-                                                    const [day, month, year] = dob.split('/');
-
-                                                    // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
-                                                    const newDob = `${month}/${day}/${year}`;
-
-                                                    listInfant[index] = {
-                                                        ...listInfant[index],
-                                                        dob: newDob,
-                                                    };
+                                                    // Chỉ xử lý nếu có đủ 3 phần (DD/MM/YYYY)
+                                                    const parts = dob.split('/');
+                                                    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+                                                        const [day, month, year] = parts;
+                                                        // Hoán đổi vị trí ngày và tháng (MM/DD/YYYY)
+                                                        const newDob = `${month}/${day}/${year}`;
+                                                        listInfant[index] = {
+                                                            ...listInfant[index],
+                                                            dob: newDob,
+                                                        };
+                                                    } else {
+                                                        // Nếu chưa đủ, lưu giá trị hiện tại (DD/MM/YYYY format)
+                                                        listInfant[index] = {
+                                                            ...listInfant[index],
+                                                            dob: dob || null,
+                                                        };
+                                                    }
                                                     setListPassenger({ ...listPassenger, listInfant });
                                                 }}
-                                            >
-                                                {(inputProps) => (
-                                                    <input
-                                                        {...inputProps}
-                                                        type="text"
-                                                        name="dob"
-                                                        className="w-48 p-2 outline-none"
-                                                    />
-                                                )}
-                                            </InputMask>
+                                                name="dob"
+                                                className="w-48 p-2 outline-none"
+                                            />
                                         </div>
                                         <p
                                             className={`text-red-500 thong-tin-em-be-ngay-sinh-${index} text-sm absolute top-2 right-2`}

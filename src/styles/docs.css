@@ -1,0 +1,127 @@
+/* ===== Base ===== */
+.prose {
+  background-color: white;
+  max-width: none;
+  margin-top: 0;
+}
+
+/* ===== Headings ===== */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  scroll-margin-top: 6rem;
+}
+
+/* ===== Paragraph ===== */
+.prose p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+/* ===== Links ===== */
+.prose a {
+  font-weight: 500;
+  text-decoration: none;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Lists ===== */
+.prose ul > li::marker {
+  color: #64748b;
+}
+.prose ol > li::marker {
+  font-weight: 600;
+}
+
+/* ===== Task list ===== */
+.prose input[type='checkbox'] {
+  margin-right: 0.5rem;
+}
+
+/* ===== Blockquote (docs-style) ===== */
+.prose blockquote {
+  border-left: 4px solid #3b82f6;
+  background: #f8fafc;
+  padding: 0.75rem 1rem;
+  font-style: normal;
+}
+
+/* ===== Code inline ===== */
+.prose code {
+  background: #f1f5f9;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+/* ===== Code block ===== */
+.prose pre {
+  background: #0f172a;
+  color: #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* ===== Tables ===== */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.prose th,
+.prose td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+}
+.prose th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+/* ===== Images ===== */
+.prose img {
+  margin: 2rem auto;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* ===== HR ===== */
+.prose hr {
+  border-color: #e5e7eb;
+}
+
+/* ===== KBD ===== */
+.prose kbd {
+  background: #f1f5f9;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  padding: 0.1em 0.4em;
+  font-size: 0.875em;
+}
+
+
+/* TOC scrollbar styling */
+aside nav {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+aside nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+aside nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+aside nav::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+aside nav::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}

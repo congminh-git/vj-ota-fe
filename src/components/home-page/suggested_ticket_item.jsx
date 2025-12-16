@@ -4,7 +4,7 @@ function ProposedFlightItem() {
             <div className="w-full flex justify-start">
                 <div className="w-1/4 relative">
                     <div className="absolute inset-0">
-                        <div className="bg-[url('/vietjet-airlines-logo.jpg')] h-full w-full bg-cover"></div>
+                        <div className="bg-[url('/globalImages/vietjet-airlines-logo.jpg')] h-full w-full bg-cover"></div>
                     </div>
                 </div>
                 <span className="text-xs font-medium p-2">VietjetAir</span>

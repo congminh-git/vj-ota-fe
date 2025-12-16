@@ -51,7 +51,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen "> 
-            <section className="block bg-[url('/loginbg.png')] bg-cover">
+            <section className="block bg-[url('/globalImages/loginbg.png')] bg-cover">
                 <div className="flex flex-col items-end justify-center mx-auto md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg md:mt-0 sm:max-w-sm xl:p-0 shadow-lg sm:mr-[6%]">
                         <div className="p-6 sm:p-8">

@@ -545,7 +545,7 @@ export default function AddService() {
                                 <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                                     <div className="grid grid-cols-5">
                                         <div className="flex justify-start items-center col-span-2">
-                                            <div className="w-20 h-20 bg-[url('/baggage.jpg')] bg-cover rounded-sm"></div>
+                                            <div className="w-20 h-20 bg-[url('/globalImages/baggage.jpg')] bg-cover rounded-sm"></div>
                                             <span className="ml-2">Chọn gói hành lý</span>
                                         </div>
                                         <div
@@ -595,7 +595,7 @@ export default function AddService() {
                                 <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                                     <div className="grid grid-cols-5">
                                         <div className="flex justify-start items-center col-span-2">
-                                            <div className="w-20 h-20 bg-[url('/meal.jpg')] bg-cover rounded-sm"></div>
+                                            <div className="w-20 h-20 bg-[url('/globalImages/meal.jpg')] bg-cover rounded-sm"></div>
                                             <span className="ml-2">Chọn suất ăn</span>
                                         </div>
                                         <div
@@ -645,7 +645,7 @@ export default function AddService() {
                                 <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                                     <div className="grid grid-cols-5">
                                         <div className="flex justify-start items-center col-span-2">
-                                            <div className="w-20 h-20 bg-[url('/seat.jpg')] bg-cover rounded-sm"></div>
+                                            <div className="w-20 h-20 bg-[url('/globalImages/seat.jpg')] bg-cover rounded-sm"></div>
                                             <div className="grid">
                                                 <span className="ml-2">Chọn chỗ ngồi</span>
                                                 {roundTrip ? (
@@ -708,7 +708,7 @@ export default function AddService() {
                                 <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                                     <div className="grid grid-cols-5">
                                         <div className="flex justify-start items-center col-span-2">
-                                            <div className="w-20 h-20 bg-[url('/insurance.jpg')] bg-cover rounded-sm"></div>
+                                            <div className="w-20 h-20 bg-[url('/globalImages/insurance.jpg')] bg-cover rounded-sm"></div>
                                             <span className="ml-2">Mua bảo hiểm</span>
                                         </div>
                                         <div

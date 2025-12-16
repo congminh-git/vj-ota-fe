@@ -132,7 +132,7 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                     <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                         <div className="flex justify-between items-center">
                             <div className="flex justify-start items-center">
-                                <div className="w-20 h-20 bg-[url('/baggage.jpg')] bg-cover rounded-sm"></div>
+                                <div className="w-20 h-20 bg-[url('/globalImages/baggage.jpg')] bg-cover rounded-sm"></div>
                                 <span className="ml-2">Chọn gói hành lý</span>
                             </div>
                             <div
@@ -177,7 +177,7 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                     <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                         <div className="flex justify-between items-center">
                             <div className="flex justify-start items-center">
-                                <div className="w-20 h-20 bg-[url('/meal.jpg')] bg-cover rounded-sm"></div>
+                                <div className="w-20 h-20 bg-[url('/globalImages/meal.jpg')] bg-cover rounded-sm"></div>
                                 <span className="ml-2">Chọn suất ăn</span>
                             </div>
                             <div className={`${mealPrice > 0 ? 'block' : 'hidden'} text-3xl font-bold text-orange-500`}>
@@ -218,7 +218,7 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                     <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
                         <div className="flex justify-between items-center">
                             <div className="flex justify-start items-center">
-                                <div className="w-20 h-20  bg-[url('/seat.jpg')] bg-cover rounded-sm"></div>
+                                <div className="w-20 h-20  bg-[url('/globalImages/seat.jpg')] bg-cover rounded-sm"></div>
                                 <span className="ml-2">Chọn chỗ ngồi</span>
                             </div>
                             <button

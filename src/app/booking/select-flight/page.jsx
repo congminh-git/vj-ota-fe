@@ -373,7 +373,7 @@ export default function ListFlightPage() {
                                         ) : (
                                             <div className="w-full flex justify-center items-center">
                                                 <div className="flex flex-col items-center mt-12">
-                                                    <div className="w-[100px] h-[120px] bg-[url('/KhongTimThayKetQua.png')] bg-cover"></div>
+                                                    <div className="w-[100px] h-[120px] bg-[url('/globalImages/KhongTimThayKetQua.png')] bg-cover"></div>
                                                     <p className="my-1 text-md">Không có chuyến bay nào được tìm thấy</p>
                                                 </div>
                                             </div>

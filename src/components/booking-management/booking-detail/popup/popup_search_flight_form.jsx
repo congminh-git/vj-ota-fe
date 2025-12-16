@@ -179,7 +179,7 @@ export default function SearchFlightPopup({
                 className={` rounded-2xl ${
                     pathname && pathname.includes('select-flight')
                         ? 'bg-white h-fit p-0 w-full'
-                        : "bg-[url('/plane-background.jpg')] pt-16 pb-16 md:w-4/5 w-full"
+                        : "bg-[url('/globalImages/plane-background.jpg')] pt-16 pb-16 md:w-4/5 w-full"
                 } bg-cover p-4 relative`}
             >
                 <div className={`w-full text-gray-600 relative`}>

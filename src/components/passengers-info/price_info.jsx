@@ -42,7 +42,6 @@ export default function PriceInfomation({
     }, [currency]);
 
     useEffect(() => {
-        console.log(fareOptionsDepartureFlight)
         const departureTotal =
             departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalAdult * adult +
             departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalChild * child +

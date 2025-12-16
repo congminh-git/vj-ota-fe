@@ -12,10 +12,10 @@ import { useRouter } from 'next/navigation';
 export default function PassengerInfomationPage() {
     const router = useRouter();
     const [contactInfomation, setContactInfomation] = useState({
-        firstName: null,
-        lastName: null,
-        phoneNumber: null,
-        email: null,
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        email: '',
         gender: null,
         dob: null,
     });

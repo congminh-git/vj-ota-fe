@@ -65,10 +65,10 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                         </div>
                     </div>
                     <div className="mx-2 flex flex-col justify-between items-center relative w-1/6">
-                        <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                        <div className="bg-[url('/Vector1-doc.png')] w-[2px] flex-grow"></div>
-                        <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                        <div className="w-5 h-5 bg-[url('/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                        <div className="bg-[url('/globalImages/Vector1-doc.png')] w-[2px] flex-grow"></div>
+                        <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                        <div className="w-5 h-5 bg-[url('/globalImages/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                     </div>
                     <div className="w-3/6">
                         <div>
@@ -158,10 +158,10 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                 </div>
                             </div>
                             <div className="mx-2 flex flex-col justify-between items-center relative w-1/6">
-                                <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                                <div className="bg-[url('/Vector1-doc.png')] w-[2px] flex-grow"></div>
-                                <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                                <div className="w-5 h-5 bg-[url('/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                                <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                                <div className="bg-[url('/globalImages/Vector1-doc.png')] w-[2px] flex-grow"></div>
+                                <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                                <div className="w-5 h-5 bg-[url('/globalImages/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                             </div>
                             <div className="w-3/6">
                                 <div>
@@ -322,10 +322,10 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                             </div>
                         </div>
                         <div className="mx-2 flex flex-col justify-between items-center relative w-1/6">
-                            <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                            <div className="bg-[url('/Vector1-doc.png')] w-[2px] flex-grow"></div>
-                            <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                            <div className="w-5 h-5 bg-[url('/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                            <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                            <div className="bg-[url('/globalImages/Vector1-doc.png')] w-[2px] flex-grow"></div>
+                            <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                            <div className="w-5 h-5 bg-[url('/globalImages/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                         </div>
                         <div className="w-3/6">
                             <div>
@@ -419,10 +419,10 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                     </div>
                                 </div>
                                 <div className="mx-2 flex flex-col justify-between items-center relative w-1/6">
-                                    <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                                    <div className="bg-[url('/Vector1-doc.png')] w-[2px] flex-grow"></div>
-                                    <div className="w-4 h-4 bg-[url('/Group16.png')] bg-cover"></div>
-                                    <div className="w-5 h-5 bg-[url('/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                                    <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                                    <div className="bg-[url('/globalImages/Vector1-doc.png')] w-[2px] flex-grow"></div>
+                                    <div className="w-4 h-4 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                                    <div className="w-5 h-5 bg-[url('/globalImages/airplane1.png')] hidden detail-item bg-cover rotate-90 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                                 </div>
                                 <div className="w-3/6">
                                     <div>

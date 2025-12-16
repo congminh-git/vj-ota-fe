@@ -122,7 +122,7 @@ function ListMealPack({
                     });
                     return (
                         <div className={`border text-sm rounded relative`} key={index}>
-                            <div className="relative w-full h-60 bg-[url('/meal.jpg')] bg-cover">
+                            <div className="relative w-full h-60 bg-[url('/globalImages/meal.jpg')] bg-cover">
                                 <p className="w-fit text-end mt-1 bg-white text-orange-500 font-medium absolute top-1 left-2">
                                     {price.toLocaleString()}đ
                                 </p>

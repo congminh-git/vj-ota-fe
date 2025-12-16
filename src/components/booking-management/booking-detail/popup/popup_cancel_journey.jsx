@@ -193,7 +193,7 @@ export default function CancelLegQuotationPopup({
                                 {parseNgayThang(journeyInfo.segments[0].departure.localScheduledTime).date}
                             </div>
                         </div>
-                        <span className="block w-5 h-5 bg-[url('/airplane1.png')] bg-cover"></span>
+                        <span className="block w-5 h-5 bg-[url('/globalImages/airplane1.png')] bg-cover"></span>
                         <div className="flex flex-col items-end">
                             <div className="h-1/3 font-semibold mb-1">
                                 <i>
@@ -225,7 +225,7 @@ export default function CancelLegQuotationPopup({
                                     {parseNgayThang(journeyInfo.segments[1].departure.localScheduledTime).date}
                                 </div>
                             </div>
-                            <span className="block w-5 h-5 bg-[url('/airplane1.png')] bg-cover"></span>
+                            <span className="block w-5 h-5 bg-[url('/globalImages/airplane1.png')] bg-cover"></span>
                             <div className="flex flex-col items-end">
                                 <div className="h-1/3 font-semibold mb-1">
                                     <i>
@@ -319,10 +319,10 @@ export default function CancelLegQuotationPopup({
                             )}
                         </div>
                         <div className="h-1/3 flex justify-between items-center relative">
-                            <div className="w-2 h-2 bg-[url('/Group16.png')] bg-cover"></div>
-                            <div className="bg-[url('/Vector1.png')] h-[1px] flex-grow"></div>
-                            <div className="w-2 h-2 bg-[url('/Group16.png')] bg-cover"></div>
-                            <div className="w-5 h-5 bg-[url('/airplane1.png')] bg-cover absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                            <div className="w-2 h-2 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                            <div className="bg-[url('/globalImages/Vector1.png')] h-[1px] flex-grow"></div>
+                            <div className="w-2 h-2 bg-[url('/globalImages/Group16.png')] bg-cover"></div>
+                            <div className="w-5 h-5 bg-[url('/globalImages/airplane1.png')] bg-cover absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                         </div>
                         <div className="h-1/3 text-gray-500 text-xs w-full text-center mt-1">Bay thẳng</div>
                     </div>

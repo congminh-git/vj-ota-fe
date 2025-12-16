@@ -262,7 +262,7 @@ function HomePageSearchForm({ typeSearchForm, loadingStatus, setLoadingStatus })
             className={`rounded-md ${
                 isFlightListPage
                     ? 'bg-white h-fit p-0 w-full'
-                    : "bg-[url('/plane-background.jpg')] h-screen grid justify-center pt-6 pb-6 sm:pt-16 sm:pb-16 w-full"
+                    : "bg-[url('/globalImages/plane-background.jpg')] h-screen grid justify-center pt-6 pb-6 sm:pt-16 sm:pb-16 w-full"
             } bg-cover p-4 relative z-[20]`}
         >
             <div className={`w-full block items-center justify-start text-gray-600`}>
