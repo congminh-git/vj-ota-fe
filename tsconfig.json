@@ -48,7 +48,7 @@
     "src/app/layout.jsx",
     "src/app/login/layout.jsx",
     ".next/types/**/*.ts"
-, "src/components/home-page/search_form.jsx"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

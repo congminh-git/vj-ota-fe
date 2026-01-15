@@ -31,7 +31,65 @@ export default function PassengerInfomation({ setChangePassengerInfoPopup, reser
                                         </span>
                                         {passenger.infants.length > 0 ? <span>+ Em bé</span> : <></>}
                                     </div>
+                                    {/* <div>
+                                        <button
+                                            onClick={() => {
+                                                setChangePassengerInfoPopup(true);
+                                                setPassengerSelect(passenger);
+                                            }}
+                                            title="Chỉnh sửa"
+                                            className="p-1 border rounded bg-white"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-4"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div> */}
                                 </div>
+                                {/* <div
+                                    className={`${
+                                        reservation?.journeys.length > 1 ? 'grid-cols-2' : 'grid-cols-1'
+                                    } grid`}
+                                >
+                                    {reservation?.journeys.map((element, index) => {
+                                        if (!element.reservationStatus.cancelled) {
+                                            return (
+                                                <div
+                                                    key={`journey-${index}`}
+                                                    className="p-3 text-gray-400 flex justify-between"
+                                                >
+                                                    {element.segments.map((segments, indexSegment) => {
+                                                        return (
+                                                            <div
+                                                                key={`segment-${indexSegment}`}
+                                                                className="flex justify-star items-center"
+                                                            >
+                                                                <span className="mr-2">
+                                                                    {segments.departure.airport.code}
+                                                                </span>
+                                                                <span className="block w-5 h-5 bg-[url('/globalImages/airplane1.png')] bg-cover"></span>
+                                                                <span className="ml-2">
+                                                                    {segments.arrival.airport.code}
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div> */}
                             </div>
                         );
                     })}

@@ -1,22 +1,14 @@
-import { getDocBySlug, getAllDocs } from '@/lib/docs';
+import { getDocBySlug } from '@/lib/docs';
 import { renderMarkdoc } from '@/lib/markdoc';
 
-export async function generateStaticParams() {
-  const docs = getAllDocs();
-  
-  return docs.map((doc) => ({
-    slug: doc.slug.filter(s => s !== 'index'),
-  }));
-}
+export const runtime = 'nodejs';
 
-export default function DocPage({ params }: { params: { slug?: string[] } }) {
+export default function DocPage({ params }: any) {
   const { content, data } = getDocBySlug(params.slug);
-  const renderedContent = renderMarkdoc(content);
 
   return (
     <article className="prose prose-slate max-w-none">
-      <h1>{data.title}</h1>
-      {renderedContent}
+      {renderMarkdoc(content)}
     </article>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { parseNgayThang } from '@/lib/dateTime'
+import { parseNgayThang } from '@/components/select-flight/flight_item';
 
 export default function ReservationInformation({ bookingSuccessResult }) {
     console.log(bookingSuccessResult);

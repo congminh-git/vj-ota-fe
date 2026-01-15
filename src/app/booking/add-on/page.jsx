@@ -14,9 +14,6 @@ import SelectBaggagePopup from '@/components/add-on/popup/popup_select_baggage';
 import SelectMealPopup from '@/components/add-on/popup/popup_select_meal';
 import SelectSeatPopup from '@/components/add-on/popup/popup_select_seat';
 import ListInsurance from '@/components/add-on/list_insurance';
-import { CirclePlus } from '@/components/icons/circlePlus';
-import { CircleMinus } from '@/components/icons/circleMinus';
-import ProgressLoading from '@/components/progress_loading';
 
 // Custom hook để đọc sessionStorage một lần
 const useSessionStorageData = () => {
@@ -102,15 +99,12 @@ export default function AddService() {
     const [seatTotalPrice, setSeatTotalPrice] = useState({ departurePrice: 0, arrivalPrice: 0 });
     const [insuranceTotalPrice, setInsuranceTotalPrice] = useState({ departurePrice: 0, arrivalPrice: 0 });
     // Memoize breadcrumb để tránh tạo lại object mỗi lần render
-    const listBreadcrumb = useMemo(
-        () => [
-            { title: 'Tìm vé', uri: '/booking' },
-            { title: 'Danh sách vé', uri: '/booking/select-flight' },
-            { title: 'Thông tin hành khách', uri: '/booking/passengers-info' },
-            { title: 'Thêm dịch vụ', uri: '/booking/add-on' },
-        ],
-        [],
-    );
+    const listBreadcrumb = useMemo(() => [
+        { title: 'Tìm vé', uri: '/booking' },
+        { title: 'Danh sách vé', uri: '/booking/select-flight' },
+        { title: 'Thông tin hành khách', uri: '/booking/passengers-info' },
+        { title: 'Thêm dịch vụ', uri: '/booking/add-on' },
+    ], []);
 
     const removeVietnameseDiacritics = useCallback((str) => {
         return str
@@ -121,15 +115,12 @@ export default function AddService() {
             .toUpperCase();
     }, []);
 
-    const convertToUpperCaseWithoutDiacritics = useCallback(
-        (str) => {
-            const noDiacriticsStr = removeVietnameseDiacritics(str);
-            const words = noDiacriticsStr.split(' ');
-            const upperCaseStr = words.map((word) => word.toUpperCase()).join(' ');
-            return upperCaseStr;
-        },
-        [removeVietnameseDiacritics],
-    );
+    const convertToUpperCaseWithoutDiacritics = useCallback((str) => {
+        const noDiacriticsStr = removeVietnameseDiacritics(str);
+        const words = noDiacriticsStr.split(' ');
+        const upperCaseStr = words.map((word) => word.toUpperCase()).join(' ');
+        return upperCaseStr;
+    }, [removeVietnameseDiacritics]);
 
     const navigateToPaymentPage = useCallback(() => {
         sessionStorage.setItem('reservationBody', JSON.stringify(body));
@@ -182,9 +173,7 @@ export default function AddService() {
                     passengerJourneyDetailsDeparture.push({
                         passenger: { index: index + 1 },
                         segment: { index: flightIndex + 1 },
-                        bookingKey: departureFlight?.fareOptions.find(
-                            (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                        ).bookingCode.key,
+                        bookingKey: departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight).bookingCode.key,
                         reservationStatus: {
                             confirmed: true,
                             waitlist: false,
@@ -194,6 +183,7 @@ export default function AddService() {
                             finalized: false,
                             external: false,
                         },
+
                     });
                 });
                 if (returnFlight) {
@@ -201,9 +191,7 @@ export default function AddService() {
                         passengerJourneyDetailsReturn.push({
                             passenger: { index: index + 1 },
                             segment: { index: flightIndex + 1 },
-                            bookingKey: returnFlight.fareOptions.find(
-                                (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                            ).bookingCode.key,
+                            bookingKey: returnFlight.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight).bookingCode.key,
                             reservationStatus: {
                                 confirmed: true,
                                 waitlist: false,
@@ -228,20 +216,20 @@ export default function AddService() {
                         title: element.gender == 'nam' ? 'Mr' : 'Ms',
                         gender: element.gender == 'nam' ? 'MALE' : 'FEMALE',
                         address: {
-                            address1: '',
-                            addresas2: '',
-                            city: '',
-                            location: {
-                                country: {
-                                    code: '',
-                                    name: '',
+                            "address1": "",
+                            "addresas2": "",
+                            "city": "",
+                            "location": {
+                                "country": {
+                                    "code": "",
+                                    "name": ""
                                 },
-                                province: {
-                                    code: '',
-                                    name: '',
-                                },
+                                "province": {
+                                    "code": "",
+                                    "name": ""
+                                }
                             },
-                            postalCode: '',
+                            "postalCode": ""
                         },
                         birthDate: element.dob,
                         personalContactInformation: personalContactInformation,
@@ -251,8 +239,8 @@ export default function AddService() {
                             denied: true,
                         },
                         passport: {
-                            number: element.number,
-                        },
+                            number: element.number
+                        }
                     },
                     infants: [],
                 });
@@ -262,9 +250,7 @@ export default function AddService() {
                     passengerJourneyDetailsDeparture.push({
                         passenger: { index: index + 1 + listPassengers.listAdult.length },
                         segment: { index: flightIndex + 1 },
-                        bookingKey: departureFlight?.fareOptions.find(
-                            (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                        ).bookingCode.key,
+                        bookingKey: departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight).bookingCode.key,
                         reservationStatus: {
                             confirmed: true,
                             waitlist: false,
@@ -281,9 +267,7 @@ export default function AddService() {
                         passengerJourneyDetailsReturn.push({
                             passenger: { index: index + 1 + listPassengers.listAdult.length },
                             segment: { index: flightIndex + 1 },
-                            bookingKey: returnFlight.fareOptions.find(
-                                (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                            ).bookingCode.key,
+                            bookingKey: returnFlight.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight).bookingCode.key,
                             reservationStatus: {
                                 confirmed: true,
                                 waitlist: false,
@@ -308,20 +292,20 @@ export default function AddService() {
                         title: 'Master',
                         gender: element.gender == 'nam' ? 'MALE' : 'FEMALE',
                         address: {
-                            address1: '',
-                            addresas2: '',
-                            city: '',
-                            location: {
-                                country: {
-                                    code: '',
-                                    name: '',
+                            "address1": "",
+                            "addresas2": "",
+                            "city": "",
+                            "location": {
+                                "country": {
+                                    "code": "",
+                                    "name": ""
                                 },
-                                province: {
-                                    code: '',
-                                    name: '',
-                                },
+                                "province": {
+                                    "code": "",
+                                    "name": ""
+                                }
                             },
-                            postalCode: '',
+                            "postalCode": ""
                         },
                         birthDate: element.dob,
                         personalContactInformation: personalContactInformation,
@@ -344,20 +328,20 @@ export default function AddService() {
                             title: 'Infant',
                             gender: element.gender == 'nam' ? 'MALE' : 'FEMALE',
                             address: {
-                                address1: '',
-                                addresas2: '',
-                                city: '',
-                                location: {
-                                    country: {
-                                        code: '',
-                                        name: '',
+                                "address1": "",
+                                "addresas2": "",
+                                "city": "",
+                                "location": {
+                                    "country": {
+                                        "code": "",
+                                        "name": ""
                                     },
-                                    province: {
-                                        code: '',
-                                        name: '',
-                                    },
+                                    "province": {
+                                        "code": "",
+                                        "name": ""
+                                    }
                                 },
-                                postalCode: '',
+                                "postalCode": ""
                             },
                             birthDate: element.dob,
                             personalContactInformation: personalContactInformation,
@@ -443,7 +427,7 @@ export default function AddService() {
         if (fareOptionsDepartureFlightStr) {
             setFareOptionsDepartureFlight(fareOptionsDepartureFlightStr);
         } else {
-            router.replace('/');
+            router.replace('/')
         }
         if (fareOptionsReturnFlightStr) {
             setFareOptionsReturnFlight(fareOptionsReturnFlightStr);
@@ -470,7 +454,7 @@ export default function AddService() {
                     const bookingKey = journey.passengerJourneyDetails[0].bookingKey;
 
                     if (!listDepartureBaggagePack || !listDepartureMealPack || !departureFlightSeatOptions) {
-                        handleGetAncillaryOptions(bookingKey, setListDepartureBaggagePack, setListDepartureMealPack);
+                        handleGetAncillaryOptions(bookingKey, setListDepartureBaggagePack, setListDepartureMealPack)
                         handleGetSeatSelectionOptions(bookingKey, setDepartureFlightSeatOptions);
                     }
                 }
@@ -481,11 +465,7 @@ export default function AddService() {
                         const returnBookingKey = returnJourney.passengerJourneyDetails[0].bookingKey;
 
                         if (!listReturnBaggagePack || !listReturnMealPack || !returnFlightSeatOptions) {
-                            handleGetAncillaryOptions(
-                                returnBookingKey,
-                                setListReturnBaggagePack,
-                                setListReturnMealPack,
-                            );
+                            handleGetAncillaryOptions(returnBookingKey, setListReturnBaggagePack, setListReturnMealPack);
                             handleGetSeatSelectionOptions(returnBookingKey, setReturnFlightSeatOptions);
                         }
                     }
@@ -546,236 +526,292 @@ export default function AddService() {
 
     return (
         <>
-            {fareOptionsDepartureFlightStr ? (
-                <main className="relative mt-[74px] sm:mt-0">
-                    <Steps />
-                    <div className="flex flex-wrap justify-center min-h-screen bg-gray-100 border shadow">
-                        <div className={` w-full max-w-[1200px]`}>
-                            <div className="mt-4">
-                                <Breadcrumb listBreadcrumb={listBreadcrumb} />
-                            </div>
-                            <div className=" w-full grid grid-cols-8 gap-4">
-                                <div className="sm:col-span-5 col-span-8 p-4 h-fit rounded-md bg-white">
-                                    <h1 className="font-bold text-md">
-                                        <i>Chọn thêm dịch vụ</i>
-                                    </h1>
-                                    <div className="">
-                                        <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
-                                            <div className="grid grid-cols-6 sm:grid-cols-5 gap-2">
-                                                <div className="flex justify-start items-center col-span-3 sm:col-span-2">
-                                                    <div className="w-20 h-20 bg-[url('/globalImages/baggage.jpg')] bg-cover rounded-sm"></div>
-                                                    <span className="ml-2">Chọn gói hành lý</span>
-                                                </div>
-                                                <div
-                                                    className={`${
-                                                        baggageTotalPrice.departurePrice +
-                                                            baggageTotalPrice.arrivalPrice >
-                                                        0
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    } text-md sm:text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
-                                                >
-                                                    {(
-                                                        baggageTotalPrice.departurePrice +
-                                                        baggageTotalPrice.arrivalPrice
-                                                    ).toLocaleString()}
-                                                    đ
-                                                </div>
-                                                <div className="col-span-1 flex justify-center items-center">
-                                                    <button
-                                                        onClick={() => setOpenPupupBaggage(true)}
-                                                        className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
-                                                    >
-                                                        <CirclePlus className={'w-6 h-6'} strokeWidth={'1.5'} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <SelectBaggagePopup
-                                                openPopupBaggage={openPopupBaggage}
-                                                setOpenPupupBaggage={setOpenPupupBaggage}
-                                                listDepartureBaggagePack={listDepartureBaggagePack}
-                                                listReturnBaggagePack={listReturnBaggagePack}
-                                                setBaggageTotalPrice={setBaggageTotalPrice}
-                                                setBaggageConfirmed={setBaggageConfirmed}
-                                                body={body}
-                                            />
+        {
+            fareOptionsDepartureFlightStr
+            ?
+        <main className="relative">
+            <Steps />
+            <div className="flex flex-wrap justify-center min-h-screen bg-gray-100 border shadow">
+                <div className={` w-full max-w-[1200px]`}>
+                    <div className="mt-4">
+                        <Breadcrumb listBreadcrumb={listBreadcrumb} />
+                    </div>
+                    <div className=" w-full grid grid-cols-7 gap-4">
+                        <div className="col-span-5 p-4 h-fit rounded-md bg-white">
+                            <h1 className="font-bold text-md">
+                                <i>Chọn thêm dịch vụ</i>
+                            </h1>
+                            <div className="">
+                                <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
+                                    <div className="grid grid-cols-5">
+                                        <div className="flex justify-start items-center col-span-2">
+                                            <div className="w-20 h-20 bg-[url('/globalImages/baggage.jpg')] bg-cover rounded-sm"></div>
+                                            <span className="ml-2">Chọn gói hành lý</span>
                                         </div>
-                                        <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
-                                            <div className="grid grid-cols-6 gap-2">
-                                                <div className="flex justify-start items-center col-span-3 sm:col-span-2">
-                                                    <div className="w-20 h-20 bg-[url('/globalImages/meal.jpg')] bg-cover rounded-sm"></div>
-                                                    <span className="ml-2">Chọn suất ăn</span>
-                                                </div>
-                                                <div
-                                                    className={`${
-                                                        mealTotalPrice.departurePrice + mealTotalPrice.arrivalPrice > 0
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    } text-md sm:text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
-                                                >
-                                                    {(
-                                                        mealTotalPrice.departurePrice + mealTotalPrice.arrivalPrice
-                                                    ).toLocaleString()}
-                                                    đ
-                                                </div>
-                                                <div className="col-span-1 flex justify-center items-center">
-                                                    <button
-                                                        onClick={() => setOpenPopupMeal(true)}
-                                                        className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
-                                                    >
-                                                        <CirclePlus className={'w-6 h-6'} strokeWidth={'1.5'} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <SelectMealPopup
-                                                openPopupMeal={openPopupMeal}
-                                                setOpenPopupMeal={setOpenPopupMeal}
-                                                listDepartureMealPack={listDepartureMealPack}
-                                                listReturnMealPack={listReturnMealPack}
-                                                setMealConfirmed={setMealConfirmed}
-                                                setMealTotalPrice={setMealTotalPrice}
-                                                body={body}
-                                            />
+                                        <div
+                                            className={`${
+                                                baggageTotalPrice.departurePrice + baggageTotalPrice.arrivalPrice > 0
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            } text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
+                                        >
+                                            {(
+                                                baggageTotalPrice.departurePrice + baggageTotalPrice.arrivalPrice
+                                            ).toLocaleString()}
+                                            đ
                                         </div>
-                                        <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
-                                            <div className="grid grid-cols-6 gap-2">
-                                                <div className="flex justify-start items-center col-span-3 sm:col-span-2">
-                                                    <div className="w-20 h-20 bg-[url('/globalImages/seat.jpg')] bg-cover rounded-sm"></div>
-                                                    <div className="grid">
-                                                        <span className="ml-2">Chọn chỗ ngồi</span>
-                                                        {roundTrip ? (
-                                                            <span className="ml-2">
-                                                                {`${departureFlight?.flights[0].arrival.airportCode}` +
-                                                                    ' - ' +
-                                                                    `${departureFlight?.flights[0].departure.airportCode}`}
-                                                            </span>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className={`${
-                                                        seatTotalPrice.departurePrice + seatTotalPrice.arrivalPrice > 0
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    } text-md sm:text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
+                                        <div className="col-span-1 flex justify-center items-center">
+                                            <button
+                                                onClick={() => setOpenPupupBaggage(true)}
+                                                className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
                                                 >
-                                                    {(
-                                                        seatTotalPrice.departurePrice + seatTotalPrice.arrivalPrice
-                                                    ).toLocaleString()}
-                                                    đ
-                                                </div>
-                                                <div className="col-span-1 flex justify-center items-center">
-                                                    <button
-                                                        onClick={() => setOpenPopupSeat(true)}
-                                                        className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
-                                                    >
-                                                        <CirclePlus className={'w-6 h-6'} strokeWidth={'1.5'} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <SelectSeatPopup
-                                                openPopupSeat={openPopupSeat}
-                                                setOpenPopupSeat={setOpenPopupSeat}
-                                                departureFlightSeatOptions={departureFlightSeatOptions}
-                                                returnFlightSeatOptions={returnFlightSeatOptions}
-                                                departureFlight={departureFlight}
-                                                returnFlight={returnFlight}
-                                                setSeatConfirmed={setSeatConfirmed}
-                                                setSeatTotalPrice={setSeatTotalPrice}
-                                                body={body}
-                                                currency={currency}
-                                                exchangeRate={exchangeRate}
-                                            />
-                                        </div>
-                                        <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
-                                            <div className="grid grid-cols-6 gap-2">
-                                                <div className="flex justify-start items-center col-span-3 sm:col-span-2">
-                                                    <div className="w-20 h-20 bg-[url('/globalImages/insurance.jpg')] bg-cover rounded-sm"></div>
-                                                    <span className="ml-2">Mua bảo hiểm</span>
-                                                </div>
-                                                <div
-                                                    className={`${
-                                                        insuranceTotalPrice.departurePrice +
-                                                            insuranceTotalPrice.arrivalPrice >
-                                                        0
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    } text-md sm:text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
-                                                >
-                                                    {(
-                                                        insuranceTotalPrice.departurePrice +
-                                                        insuranceTotalPrice.arrivalPrice
-                                                    ).toLocaleString()}
-                                                    đ
-                                                </div>
-                                                <div className="col-span-1 flex justify-center items-center">
-                                                    <button
-                                                        onClick={() => {
-                                                            setOpenListInsurance(!openListInsurance);
-                                                        }}
-                                                        className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
-                                                    >
-                                                        {openListInsurance ? (
-                                                            <CircleMinus className={'w-6 h-6'} strokeWidth={'1.5'} />
-                                                        ) : (
-                                                            <CirclePlus className={'w-6 h-6'} strokeWidth={'1.5'} />
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <ListInsurance
-                                                openListInsurance={openListInsurance}
-                                                listInsurance={listInsurance}
-                                                listSeleactedInsurance={listSeleactedInsurance}
-                                                setListSelectedInsurance={setListSelectedInsurance}
-                                            />
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                    />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
+                                    <SelectBaggagePopup
+                                        openPopupBaggage={openPopupBaggage}
+                                        setOpenPupupBaggage={setOpenPupupBaggage}
+                                        listDepartureBaggagePack={listDepartureBaggagePack}
+                                        listReturnBaggagePack={listReturnBaggagePack}
+                                        setBaggageTotalPrice={setBaggageTotalPrice}
+                                        setBaggageConfirmed={setBaggageConfirmed}
+                                        body={body}
+                                    />
                                 </div>
-                                <div className="col-span-3 hidden sm:block">
-                                    <PriceInfomation
+                                <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
+                                    <div className="grid grid-cols-5">
+                                        <div className="flex justify-start items-center col-span-2">
+                                            <div className="w-20 h-20 bg-[url('/globalImages/meal.jpg')] bg-cover rounded-sm"></div>
+                                            <span className="ml-2">Chọn suất ăn</span>
+                                        </div>
+                                        <div
+                                            className={`${
+                                                mealTotalPrice.departurePrice + mealTotalPrice.arrivalPrice > 0
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            } text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
+                                        >
+                                            {(
+                                                mealTotalPrice.departurePrice + mealTotalPrice.arrivalPrice
+                                            ).toLocaleString()}
+                                            đ
+                                        </div>
+                                        <div className="col-span-1 flex justify-center items-center">
+                                            <button
+                                                onClick={() => setOpenPopupMeal(true)}
+                                                className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <SelectMealPopup
+                                        openPopupMeal={openPopupMeal}
+                                        setOpenPopupMeal={setOpenPopupMeal}
+                                        listDepartureMealPack={listDepartureMealPack}
+                                        listReturnMealPack={listReturnMealPack}
+                                        setMealConfirmed={setMealConfirmed}
+                                        setMealTotalPrice={setMealTotalPrice}
+                                        body={body}
+                                    />
+                                </div>
+                                <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
+                                    <div className="grid grid-cols-5">
+                                        <div className="flex justify-start items-center col-span-2">
+                                            <div className="w-20 h-20 bg-[url('/globalImages/seat.jpg')] bg-cover rounded-sm"></div>
+                                            <div className="grid">
+                                                <span className="ml-2">Chọn chỗ ngồi</span>
+                                                {roundTrip ? (
+                                                    <span className="ml-2">
+                                                        {`${departureFlight?.flights[0].arrival.airportCode}` +
+                                                            ' - ' +
+                                                            `${departureFlight?.flights[0].departure.airportCode}`}
+                                                    </span>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div
+                                            className={`${
+                                                seatTotalPrice.departurePrice + seatTotalPrice.arrivalPrice > 0
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            } text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
+                                        >
+                                            {(
+                                                seatTotalPrice.departurePrice + seatTotalPrice.arrivalPrice
+                                            ).toLocaleString()}
+                                            đ
+                                        </div>
+                                        <div className="col-span-1 flex justify-center items-center">
+                                            <button
+                                                onClick={() => setOpenPopupSeat(true)}
+                                                className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <SelectSeatPopup
+                                        openPopupSeat={openPopupSeat}
+                                        setOpenPopupSeat={setOpenPopupSeat}
+                                        departureFlightSeatOptions={departureFlightSeatOptions}
+                                        returnFlightSeatOptions={returnFlightSeatOptions}
                                         departureFlight={departureFlight}
                                         returnFlight={returnFlight}
-                                        roundTrip={roundTrip}
-                                        adult={adult}
-                                        child={child}
-                                        infant={infant}
-                                        cityPair={cityPair}
-                                        departureCity={departureCity}
-                                        arrivalCity={arrivalCity}
-                                        totalPrice={totalPrice}
-                                        fareOptionsDepartureFlight={fareOptionsDepartureFlight}
-                                        fareOptionsReturnFlight={fareOptionsReturnFlight}
-                                        baggageTotalPrice={baggageTotalPrice}
-                                        seatTotalPrice={seatTotalPrice}
-                                        mealTotalPrice={mealTotalPrice}
-                                        insuranceTotalPrice={insuranceTotalPrice}
+                                        setSeatConfirmed={setSeatConfirmed}
+                                        setSeatTotalPrice={setSeatTotalPrice}
+                                        body={body}
+                                        currency={currency}
+                                        exchangeRate={exchangeRate}
                                     />
-                                    {/* <FlightInfomation departureFlight={departureFlight} returnFlight={returnFlight} /> */}
-                                    <div className="mt-4">
-                                        <button
-                                            onClick={() => navigateToPaymentPage()}
-                                            className="bg-yellow-400 hover:bg-yellow-500 w-full rounded px-4 py-4 text-white font-bold transition-all"
+                                </div>
+                                <div className="mt-4 p-2 border-2 hover:border-blue-400 bg-opacity-50 rounded-md ">
+                                    <div className="grid grid-cols-5">
+                                        <div className="flex justify-start items-center col-span-2">
+                                            <div className="w-20 h-20 bg-[url('/globalImages/insurance.jpg')] bg-cover rounded-sm"></div>
+                                            <span className="ml-2">Mua bảo hiểm</span>
+                                        </div>
+                                        <div
+                                            className={`${
+                                                insuranceTotalPrice.departurePrice + insuranceTotalPrice.arrivalPrice >
+                                                0
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            } text-3xl font-bold text-orange-500 col-span-2 flex justify-start items-center`}
                                         >
-                                            Tiếp theo
-                                        </button>
+                                            {(
+                                                insuranceTotalPrice.departurePrice + insuranceTotalPrice.arrivalPrice
+                                            ).toLocaleString()}
+                                            đ
+                                        </div>
+                                        <div className="col-span-1 flex justify-center items-center">
+                                            <button
+                                                onClick={() => {
+                                                    setOpenListInsurance(!openListInsurance);
+                                                }}
+                                                className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
+                                            >
+                                                {openListInsurance ? (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="1.5"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                        />
+                                                    </svg>
+                                                ) : (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="1.5"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                        />
+                                                    </svg>
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
+                                    <ListInsurance
+                                        openListInsurance={openListInsurance}
+                                        listInsurance={listInsurance}
+                                        listSeleactedInsurance={listSeleactedInsurance}
+                                        setListSelectedInsurance={setListSelectedInsurance}
+                                    />
                                 </div>
                             </div>
-                            <div className="block sm:hidden fixed bottom-0 left-0 w-full bg-white p-2 sm:p-4 border-t shadow">
+                            <div className="mt-4">
                                 <button
                                     onClick={() => navigateToPaymentPage()}
-                                    className="bg-yellow-400 hover:bg-yellow-500 w-full rounded px-4 py-4 text-white font-bold transition-all"
+                                    className="bg-blue-500 hover:bg-blue-400 rounded px-4 py-2 text-white font-bold"
                                 >
                                     Tiếp theo
                                 </button>
                             </div>
                         </div>
+                        <div className="col-span-2">
+                            <PriceInfomation
+                                departureFlight={departureFlight}
+                                returnFlight={returnFlight}
+                                roundTrip={roundTrip}
+                                adult={adult}
+                                child={child}
+                                infant={infant}
+                                cityPair={cityPair}
+                                departureCity={departureCity}
+                                arrivalCity={arrivalCity}
+                                totalPrice={totalPrice}
+                                fareOptionsDepartureFlight={fareOptionsDepartureFlight}
+                                fareOptionsReturnFlight={fareOptionsReturnFlight}
+                                baggageTotalPrice={baggageTotalPrice}
+                                seatTotalPrice={seatTotalPrice}
+                                mealTotalPrice={mealTotalPrice}
+                                insuranceTotalPrice={insuranceTotalPrice}
+                            />
+                            {/* <FlightInfomation departureFlight={departureFlight} returnFlight={returnFlight} /> */}
+                        </div>
                     </div>
-                </main>
-            ) : (
-                <ProgressLoading loading={true} />
-            )}
+                </div>
+            </div>
+        </main>
+            :
+            <div className='min-h-screen'>
+                <span>Loading...</span>
+            </div>
+        }
         </>
     );
 }

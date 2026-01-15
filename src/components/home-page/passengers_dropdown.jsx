@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useCallback } from 'react';
-import Icon from '@/components/icon';
+import Icon from '../icon';
 import { faPerson, faChild, faBaby, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 function PassengersDropDown({
@@ -16,7 +16,7 @@ function PassengersDropDown({
     href,
 }) {
     useEffect(() => {
-        const dropdownElement = document.querySelector('.dropdown-hanh-khach') as HTMLElement | null;
+        const dropdownElement = document.querySelector('.dropdown-hanh-khach');
         if (dropdownElement) {
             dropdownElement.style.display = openDropDownPassengers ? 'block' : 'none';
         }
@@ -68,7 +68,7 @@ function PassengersDropDown({
                 <div className="w-full flex justify-between items-center">
                     <div className="flex justify-start items-center pr-16">
                         <div className="bg-gray-200 flex justify-center items-center w-10 h-10 rounded-full mr-2">
-                            <Icon className={""} icon={faPerson} />
+                            <Icon icon={faPerson} />
                         </div>
                         <div>
                             <p className="text-sm font-semibold">Người lớn</p>
@@ -80,14 +80,14 @@ function PassengersDropDown({
                             onClick={handleAdultDecrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
+                            <Icon icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                         <input type="text" value={adult} readOnly className="w-10 outline-none border-b text-center" />
                         <button
                             onClick={handleAdultIncrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faPlus} style={{ width: '1rem', height: '1rem' }}  />
+                            <Icon icon={faPlus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                     </div>
                 </div>
@@ -96,7 +96,7 @@ function PassengersDropDown({
                 <div className="w-full flex justify-between items-center">
                     <div className="flex justify-start items-center pr-16">
                         <div className="bg-gray-200 flex justify-center items-center w-10 h-10 rounded-full mr-2">
-                            <Icon className={""} icon={faChild} />
+                            <Icon icon={faChild} />
                         </div>
                         <div>
                             <p className="text-sm font-semibold">Trẻ em</p>
@@ -108,14 +108,14 @@ function PassengersDropDown({
                             onClick={handleChildDecrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
+                            <Icon icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                         <input type="text" value={child} readOnly className="w-10 outline-none border-b text-center" />
                         <button
                             onClick={handleChildIncrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faPlus} style={{ width: '1rem', height: '1rem' }}  />
+                            <Icon icon={faPlus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ function PassengersDropDown({
                 <div className="w-full flex justify-between items-center">
                     <div className="flex justify-start items-center pr-16">
                         <div className="bg-gray-200 flex justify-center items-center w-10 h-10 rounded-full mr-2">
-                            <Icon className={""} icon={faBaby} />
+                            <Icon icon={faBaby} />
                         </div>
                         <div>
                             <p className="text-sm font-semibold">Em bé</p>
@@ -136,14 +136,14 @@ function PassengersDropDown({
                             onClick={handleInfantDecrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
+                            <Icon icon={faMinus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                         <input type="text" value={infant} readOnly className="w-10 outline-none border-b text-center" />
                         <button
                             onClick={handleInfantIncrease}
                             className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center hover:bg-gray-100"
                         >
-                            <Icon className={""} icon={faPlus} style={{ width: '1rem', height: '1rem' }}  />
+                            <Icon icon={faPlus} style={{ width: '1rem', height: '1rem' }} />
                         </button>
                     </div>
                 </div>

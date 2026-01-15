@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { postReservationSplitPassengers } from '@/services/reservations/functions';
-import { XMark } from '@/components/icons/xMark';
 
 export default function SplitPassengersPopup({
     openSplitPassengersPopup,
@@ -65,7 +64,16 @@ export default function SplitPassengersPopup({
                         onClick={() => setOpenSplitPassengersPopup(false)}
                         className="bg-white p-2 rounded-md hover:bg-gray-100 border"
                     >
-                        <XMark className={"w-4 h-4"} strokeWidth={"2"} />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
                     </button>
                     <h4 className="font-bold">Tách hành khách</h4>
                 </div>

@@ -1,6 +1,3 @@
-import { CircleMinus } from "../icons/circleMinus";
-import { CirclePlus } from "../icons/circlePlus";
-
 function ListMealPack({ listMealPack, journey, passenger, selectedMeal, setSelectedMeal }) {
     function handleCheckboxChange(event, index) {
         if (selectedMeal) {
@@ -112,7 +109,20 @@ function ListMealPack({ listMealPack, journey, passenger, selectedMeal, setSelec
                                             onClick={(event) => decrease(event, index, item.purchaseKey)}
                                             className="inline-flex items-center"
                                         >
-                                            <CircleMinus className={"size-5"} strokeWidth={"1.5"}/>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-5"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
                                         </button>
                                         <div className={`w-4 text-center outline-none mx-2 count-input-${index}`}>
                                             1
@@ -121,7 +131,20 @@ function ListMealPack({ listMealPack, journey, passenger, selectedMeal, setSelec
                                             onClick={(event) => increase(event, index, item.purchaseKey)}
                                             className="inline-flex items-center"
                                         >
-                                            <CirclePlus className={"size-5"} strokeWidth={"1.5"}/>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="1.5"
+                                                stroke="currentColor"
+                                                className="size-5"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
                                         </button>
                                     </div>
                                     <input

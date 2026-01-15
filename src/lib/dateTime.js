@@ -11,28 +11,3 @@ export function getCurrentTimestamp() {
 
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 }
-
-export const parseNgayThang = (input) => {
-    if (typeof input === 'string') {
-        let [datePart, timePart] = input.split(' ');
-        let [year, month, day] = datePart.split('-');
-        return {
-            date: `${day}-${month}-${year}`,
-            time: timePart.split(':').slice(0, 2).join(':'),
-        };
-    } else {
-        return {
-            date: null,
-            time: null,
-        };
-    }
-};
-
-export function tinhThoiGianBay(startTime, endTime) {
-    let start = new Date(startTime);
-    let end = new Date(endTime);
-    let timeDiff = Math.abs(end - start);
-    let hours = Math.floor(timeDiff / 3600000);
-    let minutes = Math.floor((timeDiff % 3600000) / 60000);
-    return `${hours}h${minutes}`;
-}

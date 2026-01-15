@@ -1,5 +1,4 @@
-import { ArrowRight } from '../icons/arrowRight';
-import { parseNgayThang } from '@/lib/dateTime'
+import { parseNgayThang } from './flight_item';
 
 function SelectedFlight({
     direction,
@@ -10,15 +9,13 @@ function SelectedFlight({
     selectedFlight,
     activeSelectFlight,
     setActiveSelectFlight,
-    setRefetchData
 }) {
     return (
         <div
             onClick={() => {
                 setActiveSelectFlight(direction);
-                setRefetchData(true);
             }}
-            className={`w-full col-span-1 bg-white sm:p-4 p-2 rounded cursor-pointer border-2 hover:border-2 hover:border-blue-400 text-sm ${
+            className={`col-span-1 bg-white sm:p-4 p-2 rounded cursor-pointer border-2 hover:border-2 hover:border-blue-400 text-sm ${
                 activeSelectFlight == direction ? 'border-blue-400 ' : 'opacity-50'
             }`}
         >
@@ -33,8 +30,21 @@ function SelectedFlight({
             <p className="flex justify-start items-center text-base text-gray-900 font-semibold mt-2">
                 <i className="flex justify-start items-center mr-2">
                     <span>{departureAirport}</span>
-                    <span className='mx-4'>
-                        <ArrowRight className={"w-6 h-6"} strokeWidth={"2"}/>
+                    <span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                            />
+                        </svg>
                     </span>
                     <span>{arrivalAirport}</span>
                 </i>

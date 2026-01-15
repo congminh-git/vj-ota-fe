@@ -8,7 +8,6 @@ import Loading from '@/components/loading';
 import { useState, useEffect } from 'react';
 import { getReservationPassengers } from '@/services/reservations/functions';
 import { useRouter, usePathname } from 'next/navigation';
-import { XMark } from '@/components/icons/xMark';
 
 export default function UpdatePassengerInfomationPopup({
     changePassengerInfoPopup,
@@ -218,7 +217,16 @@ export default function UpdatePassengerInfomationPopup({
                         }}
                         className="bg-white p-2 rounded-md hover:bg-gray-100 border"
                     >
-                        <XMark className={"w-4 h-4"} strokeWidth={"2"} />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
                     </button>
                     <h4 className="font-bold">Cập nhật thông tin hành khách</h4>
                 </div>

@@ -9,7 +9,6 @@ import { getAncillaryOptionsReturn } from '@/services/ancillaryOptions/functions
 import { getSeatSelectionOptionsReturn } from '@/services/seatSelection/functions';
 import { getReservationByKey, postEmailingItineraries } from '@/services/reservations/functions';
 import { getCompany } from '@/services/companies/functions';
-import { CirclePlus } from '@/components/icons/circlePlus';
 
 export default function ListService({ reservationKey, setRefetch, refetch, moreAction }) {
     const router = useRouter();
@@ -32,7 +31,7 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
     const exchangeRate = typeof window !== 'undefined' ? parseInt(sessionStorage.getItem('exchangeRate')) ?? 1 : 1;
 
     useEffect(() => {
-        handleGetCompany();
+        handleGetCompany()
         handleGetReservationByKey(reservationKey);
     }, [reservationKey]);
 
@@ -111,14 +110,14 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
     };
 
     const handleGetReservationByKey = async (reservationKey) => {
-        const data = await getReservationByKey(reservationKey);
-        setReservationByKey(data);
-    };
+        const data = await getReservationByKey(reservationKey)
+        setReservationByKey(data)
+    }
 
     const handleGetCompany = async () => {
-        const data = await getCompany();
-        setCompanyKey(data.key);
-    };
+        const data = await getCompany()
+        setCompanyKey(data.key)
+    }
 
     return (
         <div className="flex items-start">
@@ -147,7 +146,20 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                                 onClick={() => setOpenPopupSelectBaggagePack(true)}
                                 className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
                             >
-                                <CirclePlus className={'w-6 h-6'} strokeWidth={'2'} />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    />
+                                </svg>
                             </button>
                         </div>
                         <SelectBaggagePopup
@@ -175,7 +187,20 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                                 onClick={() => setOpenPopupSelectMealPack(true)}
                                 className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
                             >
-                                <CirclePlus className={'w-6 h-6'} strokeWidth={'2'} />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    />
+                                </svg>
                             </button>
                         </div>
                         <SelectMealPopup
@@ -200,7 +225,20 @@ export default function ListService({ reservationKey, setRefetch, refetch, moreA
                                 onClick={() => setOpenPopupSelectSeatOption(true)}
                                 className="rounded-full h-fit w-fit bg-blue-400 hover:bg-blue-300 text-white border p-2 mr-4"
                             >
-                                <CirclePlus className={'w-6 h-6'} strokeWidth={'2'} />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    />
+                                </svg>
                             </button>
                         </div>
                         <SelectSeatPopup

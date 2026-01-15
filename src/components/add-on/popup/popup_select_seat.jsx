@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { parseNgayThang } from '@/lib/dateTime';
+import { parseNgayThang } from '@/components/select-flight/flight_item';
 import ListSeatOptions from '@/components/add-on/list_seat';
-import { XMark } from '@/components/icons/xMark';
 
 function SelectSeatPopup({
     openPopupSeat,
@@ -190,21 +189,28 @@ function SelectSeatPopup({
         });
         setSelectedSeat(newSelectedSeat);
     };
-
-    console.log(returnFlight)
     return (
         <div
             className={`${
                 openPopupSeat ? 'fixed' : 'hidden'
             } top-0 left-0 bottom-0 right-0 bg-gray-800 bg-opacity-50 flex justify-end z-20`}
         >
-            <div className="h-full w-[600px] bg-white p-4 pb-40 relative overflow-auto">
+            <div className="h-full w-[600px] bg-white p-4 pb-20 relative overflow-auto">
                 <div className="flex justify-between">
                     <button
                         onClick={() => setOpenPopupSeat(false)}
                         className="border p-2 rounded hover:bg-blue-200 w-fit h-fit"
                     >
-                        <XMark className={'w-4 h-4'} strokeWidth={'2'} />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
                     </button>
                     <div className="text-center">
                         <p className="text-md font-bold text-gray-800">Chọn chỗ ngồi</p>
@@ -406,7 +412,7 @@ function SelectSeatPopup({
                                                 selectedSegment === segmentIndex + 1
                                                     ? 'block'
                                                     : 'hidden'
-                                            } mt-8 px-2 sm:px-8`}
+                                            } mt-8 px-8`}
                                         >
                                             <ListSeatOptions
                                                 listSeatRow={listSeatRowOfDepartureFlightSegment[segmentIndex]}
@@ -437,7 +443,7 @@ function SelectSeatPopup({
                                                     selectedSegment == segmentIndex + 1
                                                         ? 'block'
                                                         : 'hidden'
-                                                } mt-8 px-2 sm:px-8`}
+                                                } mt-8 px-8`}
                                             >
                                                 <ListSeatOptions
                                                     listSeatRow={listSeatRowOfReturnFlightSegment[segmentIndex]}
@@ -458,15 +464,25 @@ function SelectSeatPopup({
                     )}
                 </div>
 
-                <div className="w-full sm:w-[600px] p-4 shadow fixed bottom-0 right-0 rounded-t-lg bg-gradient-to-r from-blue-500 to-blue-400 flex justify-between items-center flex-wrap">
+                <div className="w-[600px] p-4 shadow fixed bottom-0 right-0 rounded-t-lg bg-gradient-to-r from-blue-500 to-blue-400 flex justify-between items-center">
                     <div className="flex justify-between items-center">
+                        <button
+                            onClick={() => {
+                                setSeatConfirmed(selectedSeat);
+                                setOpenPopupSeat(false);
+                                setSeatTotalPrice(price);
+                            }}
+                            className="bg-white p-2 rounded border-2 border-transparent hover:bg-gray-100 hover:border-gray-600"
+                        >
+                            <p className="font-bold">Xác nhận</p>
+                        </button>
                         <div className="ml-2">
-                            <p className="text-lg sm:text-xl font-bold text-white">
+                            <p className="text-xl font-bold text-white">
                                 Tổng: {(price.departurePrice + price.arrivalPrice)?.toLocaleString()}
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center text-sm sm:text-base">
+                    <div className="flex items-center">
                         <button
                             onClick={cancelSelected}
                             className={`${
@@ -494,18 +510,6 @@ function SelectSeatPopup({
                             } bg-white p-2 rounded border-2 border-transparent hover:bg-gray-100 hover:border-gray-600 ml-2`}
                         >
                             <p className="font-bold">Tiếp theo</p>
-                        </button>
-                    </div>
-                    <div className='w-full mt-2'>                        
-                        <button
-                            onClick={() => {
-                                setSeatConfirmed(selectedSeat);
-                                setOpenPopupSeat(false);
-                                setSeatTotalPrice(price);
-                            }}
-                            className="bg-yellow-400 text-white hover:bg-yellow-500 w-full p-2 rounded border-2 border-transparent"
-                        >
-                            <p className="font-bold">Xác nhận</p>
                         </button>
                     </div>
                 </div>

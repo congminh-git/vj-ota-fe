@@ -45,21 +45,21 @@ export default function PassengerInfomation({
     return (
         <>
             <div className="bg-white sm:p-4 p-3 rounded-md">
-                <h3 className="font-medium mb-4">
+                <h3 className="font-medium">
                     <i>Thông tin hành khách</i>
                 </h3>
                 <div>
                     {listPassenger.listAdult?.map((item, index) => {
                         return (
                             <div
-                                className="mb-20"
+                                className="mt-6 border border-gray-300 rounded p-2"
                                 key={index}
                                 id={`nguoi-lon-${index}`}
                             >
                                 <p className="text-sm text-sky-400 font-medium mb-2">
                                     <i>Hành khách {index + 1}</i>
                                 </p>
-                                <div className="grid grid-cols-6 sm:gap-8 gap-6 relative">
+                                <div className="grid grid-cols-6 sm:gap-8 gap-6">
                                     <div className="col-span-6 sm:col-span-3 w-full h-fit border px-2 py-1 rounded relative">
                                         <label htmlFor="" className="text-sm text-gray-500 font-medium">
                                             Họ
@@ -321,7 +321,7 @@ export default function PassengerInfomation({
                                                     listPassenger.listAdult[index]?.gender
                                                         ? 'text-gray-700'
                                                         : 'text-gray-400'
-                                                } flex items-center mt-1 col-span-6 absolute -bottom-8`}
+                                                } flex items-center mt-1 col-span-6`}
                                             >
                                                 <input
                                                     onChange={funcUseAsContactInfomation}
@@ -358,7 +358,7 @@ export default function PassengerInfomation({
                     {listPassenger.listChild?.map((item, index) => {
                         return (
                             <div
-                                className="mt-6 sm:border border-gray-300 rounded sm:p-2"
+                                className="mt-6  border border-gray-300 rounded p-2"
                                 key={index}
                                 id={`tre-em-${index}`}
                             >
@@ -515,7 +515,7 @@ export default function PassengerInfomation({
                     })}
                     {listPassenger.listInfant?.map((item, index) => {
                         return (
-                            <div className="mt-6 sm:border border-gray-300 rounded sm:p-2" key={index} id={`em-be-${index}`}>
+                            <div className="mt-6 border border-gray-300 rounded p-2" key={index} id={`em-be-${index}`}>
                                 <p className="text-sm text-sky-400 font-medium mb-2">
                                     <i>
                                         Em bé {index + 1} <span>{'(<2 tuổi)'}</span>

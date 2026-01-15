@@ -1,9 +1,7 @@
-import { ChevronLeft } from '../icons/chevronLeft';
-import { ChevronRight } from '../icons/chevronRight';
-import NextDayItem from './next_days_item';
+import ConsecutiveDayItem from './next_days_item';
 import { usePathname, useRouter } from 'next/navigation';
 
-function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, roundTrip, setRefetchData }) {
+function ConsecutiveDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, roundTrip }) {
     const pathname = usePathname();
     const router = useRouter();
     function generateDateRange(dateStr) {
@@ -38,20 +36,16 @@ function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, r
         if (roundTrip) {
             if (departmentDateCompare <= returnDateCompare) {
                 if (endPoint === 'select-flight') {
-                    // window.location.reload();
-                    setRefetchData(true);
+                    window.location.reload();
                 } else {
-                    // router.push(url);
-                    setRefetchData(true);
+                    router.push(url);
                 }
             }
         } else {
             if (endPoint === 'select-flight') {
-                // window.location.reload();
-                setRefetchData(true);
+                window.location.reload();
             } else {
-                // router.push(url);
-                setRefetchData(true);
+                router.push(url);
             }
         }
     };
@@ -72,11 +66,9 @@ function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, r
             );
         }
 
-        setRefetchData(true);
-
-        // window.location.reload();
+        window.location.reload();
     };
-    const oneDayForward = (flyingDay) => {
+    const oneDayForward = () => {
         let date = new Date(flyingDay);
         date.setDate(date.getDate() + 1);
         let formattedDate = date.toISOString().split('T')[0];
@@ -92,25 +84,23 @@ function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, r
             );
         }
 
-        setRefetchData(true);
-
-        // window.location.reload();
+        window.location.reload();
     };
     const dateRange = generateDateRange(flyingDay);
 
     return (
         <div className="p-2 bg-white rounded-lg">
             <div className="relative">
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-2">
                     <button
                         className={`${dateRange[0] < new Date().toISOString().split('T')[0] ? 'grayscale' : ''}`}
                         disabled={dateRange[0] < new Date().toISOString().split('T')[0] ? true : false}
                         onClick={() => handleSearch(dateRange[0])}
                     >
-                        <NextDayItem flyingDay={dateRange[0]} active={false} />
+                        <ConsecutiveDayItem flyingDay={dateRange[0]} active={false} />
                     </button>
                     <button>
-                        <NextDayItem flyingDay={dateRange[1]} active={true} />
+                        <ConsecutiveDayItem flyingDay={dateRange[1]} active={true} />
                     </button>
                     <button
                         className={`${
@@ -131,10 +121,10 @@ function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, r
                         }
                         onClick={() => handleSearch(dateRange[2])}
                     >
-                        <NextDayItem flyingDay={dateRange[2]} active={false} />
+                        <ConsecutiveDayItem flyingDay={dateRange[2]} active={false} />
                     </button>
                     <button
-                        className={`hidden sm:block ${
+                        className={`${
                             roundTrip
                                 ? activeSelectFlight == 'đi'
                                     ? dateRange[3] > returnDate
@@ -152,24 +142,42 @@ function NextDays({ flyingDay, activeSelectFlight, departmentDate, returnDate, r
                         }
                         onClick={() => handleSearch(dateRange[3])}
                     >
-                        <NextDayItem flyingDay={dateRange[3]} active={false} />
+                        <ConsecutiveDayItem flyingDay={dateRange[3]} active={false} />
                     </button>
                 </div>
                 <button
                     onClick={() => oneDayBack(flyingDay)}
                     className="p-2 w-fit h-fit flex justify-center items-center bg-white rounded-full border-2 hover:border-blue-400 absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-0"
                 >
-                    <ChevronLeft className={'size-4'} strokeWidth={'2'} />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        className="size-4"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
                 </button>
                 <button
                     onClick={() => oneDayForward(flyingDay)}
                     className="p-2 w-fit h-fit flex justify-center items-center bg-white rounded-full border-2 hover:border-blue-400 absolute top-1/2 translate-x-1/2 -translate-y-1/2 right-0"
                 >
-                    <ChevronRight className={'size-4'} strokeWidth={'2'} />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        className="size-4"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
                 </button>
             </div>
         </div>
     );
 }
 
-export default NextDays;
+export default ConsecutiveDays;

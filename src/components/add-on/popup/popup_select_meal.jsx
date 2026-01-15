@@ -1,6 +1,5 @@
 'use client';
 
-import { XMark } from '@/components/icons/xMark';
 import ListMealPack from '../list_meal';
 import { useEffect, useState } from 'react';
 
@@ -70,13 +69,22 @@ function SelectMealPopup({
                 openPopupMeal ? 'fixed' : 'hidden'
             } top-0 left-0 bottom-0 right-0 bg-gray-800 bg-opacity-50 flex justify-end z-20`}
         >
-            <div className="h-full w-[600px] bg-white p-4 pb-40 relative overflow-auto">
+            <div className="h-full w-[600px] bg-white p-4 pb-24 relative overflow-auto">
                 <div className="flex justify-between">
                     <button
                         onClick={() => setOpenPopupMeal(false)}
                         className="border p-2 rounded hover:bg-blue-200 w-fit h-fit"
                     >
-                        <XMark className={"w-4 h-4"} strokeWidth={"2"}/>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
                     </button>
                     <div className="text-center">
                         <p className="text-md font-bold text-gray-800">Thông tin suất ăn</p>
@@ -180,15 +188,25 @@ function SelectMealPopup({
                     )}
                 </div>
 
-                <div className="w-full sm:w-[600px] p-4 shadow fixed bottom-0 right-0 rounded-t-lg bg-gradient-to-r from-blue-500 to-blue-400 flex justify-between items-center flex-wrap">
+                <div className="w-[600px] p-4 shadow fixed bottom-0 right-0 rounded-t-lg bg-gradient-to-r from-blue-500 to-blue-400 flex justify-between items-center">
                     <div className="flex justify-between items-center">
+                        <button
+                            onClick={() => {
+                                setMealConfirmed(selectedMeal);
+                                setOpenPopupMeal(false);
+                                setMealTotalPrice(price);
+                            }}
+                            className="bg-white p-2 rounded border-2 border-transparent hover:bg-gray-100 hover:border-gray-600"
+                        >
+                            <p className="font-bold">Xác nhận</p>
+                        </button>
                         <div className="ml-2">
-                            <p className="text-lg sm:text-xl font-bold text-white">
+                            <p className="text-xl font-bold text-white">
                                 Tổng: {(price.departurePrice + price.arrivalPrice)?.toLocaleString()}
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center text-sm sm:text-base">
+                    <div className="flex items-center">
                         <button
                             onClick={cancelSelected}
                             className={`${
@@ -213,19 +231,6 @@ function SelectMealPopup({
                             } bg-white p-2 rounded border-2 border-transparent hover:bg-gray-100 hover:border-gray-600 ml-2`}
                         >
                             <p className="font-bold">Tiếp theo</p>
-                        </button>
-                    </div>
-                    <div className='w-full mt-4'>
-                        
-                        <button
-                            onClick={() => {
-                                setMealConfirmed(selectedMeal);
-                                setOpenPopupMeal(false);
-                                setMealTotalPrice(price);
-                            }}
-                            className="bg-yellow-400 text-white hover:bg-yellow-500 p-2 w-full rounded border-2 border-transparent"
-                        >
-                            <p className="font-bold">Xác nhận</p>
                         </button>
                     </div>
                 </div>

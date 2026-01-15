@@ -1,7 +1,10 @@
 # Master Data API
 
-> This API endpoint provides a collection of frequently used reference data, often referred to as "Master Data," which is relatively static. This data is essential for various lookups and operations across the system.
-
+```
+This API endpoint provides a collection of frequently used reference data, often referred to 
+as "Master Data," which is relatively static. This data is essential for various lookups and 
+operations across the system.
+```
 
 ## Endpoint Details
 

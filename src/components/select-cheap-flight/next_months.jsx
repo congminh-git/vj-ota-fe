@@ -3,8 +3,6 @@
 import ConsecutiveMonthItem from './next_months_item';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronRight } from '../icons/chevronRight';
-import { ChevronLeft } from '../icons/chevronLeft';
 
 function ConsecutiveMonths({ monthAndYear, paramStr }) {
     const router = useRouter();
@@ -123,13 +121,31 @@ function ConsecutiveMonths({ monthAndYear, paramStr }) {
                 onClick={() => previousMonth(monthAndYear)}
                 className="p-2 w-fit h-fit flex justify-center items-center bg-white rounded-full border-2 hover:border-blue-400 absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-0"
             >
-                <ChevronLeft className={"size-4"} strokeWidth={"2"} />
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="size-4"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
             </button>
             <button
                 onClick={() => nextMonth(monthAndYear)}
                 className="p-2 w-fit h-fit flex justify-center items-center bg-white rounded-full border-2 hover:border-blue-400 absolute top-1/2 translate-x-1/2 -translate-y-1/2 right-0"
             >
-                <ChevronRight className={"size-4"} strokeWidth={"2"} />
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="size-4"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
             </button>
         </div>
     );

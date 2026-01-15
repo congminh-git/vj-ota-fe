@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useSessionStorage } from './useSessionStorage';
 
 export function useFlightSearchForm(typeSearchForm) {
@@ -17,15 +17,7 @@ export function useFlightSearchForm(typeSearchForm) {
     const [promoCode, setPromoCode] = useState('');
 
     // Session storage for currency
-    // const [currency] = useSessionStorage('currencySearchParam', 'VND');
-    const [currency, setCurrency] = useState('VND');
-
-    useEffect(() => {
-        const storedCurrency = sessionStorage.getItem('currencySearchParam');
-        if (storedCurrency) {
-            setCurrency(storedCurrency);
-        }
-    }, []);
+    const [currency] = useSessionStorage('currencySearchParam', 'VND');
 
     // Computed values
     const totalPassengers = useMemo(() => adult + child + infant, [adult, child, infant]);

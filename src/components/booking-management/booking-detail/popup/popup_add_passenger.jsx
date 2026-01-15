@@ -7,14 +7,13 @@ import ListPaymentMethod from '@/components/payment/listPaymentMethod';
 import Loading from '@/components/loading';
 import { useState, useEffect } from 'react';
 import { formatTravelOptions, getTravelOptionsAddPassenger } from '@/services/travelOptions/functions';
-import { parseNgayThang} from '@/lib/dateTime'
+import { parseNgayThang } from '@/components/select-flight/flight_item';
 import { putQuotationReservationAddPassenger } from '@/services/quotations/functions';
 import { postReservationAddPassenger } from '@/services/reservations/functions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
 import { getCompany } from '@/services/companies/functions';
-import { XMark } from '@/components/icons/xMark';
 
 export default function AddPassengerPopup({
     addPassengerInfoPopup,
@@ -404,7 +403,16 @@ export default function AddPassengerPopup({
                         }}
                         className="bg-white p-2 rounded-md hover:bg-gray-100 border"
                     >
-                        <XMark className={"w-4 h-4"} strokeWidth={"2"} />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
                     </button>
                     <h4 className="font-bold">Thêm hành khách</h4>
                 </div>

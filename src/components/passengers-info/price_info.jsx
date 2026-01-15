@@ -1,9 +1,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { parseNgayThang } from '@/lib/dateTime'
+import { parseNgayThang } from '../select-flight/flight_item';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
-import { ChevronUp } from '../icons/chevronUp';
-import { ChevronDown } from '../icons/chevronDown';
 
 export default function PriceInfomation({
     departureFlight,
@@ -21,7 +19,7 @@ export default function PriceInfomation({
     seatTotalPrice,
     mealTotalPrice,
     insuranceTotalPrice,
-    processingAmount,
+    processingAmount
 }) {
     const pathname = usePathname();
     const [showDeparturePrices, setShowDeparturePrices] = useState(false);
@@ -45,25 +43,13 @@ export default function PriceInfomation({
 
     useEffect(() => {
         const departureTotal =
-            departureFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsDepartureFlight)
-                ?.totalAdult *
-                adult +
-            departureFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsDepartureFlight)
-                ?.totalChild *
-                child +
-            departureFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsDepartureFlight)
-                ?.totalInfant *
-                infant;
+            departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalAdult * adult +
+            departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalChild * child +
+            departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalInfant * infant;
         const returnTotal =
-            returnFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsReturnFlight)
-                ?.totalAdult *
-                adult +
-            returnFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsReturnFlight)
-                ?.totalChild *
-                child +
-            returnFlight?.fareOptions.find((element) => element.bookingCode.key == fareOptionsReturnFlight)
-                ?.totalInfant *
-                infant;
+            returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalAdult * adult +
+            returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalChild * child +
+            returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalInfant * infant;
         const price =
             (departureTotal ? departureTotal : 0) +
             (returnTotal ? returnTotal : 0) +
@@ -95,7 +81,7 @@ export default function PriceInfomation({
                     <div className="text-sky-400 flex justify-between items-end text-base">Chuyến đi:</div>
                     {departureFlight ? (
                         <>
-                            <div className="text-sm my-2">
+                            <div className="text-sm mt-1">
                                 <p>
                                     {`${departureFlight.flights[0].departure.airportName} (${departureFlight.flights[0].departure.airportCode})` +
                                         ' - ' +
@@ -114,7 +100,7 @@ export default function PriceInfomation({
                                 </p>
                             </div>
                             {departureFlight.flights.length > 1 ? (
-                                <div className="text-sm my-2">
+                                <div className="text-sm mt-1">
                                     <p>
                                         {`${departureFlight.flights[1].departure.airportName} (${departureFlight.flights[1].departure.airportCode})` +
                                             ' - ' +
@@ -137,7 +123,7 @@ export default function PriceInfomation({
                             )}
                         </>
                     ) : (
-                        <div className="text-sm my-2">
+                        <div className="text-sm mt-1">
                             <p>
                                 {`${departureCity?.replaceAll('_', ' ')} (${cityPair?.split('-')[0]})` +
                                     ' - ' +
@@ -158,17 +144,11 @@ export default function PriceInfomation({
                                     {departureFlight ? (
                                         <span className="font-semibold">
                                             {(
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.priceAdult *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceAdult *
                                                     adult +
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.priceChild *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceChild *
                                                     child +
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.priceInfant *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceInfant *
                                                     infant
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
@@ -176,39 +156,53 @@ export default function PriceInfomation({
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
                                         className={`size-4 ml-2 ${showDeparturePrices ? 'hidden' : 'block'}`}
-                                        strokeWidth={'2'}
-                                    />
-
-                                    <ChevronUp
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
                                         className={`size-4 ml-2 ${showDeparturePrices ? 'block' : 'hidden'}`}
-                                        strokeWidth={'2'}
-                                    />
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {departureFlight ? (
-                                <div className={`p-3 border-b ${showDeparturePrices ? 'block' : 'hidden'}`}>
+                                <div className={`p-2 border-b ${showDeparturePrices ? 'block' : 'hidden'}`}>
                                     <p className="flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Hạng vé</span>
                                         <span>
                                             {
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.fareClass.description
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareClass
+                                                    .description
                                             }
                                         </span>
                                     </p>
                                     <p className="mt-2 flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Người lớn x {adult}</span>
                                         <span>
-                                            {(departureFlight?.fareOptions.find(
-                                                (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                            )?.fareCharges[0].passengerApplicability.adult
-                                                ? departureFlight?.fareOptions.find(
-                                                      (element) =>
-                                                          element.bookingCode.key == fareOptionsDepartureFlight,
-                                                  )?.fareCharges[0].currencyAmounts[0].baseAmount * adult
+                                            {(departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0]
+                                                .passengerApplicability.adult
+                                                ? departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].currencyAmounts[0].baseAmount * adult
                                                 : 0
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
@@ -218,13 +212,8 @@ export default function PriceInfomation({
                                         <p className="mt-2 flex justify-between items-center">
                                             <span className="font-medium text-gray-500">Trẻ em x {child}</span>
                                             <span>
-                                                {(departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.fareCharges[0].passengerApplicability.child
-                                                    ? departureFlight?.fareOptions.find(
-                                                          (element) =>
-                                                              element.bookingCode.key == fareOptionsDepartureFlight,
-                                                      )?.fareCharges[0].currencyAmounts[0].baseAmount * child
+                                                {(departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].passengerApplicability.child
+                                                    ? departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].currencyAmounts[0].baseAmount * child
                                                     : 0
                                                 ).toLocaleString()}{' '}
                                                 {currencySymbol}
@@ -235,13 +224,8 @@ export default function PriceInfomation({
                                         <p className="mt-2 flex justify-between items-center">
                                             <span className="font-medium text-gray-500">Em bé x {infant}</span>
                                             <span>
-                                                {(departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.fareCharges[0].passengerApplicability.infant
-                                                    ? departureFlight?.fareOptions.find(
-                                                          (element) =>
-                                                              element.bookingCode.key == fareOptionsDepartureFlight,
-                                                      )?.fareCharges[0].currencyAmounts[0].baseAmount * infant
+                                                {(departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].passengerApplicability.infant
+                                                    ? departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].currencyAmounts[0].baseAmount * infant
                                                     : 0
                                                 ).toLocaleString()}{' '}
                                                 {currencySymbol}
@@ -252,24 +236,15 @@ export default function PriceInfomation({
                                         <span className="font-medium text-gray-500">Thuế VAT</span>
                                         <span>
                                             {(
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.fareCharges[0].currencyAmounts[0].taxAmount *
-                                                ((departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.fareCharges[0].passengerApplicability.adult
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0]
+                                                    .currencyAmounts[0].taxAmount *
+                                                ((departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].passengerApplicability.adult
                                                     ? adult
                                                     : 0) +
-                                                    (departureFlight?.fareOptions.find(
-                                                        (element) =>
-                                                            element.bookingCode.key == fareOptionsDepartureFlight,
-                                                    )?.fareCharges[0].passengerApplicability.child
+                                                    (departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].passengerApplicability.child
                                                         ? child
                                                         : 0) +
-                                                    (departureFlight?.fareOptions.find(
-                                                        (element) =>
-                                                            element.bookingCode.key == fareOptionsDepartureFlight,
-                                                    )?.fareCharges[0].passengerApplicability.infant
+                                                    (departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges[0].passengerApplicability.infant
                                                         ? infant
                                                         : 0))
                                             ).toLocaleString()}{' '}
@@ -293,31 +268,17 @@ export default function PriceInfomation({
                                     {departureFlight ? (
                                         <span className="font-semibold">
                                             {(
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.totalAdult *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalAdult *
                                                     adult +
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.totalChild *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalChild *
                                                     child +
-                                                departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.totalInfant *
+                                                departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.totalInfant *
                                                     infant -
-                                                (departureFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )?.priceAdult *
+                                                (departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceAdult *
                                                     adult +
-                                                    departureFlight?.fareOptions.find(
-                                                        (element) =>
-                                                            element.bookingCode.key == fareOptionsDepartureFlight,
-                                                    )?.priceChild *
+                                                    departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceChild *
                                                         child +
-                                                    departureFlight?.fareOptions.find(
-                                                        (element) =>
-                                                            element.bookingCode.key == fareOptionsDepartureFlight,
-                                                    )?.priceInfant *
+                                                    departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.priceInfant *
                                                         infant)
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
@@ -325,15 +286,40 @@ export default function PriceInfomation({
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown className={`size-4 ml-2 ${showDepartureFees ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
-                                    <ChevronUp className={`size-4 ml-2 ${showDepartureFees ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showDepartureFees ? 'hidden' : 'block'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showDepartureFees ? 'block' : 'hidden'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {departureFlight ? (
-                                <div className={`p-3 border-b ${showDepartureFees ? 'block' : 'hidden'}`}>
-                                    {departureFlight?.fareOptions
-                                        .find((element) => element.bookingCode.key == fareOptionsDepartureFlight)
-                                        ?.fareCharges.map((charge, indexCharge) => {
+                                <div className={`p-2 border-b ${showDepartureFees ? 'block' : 'hidden'}`}>
+                                    {departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges.map(
+                                        (charge, indexCharge) => {
                                             if (indexCharge > 0) {
                                                 const count =
                                                     (charge.passengerApplicability.adult ? adult : 0) +
@@ -355,15 +341,13 @@ export default function PriceInfomation({
                                                     </div>
                                                 );
                                             }
-                                        })}
+                                        },
+                                    )}
                                     <p className="flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Thuế VAT</span>
                                         <span>
-                                            {departureFlight?.fareOptions
-                                                .find(
-                                                    (element) => element.bookingCode.key == fareOptionsDepartureFlight,
-                                                )
-                                                ?.fareCharges.reduce((total, charge, indexCharge) => {
+                                            {departureFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsDepartureFlight)?.fareCharges
+                                                .reduce((total, charge, indexCharge) => {
                                                     if (indexCharge > 0) {
                                                         const count =
                                                             (charge.passengerApplicability.adult ? adult : 0) +
@@ -408,8 +392,34 @@ export default function PriceInfomation({
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown className={`size-4 ml-2 ${showDepartureServices ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
-                                    <ChevronUp className={`size-4 ml-2 ${showDepartureServices ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showDepartureServices ? 'hidden' : 'block'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showDepartureServices ? 'block' : 'hidden'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {departureFlight ? (
@@ -519,49 +529,60 @@ export default function PriceInfomation({
                                     {returnFlight ? (
                                         <span className="font-semibold">
                                             {(
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.priceAdult *
-                                                    adult +
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.priceChild *
-                                                    child +
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.priceInfant *
-                                                    infant
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceAdult * adult +
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceChild * child +
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceInfant * infant
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
                                         </span>
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown className={`size-4 ml-2 ${showReturnPrices ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
-                                    <ChevronUp className={`size-4 ml-2 ${showReturnPrices ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnPrices ? 'hidden' : 'block'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnPrices ? 'block' : 'hidden'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {returnFlight ? (
-                                <div className={`p-3 border-b ${showReturnPrices ? 'block' : 'hidden'}`}>
+                                <div className={`p-2 border-b ${showReturnPrices ? 'block' : 'hidden'}`}>
                                     <p className="flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Hạng vé</span>
                                         <span>
-                                            {
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.fareClass.description
-                                            }
+                                            {returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareClass.description}
                                         </span>
                                     </p>
                                     <p className="mt-2 flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Người lớn x {adult}</span>
                                         <span>
-                                            {(returnFlight?.fareOptions.find(
-                                                (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                            )?.fareCharges[0].passengerApplicability.adult
-                                                ? returnFlight?.fareOptions.find(
-                                                      (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                  )?.fareCharges[0].currencyAmounts[0].baseAmount * adult
+                                            {(returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                .passengerApplicability.adult
+                                                ? returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                      .currencyAmounts[0].baseAmount * adult
                                                 : 0
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
@@ -571,13 +592,10 @@ export default function PriceInfomation({
                                         <p className="mt-2 flex justify-between items-center">
                                             <span className="font-medium text-gray-500">Trẻ em x {child}</span>
                                             <span>
-                                                {(returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.fareCharges[0].passengerApplicability.child
-                                                    ? returnFlight?.fareOptions.find(
-                                                          (element) =>
-                                                              element.bookingCode.key == fareOptionsReturnFlight,
-                                                      )?.fareCharges[0].currencyAmounts[0].baseAmount * child
+                                                {(returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                    .passengerApplicability.child
+                                                    ? returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                          .currencyAmounts[0].baseAmount * child
                                                     : 0
                                                 ).toLocaleString()}{' '}
                                                 {currencySymbol}
@@ -588,13 +606,10 @@ export default function PriceInfomation({
                                         <p className="mt-2 flex justify-between items-center">
                                             <span className="font-medium text-gray-500">Em bé x {infant}</span>
                                             <span>
-                                                {(returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.fareCharges[0].passengerApplicability.infant
-                                                    ? returnFlight?.fareOptions.find(
-                                                          (element) =>
-                                                              element.bookingCode.key == fareOptionsReturnFlight,
-                                                      )?.fareCharges[0].currencyAmounts[0].baseAmount * infant
+                                                {(returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                    .passengerApplicability.infant
+                                                    ? returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                          .currencyAmounts[0].baseAmount * infant
                                                     : 0
                                                 ).toLocaleString()}{' '}
                                                 {currencySymbol}
@@ -605,22 +620,18 @@ export default function PriceInfomation({
                                         <span className="font-medium text-gray-500">Thuế VAT</span>
                                         <span>
                                             {(
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.fareCharges[0].currencyAmounts[0].taxAmount *
-                                                ((returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.fareCharges[0].passengerApplicability.adult
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                    .currencyAmounts[0].taxAmount *
+                                                ((returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                    .passengerApplicability.adult
                                                     ? adult
                                                     : 0) +
-                                                    (returnFlight?.fareOptions.find(
-                                                        (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                    )?.fareCharges[0].passengerApplicability.child
+                                                    (returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                        .passengerApplicability.child
                                                         ? child
                                                         : 0) +
-                                                    (returnFlight?.fareOptions.find(
-                                                        (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                    )?.fareCharges[0].passengerApplicability.infant
+                                                    (returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges[0]
+                                                        .passengerApplicability.infant
                                                         ? infant
                                                         : 0))
                                             ).toLocaleString()}{' '}
@@ -644,29 +655,14 @@ export default function PriceInfomation({
                                     {returnFlight ? (
                                         <span className="font-semibold">
                                             {(
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.totalAdult *
-                                                    adult +
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.totalChild *
-                                                    child +
-                                                returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.totalInfant *
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalAdult * adult +
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalChild * child +
+                                                returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.totalInfant *
                                                     infant -
-                                                (returnFlight?.fareOptions.find(
-                                                    (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                )?.priceAdult *
-                                                    adult +
-                                                    returnFlight?.fareOptions.find(
-                                                        (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                    )?.priceChild *
+                                                (returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceAdult * adult +
+                                                    returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceChild *
                                                         child +
-                                                    returnFlight?.fareOptions.find(
-                                                        (element) => element.bookingCode.key == fareOptionsReturnFlight,
-                                                    )?.priceInfant *
+                                                    returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.priceInfant *
                                                         infant)
                                             ).toLocaleString()}{' '}
                                             {currencySymbol}
@@ -674,15 +670,40 @@ export default function PriceInfomation({
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown className={`size-4 ml-2 ${showReturnFees ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
-                                    <ChevronUp className={`size-4 ml-2 ${showReturnFees ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnFees ? 'hidden' : 'block'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnFees ? 'block' : 'hidden'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {returnFlight ? (
-                                <div className={`p-3 border-b ${showReturnFees ? 'block' : 'hidden'}`}>
-                                    {returnFlight?.fareOptions
-                                        .find((element) => element.bookingCode.key == fareOptionsReturnFlight)
-                                        ?.fareCharges.map((charge, indexCharge) => {
+                                <div className={`p-2 border-b ${showReturnFees ? 'block' : 'hidden'}`}>
+                                    {returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges.map(
+                                        (charge, indexCharge) => {
                                             if (indexCharge > 0) {
                                                 const count =
                                                     (charge.passengerApplicability.adult ? adult : 0) +
@@ -704,13 +725,13 @@ export default function PriceInfomation({
                                                     </div>
                                                 );
                                             }
-                                        })}
+                                        },
+                                    )}
                                     <p className="flex justify-between items-center">
                                         <span className="font-medium text-gray-500">Thuế VAT</span>
                                         <span>
-                                            {returnFlight?.fareOptions
-                                                .find((element) => element.bookingCode.key == fareOptionsReturnFlight)
-                                                ?.fareCharges.reduce((total, charge, indexCharge) => {
+                                            {returnFlight?.fareOptions.find((element)=>element.bookingCode.key == fareOptionsReturnFlight)?.fareCharges
+                                                .reduce((total, charge, indexCharge) => {
                                                     if (indexCharge > 0) {
                                                         const count =
                                                             (charge.passengerApplicability.adult ? adult : 0) +
@@ -755,8 +776,34 @@ export default function PriceInfomation({
                                     ) : (
                                         <></>
                                     )}
-                                    <ChevronDown className={`size-4 ml-2 ${showReturnServices ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
-                                    <ChevronUp className={`size-4 ml-2 ${showReturnServices ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnServices ? 'hidden' : 'block'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                        />
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className={`size-4 ml-2 ${showReturnServices ? 'block' : 'hidden'}`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                                        />
+                                    </svg>
                                 </div>
                             </button>
                             {returnFlight ? (
@@ -805,19 +852,21 @@ export default function PriceInfomation({
                 <></>
             )}
             <div className="border-gray-300 mt-4">
-                {processingAmount > 0 ? (
+                {
+                    processingAmount > 0
+                    ?
                     <div className="flex justify-between items-center mt-1">
                         <span>Phí tiện ích</span>
                         <span className="font-bold">
                             {processingAmount.toLocaleString()} {currencySymbol}
                         </span>
                     </div>
-                ) : (
+                    :
                     <></>
-                )}
+                }
                 <div className="flex justify-between items-center mt-1">
                     <span>Tổng tiền</span>
-                    <span className="font-bold text-orange-500 text-lg">
+                    <span className="font-bold">
                         {totalPrice.toLocaleString()} {currencySymbol}
                     </span>
                 </div>
