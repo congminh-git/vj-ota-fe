@@ -11,6 +11,7 @@ function ListFlightTravelOptions({
     roundTrip,
     direction,
     setActiveSelectFlight,
+    setRefetchData,
 }) {
     return (
         <div className="sm:mt-4 mt-2 w-full">
@@ -28,6 +29,7 @@ function ListFlightTravelOptions({
                             roundTrip={roundTrip}
                             direction={direction}
                             setActiveSelectFlight={setActiveSelectFlight}
+                            setRefetchData={setRefetchData}
                         />
                     </div>
                 );

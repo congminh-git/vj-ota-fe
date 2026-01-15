@@ -1,4 +1,4 @@
-function ConsecutiveDayItem({ flyingDay, active }) {
+function NextDayItem({ flyingDay, active }) {
     const date = new Date(flyingDay);
     const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
     const dayOfWeek = daysOfWeek[date.getDay()];
@@ -14,4 +14,4 @@ function ConsecutiveDayItem({ flyingDay, active }) {
     );
 }
 
-export default ConsecutiveDayItem;
+export default NextDayItem;

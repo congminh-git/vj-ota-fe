@@ -10,7 +10,7 @@ export default function BookingManagementLayout({ children }) {
             <Sidebar />
             <div className="flex flex-col flex-grow h-full">
                 <Header />
-                <main className="flex-grow bg-white p-4">{children}</main>
+                <main className="flex-grow bg-white sm:p-4">{children}</main>
                 <Footer />
             </div>
         </div>

@@ -1,6 +1,8 @@
 import Icon from '../icon';
 import { faCouch, faPercent, faSuitcase, faTicket } from '@fortawesome/free-solid-svg-icons';
-import { parseNgayThang, tinhThoiGianBay } from '../select-flight/flight_item';
+import { parseNgayThang, tinhThoiGianBay} from '@/lib/dateTime'
+import { ChevronDown } from '../icons/chevronDown';
+import { ChevronUp } from '../icons/chevronUp';
 
 export default function FlightInfomation({ departureFlight, returnFlight }) {
     const showDetail = (event) => {
@@ -217,16 +219,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                 className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center show-button"
                             >
                                 Xem thêm
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="2"
-                                    stroke="currentColor"
-                                    className="w-3 h-3 ml-1"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
+                                <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                             </button>
                         </div>
                         <div className="mt-2">
@@ -235,16 +228,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                 className="show-detail-btn text-xs text-blue-400 font-semibold justify-start items-center hide-button hidden"
                             >
                                 Thu gọn
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    className="w-3 h-3 ml-1"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                                </svg>
+                                <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                             </button>
                         </div>
                     </>
@@ -256,16 +240,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                 className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center show-button"
                             >
                                 Xem thêm
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="2"
-                                    stroke="currentColor"
-                                    className="w-3 h-3 ml-1"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
+                                <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                             </button>
                         </div>
                         <div className="mt-2">
@@ -274,16 +249,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                 className="show-detail-btn text-xs text-blue-400 font-semibold justify-start items-center hide-button hidden"
                             >
                                 Thu gọn
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    className="w-3 h-3 ml-1"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                                </svg>
+                                <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                             </button>
                         </div>
                     </>
@@ -478,20 +444,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                     className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center show-button"
                                 >
                                     Xem thêm
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="w-3 h-3 ml-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                                        />
-                                    </svg>
+                                    <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                                 </button>
                             </div>
                             <div className="mt-2">
@@ -500,20 +453,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                     className="show-detail-btn text-xs text-blue-400 font-semibold justify-start items-center hide-button hidden"
                                 >
                                     Thu gọn
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="1.5"
-                                        stroke="currentColor"
-                                        className="w-3 h-3 ml-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
-                                        />
-                                    </svg>
+                                    <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                                 </button>
                             </div>
                         </>
@@ -525,20 +465,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                     className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center show-button"
                                 >
                                     Xem thêm
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="w-3 h-3 ml-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                                        />
-                                    </svg>
+                                    <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                                 </button>
                             </div>
                             <div className="mt-2">
@@ -547,20 +474,7 @@ export default function FlightInfomation({ departureFlight, returnFlight }) {
                                     className="show-detail-btn text-xs text-blue-400 font-semibold justify-start items-center hide-button hidden"
                                 >
                                     Thu gọn
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="1.5"
-                                        stroke="currentColor"
-                                        className="w-3 h-3 ml-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="m4.5 15.75 7.5-7.5 7.5 7.5"
-                                        />
-                                    </svg>
+                                    <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                                 </button>
                             </div>
                         </>

@@ -6,6 +6,7 @@ import { putUpdateReservationPassengerByKey } from '@/services/reservations/func
 import { putQuotationReservationUpdatePassenger } from '@/services/quotations/functions';
 import ListPaymentMethod from '@/components/payment/listPaymentMethod';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
+import { ArrowRight } from '@/components/icons/arrowRight';
 
 function Change({
     changeItem,
@@ -174,16 +175,7 @@ function Change({
                     )}
                 </div>
                 <div className="col-span-1 flex justify-center items-center">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-8 h-8"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
+                    <ArrowRight className={"w-8 h-8"} strokeWidth={"2"}/>
                 </div>
                 <div className="col-span-3 border rounded p-2 bg-white">
                     <div className="">

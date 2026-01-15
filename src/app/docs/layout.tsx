@@ -8,7 +8,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             <Sidebar />
 
             {/* Nội dung chính */}
-            <main className="flex-1 flex justify-center p-8 bg-white">
+            <main className="flex-1 flex justify-center p-4 pt-16 sm:pt-8 bg-white">
                 <div className="w-full max-w-6xl flex gap-8">
                     {/* Nội dung documentation */}
                     <div className="flex-1 max-w-3xl">{children}</div>

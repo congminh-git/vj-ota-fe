@@ -4,10 +4,11 @@ import ListPaymentMethod from '@/components/payment/listPaymentMethod';
 import InternationalCardInfoForm from '@/components/payment/internationalCardInfo';
 import { putUpdateReservationJourneyByKey } from '@/services/reservations/functions';
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { parseNgayThang, tinhThoiGianBay } from '@/components/select-flight/flight_item';
+import { parseNgayThang } from '@/lib/dateTime'
 import { getCurrencySymbol } from '@/lib/parseCurrency';
 import { setCookie, getCookie } from '@/lib/cookie';
 import { useRouter } from 'next/navigation';
+import { XMark } from '@/components/icons/xMark';
 
 export default function CancelLegQuotationPopup({
     openCancelLegQuotationPopup,
@@ -50,7 +51,7 @@ export default function CancelLegQuotationPopup({
             setCookie('reservationKey', reservationKey, 1);
             router.push(data?.data?.responseData?.endpoint);
         } else {
-            location.reload()
+            location.reload();
         }
     };
 
@@ -143,16 +144,7 @@ export default function CancelLegQuotationPopup({
                             onClick={() => setOpenCancelLegQuotationPopup(false)}
                             className="border p-2 rounded hover:bg-blue-200 w-fit h-fit"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                className="w-4 h-4"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
+                            <XMark className={'w-4 h-4'} strokeWidth={'2'} />
                         </button>
                         <div className="text-center">
                             <p className="text-md font-bold text-gray-800">Phí hủy chuyến</p>

@@ -8,30 +8,41 @@ import { getMasterData } from "@/services/masterData/functions";
 
 export const useAuth = () => {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<any>();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Kiểm tra masterData trong sessionStorage
       if (!sessionStorage.getItem("masterData")) {
         await getMasterData();
       }
-      const token: any = await getCookie("token");
-      const refreshToken: any = await getCookie("refreshToken");
-      const apikey: any = await getCookie("apikey");
-      if (!token && (!refreshToken || !apikey)) {
-        router.push("/login");
-        setIsAuthenticated(true)
+
+      const token = await getCookie("token");
+      const refreshToken = await getCookie("refreshToken");
+      const apikey = await getCookie("apikey");
+
+      const tokenValue = token?.value;
+      const refreshTokenValue = refreshToken?.value;
+      const apiKeyValue = apikey?.value;
+
+      if (!tokenValue && (!refreshTokenValue || !apiKeyValue)) {
+        setIsAuthenticated(false);
+        router.replace("/login");
         return;
-      } else if (!token && refreshToken && refreshToken.value) {
-        const response = await putUserSessions(refreshToken.value)
+      }
+
+      if (!tokenValue && refreshTokenValue) {
+        const response = await putUserSessions(refreshTokenValue);
         if (!response) {
-          router.push("/login");
+          setIsAuthenticated(false);
+          router.replace("/login");
+          return;
         }
       }
+
+      setIsAuthenticated(true);
     };
 
-    checkAuth(); // Gọi hàm async bên trong useEffect
+    checkAuth();
   }, [router]);
 
   return isAuthenticated;
