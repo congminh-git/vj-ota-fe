@@ -455,145 +455,123 @@ export default function BookingManagement() {
     );
 
     return (
-        <main className="relative min-h-screen bg-gray-100 p-4 mt-20 sm:mt-0">
-            <Breadcrumb listBreadcrumb={listBreadcrumb} />
-            <div className="bg-white rounded">
-                {searchSection}
-                {tabSection}
-            </div>
-            <div className="mt-4">
-                {reservationByKey && activeTab === 0 ? (
-                    <div>
-                        <div className="grid grid-cols-2 gap-4 mt-4">
-                            <ReservationInformation
-                                reservation={reservationByKey}
-                                reservationByLocator={reservationByLocator}
-                                debt={debt}
-                            />
-                            <ContactInfomation
-                                reservation={reservationByKey}
-                                setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
-                            />
-                            <div className="col-span-2">
-                                <PassengerInfomation
-                                    setChangePassengerInfoPopup={setChangePassengerInfoPopup}
+        <main className="relative min-h-screen bg-gray-100 p-4 mt-20 sm:mt-0 flex justify-center">
+            <div className='max-w-[1200px] w-full'>
+                <Breadcrumb listBreadcrumb={listBreadcrumb} />
+                <div className="bg-white rounded">
+                    {searchSection}
+                    {tabSection}
+                </div>
+                <div className="mt-4">
+                    {reservationByKey && activeTab === 0 ? (
+                        <div>
+                            <div className="grid grid-cols-2 gap-4 mt-4">
+                                <ReservationInformation
                                     reservation={reservationByKey}
-                                    setPassengerSelect={setPassengerSelect}
+                                    reservationByLocator={reservationByLocator}
+                                    debt={debt}
                                 />
-                            </div>
-                            <div
-                                className={`col-span-2 grid ${
-                                    reservationByKey.journeys[1] ? 'grid-cols-2' : 'grid-cols-1'
-                                } gap-4`}
-                            >
-                                {notCancelJourneys?.map((element, index) => (
-                                    <div key={`journey-${element.key || index}`} className="col-span-2">
-                                        <FlightInfomation
-                                            legNumber={index}
-                                            setSearchFlightPopup={setSearchFlightPopup}
-                                            reservation={reservationByKey}
-                                            journeyInfo={element}
-                                            setJourneyUpdate={setJourneyUpdate}
-                                            price={listPrice[index]}
-                                            listCharge={listCharge[index]}
-                                            reservationByKey={reservationByKey}
-                                            companyKey={companyKey}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="col-span-2 font-medium">
-                                <div className="border p-4 rounded-lg text-start h-full bg-white">
-                                    <div className=" flex justify-between items-center">
-                                        <div>
-                                            <p>
-                                                Tổng giá{' '}
-                                                <i className="text-sm text-gray-400 ml-2">
-                                                    (Đã bao gồm thuế, VAT và các chi phí khác)
-                                                </i>
-                                            </p>
+                                <ContactInfomation
+                                    reservation={reservationByKey}
+                                    setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
+                                />
+                                <div className="col-span-2">
+                                    <PassengerInfomation
+                                        setChangePassengerInfoPopup={setChangePassengerInfoPopup}
+                                        reservation={reservationByKey}
+                                        setPassengerSelect={setPassengerSelect}
+                                    />
+                                </div>
+                                <div
+                                    className={`col-span-2 grid ${
+                                        reservationByKey.journeys[1] ? 'grid-cols-2' : 'grid-cols-1'
+                                    } gap-4`}
+                                >
+                                    {notCancelJourneys?.map((element, index) => (
+                                        <div key={`journey-${element.key || index}`} className="col-span-2">
+                                            <FlightInfomation
+                                                legNumber={index}
+                                                setSearchFlightPopup={setSearchFlightPopup}
+                                                reservation={reservationByKey}
+                                                journeyInfo={element}
+                                                setJourneyUpdate={setJourneyUpdate}
+                                                price={listPrice[index]}
+                                                listCharge={listCharge[index]}
+                                                reservationByKey={reservationByKey}
+                                                companyKey={companyKey}
+                                            />
                                         </div>
-                                        <div>
-                                            <p>
-                                                <i>{totalPrice.toLocaleString()}</i> {currencySymbol}
-                                            </p>
+                                    ))}
+                                </div>
+                                <div className="col-span-2 font-medium">
+                                    <div className="border p-4 rounded-lg text-start h-full bg-white">
+                                        <div className=" flex justify-between items-center">
+                                            <div>
+                                                <p>
+                                                    Tổng giá{' '}
+                                                    <i className="text-sm text-gray-400 ml-2">
+                                                        (Đã bao gồm thuế, VAT và các chi phí khác)
+                                                    </i>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    <i>{totalPrice.toLocaleString()}</i> {currencySymbol}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="mt-1 flex justify-between items-center">
-                                        <div>
-                                            <p>Đã thanh toán</p>
+                                        <div className="mt-1 flex justify-between items-center">
+                                            <div>
+                                                <p>Đã thanh toán</p>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    <i>{amountPaid.toLocaleString()}</i> {currencySymbol}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p>
-                                                <i>{amountPaid.toLocaleString()}</i> {currencySymbol}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-1 flex justify-between items-center">
-                                        <div>
-                                            <p>Dư nợ</p>
-                                        </div>
-                                        <div>
-                                            <p>
-                                                <i>{debt.toLocaleString()}</i> {currencySymbol}
-                                            </p>
+                                        <div className="mt-1 flex justify-between items-center">
+                                            <div>
+                                                <p>Dư nợ</p>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    <i>{debt.toLocaleString()}</i> {currencySymbol}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {debt === 0 ? null : (
-                                <div className="col-span-2 bg-white rounded-md border p-2">
-                                    <h3 className="font-bold text-lg mb-4 mt-2 ml-2">Chọn phương thức thanh toán</h3>
+                                {debt === 0 ? null : (
+                                    <div className="col-span-2 bg-white rounded-md border p-2">
+                                        <h3 className="font-bold text-lg mb-4 mt-2 ml-2">Chọn phương thức thanh toán</h3>
 
-                                    <ListPaymentMethod
-                                        setPaymentMethod={setPaymentMethod}
-                                        listPaymentMethod={['AG', 'VJPVI', 'VJPMC', 'VJPAMEX', 'VJPJCB']}
-                                        useVoucher={false}
-                                    />
-                                    <InternationalCardInfoForm
-                                        cardInfo={cardInfo}
-                                        setCardInfo={setCardInfo}
-                                        billing={billing}
-                                        setBilling={setBilling}
-                                        show={
-                                            paymentMethod.identifier === 'VJPVI' ||
-                                            paymentMethod.identifier === 'VJPMC' ||
-                                            paymentMethod.identifier === 'VJPAMEX' ||
-                                            paymentMethod.identifier === 'VJPJCB'
-                                        }
-                                    />
-                                    <div>
-                                        <button
-                                            disabled={
-                                                !paymentMethod.identifier === 'AG' &&
-                                                !(
-                                                    (paymentMethod.identifier === 'VJPVI' ||
-                                                        paymentMethod.identifier === 'VJPMC' ||
-                                                        paymentMethod.identifier === 'VJPAMEX' ||
-                                                        paymentMethod.identifier === 'VJPJCB') &&
-                                                    billing.address &&
-                                                    billing.city &&
-                                                    billing.country &&
-                                                    billing.postalCode &&
-                                                    billing.phone &&
-                                                    cardInfo.cvv &&
-                                                    cardInfo.expiryDate &&
-                                                    cardInfo.cardName &&
-                                                    cardInfo.cardNumber
-                                                )
-                                                    ? true
-                                                    : false
+                                        <ListPaymentMethod
+                                            setPaymentMethod={setPaymentMethod}
+                                            listPaymentMethod={['AG', 'VJPVI', 'VJPMC', 'VJPAMEX', 'VJPJCB']}
+                                            useVoucher={false}
+                                        />
+                                        <InternationalCardInfoForm
+                                            cardInfo={cardInfo}
+                                            setCardInfo={setCardInfo}
+                                            billing={billing}
+                                            setBilling={setBilling}
+                                            show={
+                                                paymentMethod.identifier === 'VJPVI' ||
+                                                paymentMethod.identifier === 'VJPMC' ||
+                                                paymentMethod.identifier === 'VJPAMEX' ||
+                                                paymentMethod.identifier === 'VJPJCB'
                                             }
-                                            className={`${
-                                                ((reservationByKey?.bookingInformation.hold &&
-                                                    new Date(reservationByKey?.bookingInformation.hold.expiryTime) >
-                                                        today) ||
-                                                    !reservationByKey?.bookingInformation.hold) &&
-                                                (paymentMethod.identifier === 'AG' ||
-                                                    ((paymentMethod.identifier === 'VJPVI' ||
-                                                        paymentMethod.identifier === 'VJPMC' ||
-                                                        paymentMethod.identifier === 'VJPAMEX' ||
-                                                        paymentMethod.identifier === 'VJPJCB') &&
+                                        />
+                                        <div>
+                                            <button
+                                                disabled={
+                                                    !paymentMethod.identifier === 'AG' &&
+                                                    !(
+                                                        (paymentMethod.identifier === 'VJPVI' ||
+                                                            paymentMethod.identifier === 'VJPMC' ||
+                                                            paymentMethod.identifier === 'VJPAMEX' ||
+                                                            paymentMethod.identifier === 'VJPJCB') &&
                                                         billing.address &&
                                                         billing.city &&
                                                         billing.country &&
@@ -602,154 +580,178 @@ export default function BookingManagement() {
                                                         cardInfo.cvv &&
                                                         cardInfo.expiryDate &&
                                                         cardInfo.cardName &&
-                                                        cardInfo.cardNumber))
-                                                    ? ' border-blue-400 text-white bg-blue-400 hover:text-blue-400 hover:bg-white'
-                                                    : ' border-gray-400 text-white bg-gray-400'
-                                            } border-2 py-2 justify-center flex items-center font-semibold w-full rounded-md mt-4`}
-                                            onClick={() => {
-                                                handlePay();
-                                            }}
-                                        >
-                                            {reservationByKey?.bookingInformation.hold &&
-                                            new Date(reservationByKey?.bookingInformation.hold.expiryTime) < today
-                                                ? 'Đã hết hạn giữ chỗ'
-                                                : 'Thanh toán'}
-                                        </button>
-                                        <div id="galaxy-pay-sdk"></div>
+                                                        cardInfo.cardNumber
+                                                    )
+                                                        ? true
+                                                        : false
+                                                }
+                                                className={`${
+                                                    ((reservationByKey?.bookingInformation.hold &&
+                                                        new Date(reservationByKey?.bookingInformation.hold.expiryTime) >
+                                                            today) ||
+                                                        !reservationByKey?.bookingInformation.hold) &&
+                                                    (paymentMethod.identifier === 'AG' ||
+                                                        ((paymentMethod.identifier === 'VJPVI' ||
+                                                            paymentMethod.identifier === 'VJPMC' ||
+                                                            paymentMethod.identifier === 'VJPAMEX' ||
+                                                            paymentMethod.identifier === 'VJPJCB') &&
+                                                            billing.address &&
+                                                            billing.city &&
+                                                            billing.country &&
+                                                            billing.postalCode &&
+                                                            billing.phone &&
+                                                            cardInfo.cvv &&
+                                                            cardInfo.expiryDate &&
+                                                            cardInfo.cardName &&
+                                                            cardInfo.cardNumber))
+                                                        ? ' border-blue-400 text-white bg-blue-400 hover:text-blue-400 hover:bg-white'
+                                                        : ' border-gray-400 text-white bg-gray-400'
+                                                } border-2 py-2 justify-center flex items-center font-semibold w-full rounded-md mt-4`}
+                                                onClick={() => {
+                                                    handlePay();
+                                                }}
+                                            >
+                                                {reservationByKey?.bookingInformation.hold &&
+                                                new Date(reservationByKey?.bookingInformation.hold.expiryTime) < today
+                                                    ? 'Đã hết hạn giữ chỗ'
+                                                    : 'Thanh toán'}
+                                            </button>
+                                            <div id="galaxy-pay-sdk"></div>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ) : reservationByKey && activeTab === 1 ? (
-                    <div className="flex items-start">
-                        <div className="flex-grow bg-white p-4 rounded">
-                            {addServiceTab == '' ? (
-                                <div className="">
-                                    <div className="mb-4">
-                                        <ReservationInformation
-                                            reservation={reservationByKey}
-                                            reservationByLocator={reservationByLocator}
-                                            debt={debt}
-                                        />
+                    ) : reservationByKey && activeTab === 1 ? (
+                        <div className="flex items-start">
+                            <div className="flex-grow bg-white p-4 rounded">
+                                {addServiceTab == '' ? (
+                                    <div className="">
+                                        <div className="mb-4">
+                                            <ReservationInformation
+                                                reservation={reservationByKey}
+                                                reservationByLocator={reservationByLocator}
+                                                debt={debt}
+                                            />
+                                        </div>
+                                        <div>
+                                            <ContactInfomation
+                                                reservation={reservationByKey}
+                                                setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <ContactInfomation
-                                            reservation={reservationByKey}
-                                            setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
-                                        />
-                                    </div>
-                                </div>
-                            ) : addServiceTab == 'Mua chỗ ngồi' ? (
-                                <SelectSeatForm
-                                    body={body}
-                                    setRefetch={setRefetch}
-                                    refetch={refetch}
-                                    companyKey={companyKey}
-                                    listAllJourneySeatOptions={listAllJourneySeatOptions}
-                                    currency={currency}
-                                    exchangeRate={exchangeRate}
-                                />
-                            ) : addServiceTab == 'Mua hành lý' ? (
-                                <SelectBaggageForm
-                                    body={body}
-                                    setRefetch={setRefetch}
-                                    refetch={refetch}
-                                    companyKey={companyKey}
-                                    listAllJourneyBaggageOptions={listAllJourneyBaggageOptions}
-                                    currency={currency}
-                                    exchangeRate={exchangeRate}
-                                />
-                            ) : (
-                                <SelectMealForm
-                                    body={body}
-                                    setRefetch={setRefetch}
-                                    refetch={refetch}
-                                    companyKey={companyKey}
-                                    listAllJourneyMealOptions={listAllJourneyMealOptions}
-                                    currency={currency}
-                                    exchangeRate={exchangeRate}
-                                />
-                            )}
-                        </div>
-                        <div className="bg-white w-[320px] ml-4 p-4 pt-0 rounded">
-                            <button
-                                onClick={() => setAddServiceTab('Mua chỗ ngồi')}
-                                className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
-                            >
-                                Mua chỗ ngồi
-                            </button>
-                            <button
-                                onClick={() => setAddServiceTab('Mua hành lý')}
-                                className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
-                            >
-                                Mua hành lý
-                            </button>
-                            <button
-                                onClick={() => setAddServiceTab('Mua suất ăn')}
-                                className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
-                            >
-                                Mua suất ăn
-                            </button>
-                            <button
-                                onClick={() => setSearchFlightPopup('add')}
-                                className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
-                            >
-                                Thêm chặng bay
-                            </button>
-                            {reservationByKey.passengers.length > 1 && (
+                                ) : addServiceTab == 'Mua chỗ ngồi' ? (
+                                    <SelectSeatForm
+                                        body={body}
+                                        setRefetch={setRefetch}
+                                        refetch={refetch}
+                                        companyKey={companyKey}
+                                        listAllJourneySeatOptions={listAllJourneySeatOptions}
+                                        currency={currency}
+                                        exchangeRate={exchangeRate}
+                                    />
+                                ) : addServiceTab == 'Mua hành lý' ? (
+                                    <SelectBaggageForm
+                                        body={body}
+                                        setRefetch={setRefetch}
+                                        refetch={refetch}
+                                        companyKey={companyKey}
+                                        listAllJourneyBaggageOptions={listAllJourneyBaggageOptions}
+                                        currency={currency}
+                                        exchangeRate={exchangeRate}
+                                    />
+                                ) : (
+                                    <SelectMealForm
+                                        body={body}
+                                        setRefetch={setRefetch}
+                                        refetch={refetch}
+                                        companyKey={companyKey}
+                                        listAllJourneyMealOptions={listAllJourneyMealOptions}
+                                        currency={currency}
+                                        exchangeRate={exchangeRate}
+                                    />
+                                )}
+                            </div>
+                            <div className="bg-white w-[320px] ml-4 p-4 pt-0 rounded">
                                 <button
-                                    onClick={() => setOpenSplitPassengersPopup(true)}
+                                    onClick={() => setAddServiceTab('Mua chỗ ngồi')}
                                     className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
                                 >
-                                    Tách hành khách
+                                    Mua chỗ ngồi
                                 </button>
-                            )}
-                            <button
-                                onClick={sendItineraryEmail}
-                                className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
-                            >
-                                Gửi mail hành trình
-                            </button>
+                                <button
+                                    onClick={() => setAddServiceTab('Mua hành lý')}
+                                    className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
+                                >
+                                    Mua hành lý
+                                </button>
+                                <button
+                                    onClick={() => setAddServiceTab('Mua suất ăn')}
+                                    className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
+                                >
+                                    Mua suất ăn
+                                </button>
+                                <button
+                                    onClick={() => setSearchFlightPopup('add')}
+                                    className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
+                                >
+                                    Thêm chặng bay
+                                </button>
+                                {reservationByKey.passengers.length > 1 && (
+                                    <button
+                                        onClick={() => setOpenSplitPassengersPopup(true)}
+                                        className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
+                                    >
+                                        Tách hành khách
+                                    </button>
+                                )}
+                                <button
+                                    onClick={sendItineraryEmail}
+                                    className="py-2 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-white font-bold w-full mt-4"
+                                >
+                                    Gửi mail hành trình
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ) : null}
-                <SearchFlightPopup
-                    searchFlightPopup={searchFlightPopup}
-                    setSearchFlightPopup={setSearchFlightPopup}
-                    journeyUpdate={journeyUpdate}
-                    reservationByKey={reservationByKey}
-                />
-                <UpdatePassengerInfomationPopup
-                    changePassengerInfoPopup={changePassengerInfoPopup}
-                    setChangePassengerInfoPopup={setChangePassengerInfoPopup}
-                    reservationKey={reservationKey}
-                    reservationByKey={reservationByKey}
-                    companyKey={companyKey}
-                    passengerSelect={passengerSelect}
-                    setPassengerSelect={setPassengerSelect}
-                />
-                <AddPassengerPopup
-                    addPassengerInfoPopup={addPassengerInfoPopup}
-                    setAddPassengerInfoPopup={setAddPassengerInfoPopup}
-                    reservationKey={reservationKey}
-                    reservationByKey={reservationByKey}
-                    companyKey={companyKey}
-                    currency={currency}
-                    exchangeRate={exchangeRate}
-                />
-                <UpdateBookingInfomationPopup
-                    updateBookingInfomationPopup={updateBookingInfomationPopup}
-                    setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
-                    reservationKey={reservationKey}
-                    reservationByKey={reservationByKey}
-                    companyKey={companyKey}
-                />
-                <SplitPassengersPopup
-                    openSplitPassengersPopup={openSplitPassengersPopup}
-                    setOpenSplitPassengersPopup={setOpenSplitPassengersPopup}
-                    reservationByKey={reservationByKey}
-                />
+                    ) : null}
+                    <SearchFlightPopup
+                        searchFlightPopup={searchFlightPopup}
+                        setSearchFlightPopup={setSearchFlightPopup}
+                        journeyUpdate={journeyUpdate}
+                        reservationByKey={reservationByKey}
+                    />
+                    <UpdatePassengerInfomationPopup
+                        changePassengerInfoPopup={changePassengerInfoPopup}
+                        setChangePassengerInfoPopup={setChangePassengerInfoPopup}
+                        reservationKey={reservationKey}
+                        reservationByKey={reservationByKey}
+                        companyKey={companyKey}
+                        passengerSelect={passengerSelect}
+                        setPassengerSelect={setPassengerSelect}
+                    />
+                    <AddPassengerPopup
+                        addPassengerInfoPopup={addPassengerInfoPopup}
+                        setAddPassengerInfoPopup={setAddPassengerInfoPopup}
+                        reservationKey={reservationKey}
+                        reservationByKey={reservationByKey}
+                        companyKey={companyKey}
+                        currency={currency}
+                        exchangeRate={exchangeRate}
+                    />
+                    <UpdateBookingInfomationPopup
+                        updateBookingInfomationPopup={updateBookingInfomationPopup}
+                        setUpdateBookingInfomationPopup={setUpdateBookingInfomationPopup}
+                        reservationKey={reservationKey}
+                        reservationByKey={reservationByKey}
+                        companyKey={companyKey}
+                    />
+                    <SplitPassengersPopup
+                        openSplitPassengersPopup={openSplitPassengersPopup}
+                        setOpenSplitPassengersPopup={setOpenSplitPassengersPopup}
+                        reservationByKey={reservationByKey}
+                    />
+                </div>
             </div>
         </main>
     );

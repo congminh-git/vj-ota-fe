@@ -1,8 +1,32 @@
 /* ===== Base ===== */
 .prose {
   background-color: white;
-  max-width: none;
+  max-width: none !important;
   margin-top: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Quan trọng: đảm bảo prose không vượt quá container */
+  width: 100%;
+  min-width: 0;
+  /* Font size responsive */
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Desktop font size */
+@media (min-width: 640px) {
+  .prose {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
+
+@media (min-width: 1024px) {
+  .prose {
+    font-size: 1.125rem;
+    line-height: 1.75;
+  }
 }
 
 /* ===== Headings ===== */
@@ -11,21 +35,135 @@
 .prose h3,
 .prose h4 {
   scroll-margin-top: 6rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.prose h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.prose h4 {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .prose h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .prose h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .prose h3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    scroll-margin-top: 8rem;
+  }
 }
 
 /* ===== Paragraph ===== */
 .prose p {
   margin-top: 1em;
   margin-bottom: 1em;
+  max-width: 100%;
 }
 
 /* ===== Links ===== */
 .prose a {
   font-weight: 500;
   text-decoration: none;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  /* Đảm bảo link dài không làm tràn */
+  display: inline;
+  max-width: 100%;
 }
 .prose a:hover {
   text-decoration: underline;
+}
+
+/* Download cards và special links */
+.prose a.download-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  transition: background-color 0.2s;
+  word-break: normal;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.prose a.download-card:hover {
+  background-color: #f8fafc;
+  text-decoration: none;
+}
+
+.prose a.download-card svg {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.prose a.download-card > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.prose a.download-card .font-medium {
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+  overflow-wrap: break-word;
+}
+
+.prose a.download-card .text-sm {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Special flex links */
+.prose a[class*="flex"] {
+  word-break: normal;
+  overflow: hidden;
 }
 
 /* ===== Lists ===== */
@@ -34,6 +172,12 @@
 }
 .prose ol > li::marker {
   font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 /* ===== Task list ===== */
@@ -47,6 +191,10 @@
   background: #f8fafc;
   padding: 0.75rem 1rem;
   font-style: normal;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* ===== Code inline ===== */
@@ -55,6 +203,9 @@
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-weight: 500;
+  word-break: break-all;
+  white-space: pre-wrap;
+  max-width: 100%;
 }
 
 /* ===== Code block ===== */
@@ -64,33 +215,84 @@
   border-radius: 0.75rem;
   padding: 1rem;
   overflow-x: auto;
+  font-size: 0.875rem;
+  /* CRITICAL: Đảm bảo pre không vượt quá container */
+  max-width: 100%;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+  /* CRITICAL: Force text wrapping trong pre */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  /* Giữ format cho code thực sự, nhưng cho phép wrap nếu cần */
+  white-space: inherit;
+  word-break: normal;
+  display: block;
 }
 
 /* ===== Tables ===== */
 .prose table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-left: 0;
+  margin-right: 0;
   border-collapse: collapse;
 }
+
+/* Wrapper để table scroll tốt hơn */
+.prose > table {
+  min-width: 0;
+}
+
 .prose th,
 .prose td {
   border: 1px solid #e5e7eb;
   padding: 0.5rem 0.75rem;
+  /* Cho phép text wrap trong cell */
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  /* Min width để table không quá nhỏ */
+  min-width: 80px;
 }
+
 .prose th {
   background: #f8fafc;
   font-weight: 600;
 }
 
+/* Cho phép table scroll horizontal nếu quá rộng */
+.prose table tbody {
+  display: table-row-group;
+}
+
+.prose table thead {
+  display: table-header-group;
+}
+
 /* ===== Images ===== */
 .prose img {
-  margin: 2rem auto;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* ===== HR ===== */
 .prose hr {
   border-color: #e5e7eb;
+  max-width: 100%;
 }
 
 /* ===== KBD ===== */
@@ -101,7 +303,6 @@
   padding: 0.1em 0.4em;
   font-size: 0.875em;
 }
-
 
 /* TOC scrollbar styling */
 aside nav {
@@ -124,4 +325,50 @@ aside nav::-webkit-scrollbar-thumb {
 
 aside nav::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
+}
+
+/* ===== Mobile specific fixes ===== */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  .prose h1 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  
+  .prose h2 {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .prose h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .prose pre {
+    padding: 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    /* CRITICAL: Cho phép pre wrap trên mobile */
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+  
+  .prose table {
+    font-size: 0.875rem;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    width: calc(100% + 0.5rem);
+    max-width: calc(100% + 0.5rem);
+  }
+
+  .prose blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.5rem 0.75rem;
+  }
 }

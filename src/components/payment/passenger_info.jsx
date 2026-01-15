@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { ChevronDown } from '../icons/chevronDown';
+import { ChevronUp } from '../icons/chevronUp';
 
 export default function PassengersInfomation({ listPassengers }) {
     const [showInfo, setShowInfo] = useState(false);
@@ -13,29 +15,11 @@ export default function PassengersInfomation({ listPassengers }) {
                 className="flex items-center bg-sky-400 w-full p-2 border-b rounded"
             >
                 <span className="mr-2 text-white font-bold">Thông tin hành khách</span>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className={`size-4 mr-2 ${showInfo ? 'hidden' : 'block'}`}
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className={`size-4 mr-2 ${showInfo ? 'block' : 'hidden'}`}
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                </svg>
+                <ChevronDown className={`size-4 mr-2 ${showInfo ? 'hidden' : 'block'}`} strokeWidth={"2"}/>
+                <ChevronUp className={`size-4 mr-2 ${showInfo ? 'block' : 'hidden'}`} strokeWidth={"2"}/>
             </button>
             <div className={`p-3 border-b ${showInfo ? 'block' : 'hidden'}`}>
-                <div className="grid grid-cols-3 gap-4 font-medium">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-medium">
                     <div className="col-span-1 text-sm">
                         <p>Người lớn (x{listPassengers?.listAdult.length})</p>
                         {listPassengers?.listAdult.map((item, index) => {

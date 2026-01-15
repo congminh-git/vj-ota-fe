@@ -1,10 +1,13 @@
 'use client';
 
-import Icon from '../icon';
-import { faSuitcase, faPercent, faTicket, faShield, faSlash } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { fareRule } from '@/lib/fareRule';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
+import { ChevronDown } from '../icons/chevronDown';
+import { CircleCheck } from '../icons/circleCheck';
+import { CircleXMark } from '../icons/circleXMark';
+import { ChevronUp } from '../icons/chevronUp';
+import { parseNgayThang, tinhThoiGianBay} from '@/lib/dateTime'
 
 function FlightItem({
     flightItemData,
@@ -17,6 +20,7 @@ function FlightItem({
     roundTrip,
     direction,
     setActiveSelectFlight,
+    setRefetchData,
 }) {
     const [tab, setTab] = useState(0);
     const [tabFareOption, setTabFareOption] = useState(0);
@@ -38,7 +42,8 @@ function FlightItem({
         const button = event.target;
         const element = button.closest('.ticket-item');
         const detail = element.querySelector('.chi-tiet-item');
-        detail.style.display = 'grid';
+        detail.classList.remove('h-0');
+        detail.classList.add('h-fit', 'sm:p-4', 'p-2');
         button.style.display = 'none';
     };
 
@@ -47,7 +52,8 @@ function FlightItem({
         const element = button.closest('.ticket-item');
         const detail = element.querySelector('.chi-tiet-item');
         const showBtn = element.querySelector('.show-detail-btn');
-        detail.style.display = 'none';
+        detail.classList.remove('h-fit', 'sm:p-4', 'p-2');
+        detail.classList.add('h-0');
         showBtn.style.display = 'flex';
     };
 
@@ -56,7 +62,8 @@ function FlightItem({
         const element = button.closest('.ticket-item');
         const showDetailBtn = element.querySelector('.show-detail-btn');
         const detail = element.querySelector('.chi-tiet-item');
-        detail.style.display = 'grid';
+        detail.classList.remove('h-0');
+        detail.classList.add('h-fit', 'sm:p-4', 'p-2');
         showDetailBtn.style.display = 'none';
         setTab(1);
     };
@@ -75,10 +82,12 @@ function FlightItem({
         const element = button.closest('.ticket-item');
         const showDetailBtn = element.querySelector('.show-detail-btn');
         const detail = element.querySelector('.chi-tiet-item');
-        detail.style.display = 'none';
+        detail.classList.remove('h-fit', 'sm:p-4', 'p-2');
+        detail.classList.add('h-0');
         showDetailBtn.style.display = 'block';
         if (direction == 'đi' && roundTrip) {
             setActiveSelectFlight('về');
+            setRefetchData(true);
         }
     };
 
@@ -102,7 +111,7 @@ function FlightItem({
             setFareOptions(validFareOptions);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [])
 
     return (
         <div
@@ -112,33 +121,28 @@ function FlightItem({
                     : 'hover:border-sky-400 border-transparent'
             } ticket-item border-2 mb-2 rounded-md`}
         >
-            <div className="sm:p-4 p-2 bg-white rounded-md grid grid-cols-3 cursor-pointer">
-                <div className="flex justify-start items-center">
-                    <div className='w-[44px] h-[44px] bg-cover bg-[url("/VJ.png")]'></div>
-                    <div className="ml-4">
+            <div className="sm:p-4 p-2 bg-white rounded-md grid grid-cols-2 sm:grid-cols-3 cursor-pointer">
+                <div className="justify-start items-center hidden sm:flex">
+                    <div>
+                        <div className='w-[44px] h-[44px] bg-cover bg-[url("/globalImages/VJ.png")]'></div>
+                        <p className="text-sm text-gray-700">{`${flightItemData?.flights[0].airlineCode} ${flightItemData?.flights[0].flightNumber}`}</p>
+                    </div>
+                    
+                    <div className="hidden sm:block sm:ml-4">
                         <p className="font-medium">
                             <i>Vietjet Air</i>
                         </p>
                         <p className="text-sm text-gray-700">{`${flightItemData?.flights[0].airlineCode} ${flightItemData?.flights[0].flightNumber}`}</p>
                         <button
                             onClick={(event) => showFlightDetail(event)}
-                            className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center"
+                            className="hidden show-detail-btn text-xs text-blue-400 font-semibold sm:flex justify-start items-center"
                         >
                             Chi tiết vé
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                className="w-3 h-3 ml-1"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
+                            <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                         </button>
                     </div>
                 </div>
-                <div>
+                <div className='col-span-1'>
                     <div className={`grid grid-cols-5 ${flightItemData?.flights[1] ? 'h-1/2' : 'h-full'}`}>
                         <div className="col-span-1">
                             <div className="h-1/3 font-semibold">
@@ -193,20 +197,7 @@ function FlightItem({
                                     className="show-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center"
                                 >
                                     Chi tiết vé
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="w-3 h-3 ml-1"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                                        />
-                                    </svg>
+                                    <ChevronDown className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                                 </button>
                             </div>
                         </div>
@@ -254,7 +245,7 @@ function FlightItem({
                     <></>
                 )}
                 <div className="flex justify-end items-center">
-                    <div className="mr-2">
+                    <div className="mr-4 hidden sm:block">
                         {fareOptions?.[tabFareOption]?.promoCodeApplied ? (
                             <>
                                 <p className="text-md font-semibold text-sky-400 text-end">
@@ -277,19 +268,42 @@ function FlightItem({
                             </p>
                         )}
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center w-full sm:w-fit">
                         <button
                             onClick={(event) => handleSelect(event)}
-                            className={` bg-sky-400 text-white text-sm font-semibold rounded-md hover:bg-sky-300 py-4 px-6 flex justify-between items-center`}
+                            className={`w-full sm:w-fit ml-10 sm:ml-0 bg-sky-400 text-white text-sm font-semibold rounded-md hover:bg-sky-300 p-2 py-4 sm:p-4 flex justify-center sm:justify-between items-center transition-all`}
                         >
-                            <i>Chọn</i>
+                            <div className='block sm:hidden mr-2'>
+                                {fareOptions?.[tabFareOption]?.promoCodeApplied ? (
+                                    <>
+                                        <p className="text-md font-semibold text-white text-end">
+                                            <span>
+                                                {fareOptions?.[tabFareOption]?.totalAdult.toLocaleString()} {currencySymbol}
+                                            </span>
+                                        </p>
+                                        <p className="text-xs text-gray-500 text-end line-through">
+                                            {(
+                                                fareOptions?.[tabFareOption]?.totalAdult +
+                                                fareOptions?.[tabFareOption]?.discountAmount +
+                                                fareOptions?.[tabFareOption]?.discountAmount * 0.1
+                                            ).toLocaleString()}{' '}
+                                            {currencySymbol}
+                                        </p>
+                                    </>
+                                ) : (
+                                    <p className="text-md font-semibold text-white text-end">
+                                        {fareOptions?.[tabFareOption]?.totalAdult.toLocaleString()} {currencySymbol}
+                                    </p>
+                                )}
+                            </div>
+                            <i className='hidden sm:block'>Giá vé</i>
+                            <ChevronDown className={"w-4 h-4 block sm:hidden"} strokeWidth={"2"}/>
                         </button>
                     </div>
                 </div>
             </div>
             <div
-                className="chi-tiet-item p-4 bg-white rounded-md text-xs font-medium border-t"
-                style={{ display: 'none' }}
+                className="chi-tiet-item bg-white rounded-md text-xs font-medium border-t transition-[height] duration-1000 ease-in-out h-0 overflow-hidden"
             >
                 <div className="w-full flex justify-start mb-4 text-sm border-b">
                     <button
@@ -349,20 +363,7 @@ function FlightItem({
                         ].apply.map((rule, index) => {
                             return (
                                 <p key={`rule-apply-${index}`} className="mt-2 flex justify-start items-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="h-6 w-6 text-green-500 block flex-shrink-0"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                        />
-                                    </svg>
+                                    <CircleCheck className={"h-6 w-6 text-green-500 block flex-shrink-0"} strokeWidth={"2"} />
                                     <span className="ml-2 text-sm">{rule}</span>
                                 </p>
                             );
@@ -392,20 +393,7 @@ function FlightItem({
                                             key={`rule-not-apply-${index}`}
                                             className="mt-2 flex justify-start items-center"
                                         >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                className="h-6 w-6 text-red-500 block flex-shrink-0"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                />
-                                            </svg>
+                                            <CircleXMark className={"h-6 w-6 text-red-500 block flex-shrink-0"} strokeWidth={"2"} />
                                             <span className="ml-2 text-sm">{rule}</span>
                                         </p>
                                     );
@@ -418,7 +406,7 @@ function FlightItem({
                 </div>
 
                 {/* Tab 2 */}
-                <div className={`${tab == 1 ? 'block' : 'hidden'} p-4 rounded border bg-gray-50`}>
+                <div className={`${tab == 1 ? 'block' : 'hidden'} p-0 sm:p-4 rounded border bg-gray-50`}>
                     <div className="relative overflow-x-auto mt-4">
                         <table className="w-full text-sm text-center rtl:text-right text-gray-500 border">
                             <thead className="text-xs text-gray-700 bg-gray-50 border">
@@ -499,38 +487,6 @@ function FlightItem({
                                         </td>
                                     </tr>
                                 ) : null}
-                                {/* <tr className="bg-white">
-                                    <th
-                                        scope="row"
-                                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                                    >
-                                        Tổng cộng
-                                    </th>
-                                    <td className="px-6 py-4">
-                                        {(
-                                            fareOptions?.[tabFareOption]?.priceAdult * adult +
-                                            fareOptions?.[tabFareOption]?.priceChild * child +
-                                            fareOptions?.[tabFareOption]?.priceInfant * infant
-                                        ).toLocaleString()}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {(
-                                            fareOptions?.[tabFareOption]?.totalAdult * adult +
-                                            fareOptions?.[tabFareOption]?.totalChild * child +
-                                            fareOptions?.[tabFareOption]?.totalInfant * infant -
-                                            fareOptions?.[tabFareOption]?.priceAdult * adult -
-                                            fareOptions?.[tabFareOption]?.priceChild * child -
-                                            fareOptions?.[tabFareOption]?.priceInfant * infant
-                                        ).toLocaleString()}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {(
-                                            fareOptions?.[tabFareOption]?.totalAdult * adult +
-                                            fareOptions?.[tabFareOption]?.totalChild * child +
-                                            fareOptions?.[tabFareOption]?.totalInfant * infant
-                                        ).toLocaleString()}
-                                    </td>
-                                </tr> */}
                             </tbody>
                         </table>
                     </div>
@@ -541,16 +497,7 @@ function FlightItem({
                         className="hide-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center"
                     >
                         Ẩn
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-3 h-3 ml-1"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                        </svg>
+                        <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"}/>
                     </button>
                 </div>
                 <div className={`mt-4 flex justify-between ${tab == 1 ? 'block' : 'hidden'}`}>
@@ -559,16 +506,7 @@ function FlightItem({
                         className="hide-detail-btn text-xs text-blue-400 font-semibold flex justify-start items-center"
                     >
                         Ẩn
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-3 h-3 ml-1"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                        </svg>
+                        <ChevronUp className={"w-3 h-3 ml-1"} strokeWidth={"2"} />
                     </button>
 
                     <button
@@ -584,28 +522,3 @@ function FlightItem({
 }
 
 export default FlightItem;
-
-export const parseNgayThang = (input) => {
-    if (typeof input === 'string') {
-        let [datePart, timePart] = input.split(' ');
-        let [year, month, day] = datePart.split('-');
-        return {
-            date: `${day}-${month}-${year}`,
-            time: timePart.split(':').slice(0, 2).join(':'),
-        };
-    } else {
-        return {
-            date: null,
-            time: null,
-        };
-    }
-};
-
-export function tinhThoiGianBay(startTime, endTime) {
-    let start = new Date(startTime);
-    let end = new Date(endTime);
-    let timeDiff = Math.abs(end - start);
-    let hours = Math.floor(timeDiff / 3600000);
-    let minutes = Math.floor((timeDiff % 3600000) / 60000);
-    return `${hours}h${minutes}`;
-}

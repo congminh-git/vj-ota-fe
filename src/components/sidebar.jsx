@@ -6,9 +6,18 @@ import { ChevronLeft, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import './sidebar.css';
 import path from 'path';
+import { ChevronDoubleLeft } from './icons/chevronDoubleLeft';
+import { ChevronDoubleRight } from './icons/chevronDoubleRight';
+import { Plane } from './icons/plane';
+import { Ticket } from './icons/ticket';
+import { Swagger } from './icons/swagger';
+import { BookOpen } from './icons/bookOpen';
+import { Bar3 } from './icons/bar3';
+import MobileSidebarPopup from './mobileSidebar';
 
 function Sidebar() {
     const [open, setOpen] = useState(false);
+    const [openMobileSidebar, setOpenMobileSidebar] = useState(false);
     const [selected, setSelected] = useState('tim-chuyen');
     const [isDocs, setIsDocs] = useState(false);
     const popupRef = useRef(null);
@@ -26,6 +35,10 @@ function Sidebar() {
     const handleMouseEnter = () => {
         setOpen(true);
     };
+
+    const handleOpenMobileSidebar = () => {
+        setOpenMobileSidebar(!openMobileSidebar);
+    }
 
     useEffect(() => {
         function handleClick(event) {
@@ -66,7 +79,7 @@ function Sidebar() {
                 <div
                     className={`${
                         open ? 'sm:w-72' : 'sm:w-16'
-                    } bg-white shadow-lg sm:shadow-none w-full border-r fixed left-0 top-0 side-bar px-2 sm:px-0 flex sm:block justify-between items-center`}
+                    } bg-white shadow-lg sm:shadow-none w-full border-r fixed left-0 top-0 side-bar px-2 sm:px-0 flex sm:block justify-between items-center z-50`}
                 >
                     <div
                         className={`lg:w-full p-2 flex ${
@@ -92,42 +105,31 @@ function Sidebar() {
                             onClick={smallSideBar}
                             className={`text-sky-400 hidden ${open ? 'sm:block' : 'sm:hidden'}`}
                         >
-                            <svg
-                                className="h-4 w-4"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" /> <polyline points="11 7 6 12 11 17" />{' '}
-                                <polyline points="17 7 12 12 17 17" />
-                            </svg>
+                            <ChevronDoubleLeft className={"h-4 w-4"} strokeWidth={"2"} />
                         </button>
                         <button
                             onClick={bigSideBar}
                             className={`text-sky-400 hidden ${open ? 'sm:hidden' : 'sm:block'}`}
                         >
-                            <svg
-                                className="h-4 w-4"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" /> <polyline points="7 7 12 12 7 17" />{' '}
-                                <polyline points="13 7 18 12 13 17" />
-                            </svg>
+                            <ChevronDoubleRight className={"h-4 w-4"} strokeWidth={"2"} />
                         </button>
                     </div>
-                    <div className="sm:mt-2 sm:block flex justify-between items-center">
+                    <div className='mobile-sidebar class sm:hidden flex'>
+                        <button onClick={()=>{handleOpenMobileSidebar()}} className='p-4 hover:bg-sky-200 hover:text-sky-400 rounded-lg'>
+                            <Bar3 className={"size-6"} strokeWidth={"2"}/>
+                        </button>
+                        {openMobileSidebar && (
+                            <MobileSidebarPopup
+                                openMobileSidebar={openMobileSidebar}
+                                setOpenMobileSidebar={setOpenMobileSidebar}
+                                isDocs={isDocs}
+                                setIsDocs={setIsDocs}
+                                pathName={pathName}
+                                selected={selected}
+                            />
+                        )}
+                    </div>
+                    <div className="sm:mt-2 hidden sm:block justify-between items-center">
                         <button
                             className={`flex ${
                                 open ? 'justify-start' : 'justify-center'
@@ -138,25 +140,7 @@ function Sidebar() {
                             } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
                         >
                             <Link className="flex items-center" href="/">
-                                <svg
-                                    className={`h-5 w-5 ${open ? 'mr-2' : 'mr-0'}`}
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="2"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    {' '}
-                                    <path stroke="none" d="M0 0h24v24H0z" />{' '}
-                                    <path
-                                        d="M15 12h5a2 2 0 0 1 0 4h-15l-3 -6h3l2 2h3l-2 -7h3z"
-                                        transform="rotate(-15 12 12) translate(0 -1)"
-                                    />{' '}
-                                    <line x1="3" y1="21" x2="21" y2="21" />
-                                </svg>
+                                <Plane className={`h-5 w-5 ${open ? 'mr-2' : 'mr-0'}`} strokeWidth={"2"} />
                                 <span className={`text-sm font-semibold ${open ? 'block' : 'hidden'}`}>
                                     <span>Tìm chuyến bay</span>
                                 </span>
@@ -172,21 +156,7 @@ function Sidebar() {
                             } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
                         >
                             <Link className="flex items-center" href="/booking-management">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
-                                    />
-                                </svg>
-
+                                <Ticket className={`size-5 ${open ? 'mr-2' : 'mr-0'}`} strokeWidth={"2"} />
                                 <span className={`text-sm font-semibold ${open ? 'block' : 'hidden'}`}>
                                     <span>Quản lý booking</span>
                                 </span>
@@ -203,31 +173,9 @@ function Sidebar() {
                         >
                             <Link
                                 className="flex items-center"
-                                href={process.env.NEXT_PUBLIC_PUBLICAPI_URL + '/api-docs'}
+                                href='/api-docs'
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
-                                >
-                                    <circle cx="12" cy="12" r="9" />
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M9 8c-1 .5-2 2-2 4s1 3.5 2 4"
-                                    />
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M15 8c1 .5 2 2 2 4s-1 3.5-2 4"
-                                    />
-                                    <circle cx="10.5" cy="12" r="0.8" />
-                                    <circle cx="12" cy="12" r="0.8" />
-                                    <circle cx="13.5" cy="12" r="0.8" />
-                                </svg>
+                                <Swagger className={`size-5 ${open ? 'mr-2' : 'mr-0'}`} strokeWidth={"2"}/>
                                 <span className={`text-sm font-semibold ${open ? 'block' : 'hidden'}`}>
                                     <span>API swagger</span>
                                 </span>
@@ -243,20 +191,7 @@ function Sidebar() {
                             } cursor-pointer p-3 w-full text-start mr-2 sm:mr-0`}
                         >
                             <Link className="flex items-center" href="/docs">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className={`size-5 ${open ? 'mr-2' : 'mr-0'}`}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-                                    />
-                                </svg>
+                                <BookOpen className={`size-5 ${open ? 'mr-2' : 'mr-0'}`} strokeWidth={"2"}/>
                                 <span
                                     className={`text-sm font-semibold ${
                                         open ? 'flex justify-between items-center' : 'hidden'

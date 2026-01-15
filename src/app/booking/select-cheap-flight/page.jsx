@@ -54,7 +54,7 @@ export default function AddService() {
                     selectDepartureDay ? selectDepartureDay : departmentDate,
                 );
                 sessionStorage.setItem('returnDateSearchParamUpdate', selectReturnDay ? selectReturnDay : returnDate);
-                router.push('/booking/select-flightt');
+                router.push('/booking/select-flight');
             } else {
                 toast.error("Ngày về phải lớn hơn hoặc bằng ngày đi");
             }
@@ -69,7 +69,7 @@ export default function AddService() {
                 selectDepartureDay ? selectDepartureDay : departmentDate,
             );
             sessionStorage.setItem('returnDateSearchParamUpdate', selectReturnDay ? selectReturnDay : returnDate);
-            router.push('/booking/select-flightt');
+            router.push('/booking/select-flight');
         }
     };
 
@@ -147,7 +147,7 @@ export default function AddService() {
     return (
         <>
             {cityPair ? (
-                <main className="relative">
+                <main className="relative mt-[58px] sm:mt-0">
                     <Steps />
                     <div className="flex flex-wrap justify-center p-4 min-h-screen bg-gray-100 border shadow">
                         <div className={` w-full max-w-[1200px]`}>
@@ -155,7 +155,7 @@ export default function AddService() {
                                 <Breadcrumb listBreadcrumb={listBreadcrumb} />
                             </div>
                             <div className="grid grid-cols-7 gap-8">
-                                <div className="col-span-5">
+                                <div className="col-span-7 sm:col-span-5">
                                     {departmentDate ? (
                                         <div>
                                             <p className="mb-2 text-gray-700 font-semibold">
@@ -173,7 +173,7 @@ export default function AddService() {
                                                     paramStr={'departmentDate'}
                                                 />
                                             </div>
-                                            <div className="flex justify-end mt-4">
+                                            <div className="flex justify-between sm:justify-end mt-4 text-sm sm:text-base">
                                                 <div className="flex justify-between items-center">
                                                     <span className="block w-8 h-8 bg-lime-300 rounded"></span>
                                                     <span className="ml-2">Giá vé thấp nhất</span>
@@ -242,13 +242,13 @@ export default function AddService() {
                                     <div className="flex justify-center mt-8">
                                         <button
                                             onClick={navigateToListFlight}
-                                            className={`bg-sky-500 rounded text-white text-sm font-semibold px-10 py-2 mt-4`}
+                                            className={`bg-sky-500 rounded text-white text-sm font-semibold px-10 py-2 mt-4 transition-all`}
                                         >
                                             Tiếp theo
                                         </button>
                                     </div>
                                 </div>
-                                <div className="col-span-2">
+                                <div className="col-span-2 hidden sm:block">
                                     <PriceInfomation
                                         adult={adult}
                                         child={child}

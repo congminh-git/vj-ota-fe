@@ -3,6 +3,7 @@
 import { getCountries } from '@/services/country/functions';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { CircleFullBG } from '../icons/circleFullBg';
 
 export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod, useVoucher }) {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -48,14 +49,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"} />
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">
@@ -91,14 +85,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"}/>
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">
@@ -134,14 +121,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"}/>
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">
@@ -177,14 +157,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"}/>
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">
@@ -220,14 +193,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"}/>
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">
@@ -256,14 +222,7 @@ export default function ListPaymentMethod({ setPaymentMethod, listPaymentMethod,
                                 }}
                             />
                             <span className="absolute text-blue-500 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                >
-                                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                </svg>
+                                <CircleFullBG className={"h-3.5 w-3.5"}/>
                             </span>
                         </label>
                         <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="html">

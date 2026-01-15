@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAuth } from 'hooks/useAuth';
+import { SignalBars } from './icons/signalBars';
 
 function Header() {
     useAuth();
@@ -57,6 +58,7 @@ function Header() {
         if (currencyParam) {
             setSelectedCurrency(currencyParam);
             sessionStorage.setItem('currencySearchParam', currencyParam);
+            console.log(currencyParam)
             if (currencies) {
                 const idx = currencies.findIndex((item) => item.code === currencyParam);
                 if (idx > -1) {
@@ -74,9 +76,9 @@ function Header() {
     const handleChange = (event) => {
         // Fix tạm gán VND khi chọn currency khác VND và USD
         let currency = event.target.value ?? event
-        if(!['VND','USD'].includes(currency)) {
-            currency = 'VND'
-        }
+        // if(!['VND','USD'].includes(currency)) {
+        //     currency = 'VND'
+        // }
         setSelectedCurrency(currency);
         sessionStorage.setItem('currencySearchParam', currency);
         const idx = currencies.findIndex((item) => item.code === currency);
@@ -93,7 +95,7 @@ function Header() {
 
     return (
         <div
-            className="w-full bg-white border-b justify-between items-center box-border p-4 font-medium text-gray-600 hidden sm:flex"
+            className="w-full bg-white border-b justify-between items-center box-border p-4 font-medium text-gray-600 hidden sm:flex z-[1000]"
             style={{ height: '72px' }}
         >
             <h1 className="hidden sm:block">Booking demo - Đặt vé</h1>
@@ -118,20 +120,7 @@ function Header() {
                 <div className="px-4 cursor-pointer border-l">
                     <div className="flex items-center p-2 hover:bg-gray-200 rounded-full text-sm">
                         <div className="w-4 h-4 bg-[url('/globalImages/vietnamicon.png')] bg-cover rounded-full"></div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-5 h-5 ml-1"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19.5 8.25v7.5M4.5 8.25v7.5M17.25 6v12m-10.5-12v12M12 4.5v15"
-                            />
-                        </svg>
+                        <SignalBars className={"w-5 h-5 ml-1"} strokeWidth={"1.5"} />
                     </div>
                 </div>
             </div>

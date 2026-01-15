@@ -1,11 +1,13 @@
 'use client';
 
 import { putQuotationReservationUpdateJourney } from '@/services/quotations/functions';
-import { parseNgayThang, tinhThoiGianBay } from '@/components/select-flight/flight_item';
+import { parseNgayThang, tinhThoiGianBay} from '@/lib/dateTime'
 import { useEffect, useState } from 'react';
 import CancelLegQuotationPopup from '@/components/booking-management/booking-detail/popup/popup_cancel_journey';
 import { toast } from 'react-hot-toast';
 import { getCurrencySymbol } from '@/lib/parseCurrency';
+import { ChevronDown } from '@/components/icons/chevronDown';
+import { ChevronUp } from '@/components/icons/chevronUp';
 
 export default function FlightInfomation({
     legNumber,
@@ -431,26 +433,8 @@ export default function FlightInfomation({
                         className="text-sky-400 flex justify-between items-center font-semibold"
                     >
                         <span>Chi tiết</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="2"
-                            stroke="currentColor"
-                            className={`size-4 ml-2 ${open ? 'hidden' : 'block'}`}
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                        </svg>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className={`size-4 ml-2 ${open ? 'block' : 'hidden'}`}
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                        </svg>
+                        <ChevronDown className={`size-4 ml-2 ${open ? 'hidden' : 'block'}`} strokeWidth={"2"} />
+                        <ChevronUp className={`size-4 ml-2 ${open ? 'block' : 'hidden'}`} strokeWidth={"2"} />
                     </button>
                     <div>
                         Tổng tiền:{' '}

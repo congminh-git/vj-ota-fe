@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-function ConsecutiveDayItem({ active, monthAndYear, paramStr }) {
+function NextDayItem({ active, monthAndYear, paramStr }) {
     const router = useRouter();
     const vietnameseMonths = [
         'Tháng 1',
@@ -81,4 +81,4 @@ function ConsecutiveDayItem({ active, monthAndYear, paramStr }) {
     );
 }
 
-export default ConsecutiveDayItem;
+export default NextDayItem;

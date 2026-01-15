@@ -15,7 +15,7 @@ export default function PassengerInfomationBookingSuccess({ bookingSuccessResult
                 </h3>
                 <div
                     className={`grid gap-8 ${
-                        bookingSuccessResult?.journeys.length > 1 ? 'grid-cols-2' : 'grid-cols-3'
+                        bookingSuccessResult?.journeys.length > 1 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-3'
                     }`}
                 >
                     {bookingSuccessResult?.passengers.map((passenger, index) => {
